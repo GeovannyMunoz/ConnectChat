@@ -77,6 +77,7 @@ const Login = () => {
 	const classes = useStyles();
 
 	const [user, setUser] = useState({ email: "", password: "" });
+	const [showPassword, setShowPassword] = useState(false);
 
 	const { handleLogin } = useContext(AuthContext);
 

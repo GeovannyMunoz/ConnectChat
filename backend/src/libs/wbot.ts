@@ -104,7 +104,7 @@ export const initWASocket = async (whatsapp: Whatsapp): Promise<Session> => {
             creds: state.creds,
             keys: makeCacheableSignalKeyStore(state.keys, logger),
           },
-          version: [2,2413,1],
+          version: [2,3000,1017381166],
           // defaultQueryTimeoutMs: 60000,
           // retryRequestDelayMs: 250,
           // keepAliveIntervalMs: 1000 * 60 * 10 * 3,
@@ -187,10 +187,13 @@ export const initWASocket = async (whatsapp: Whatsapp): Promise<Session> => {
             }
 
             if (connection === "open") {
+              const number = wsocket.user.id.split(':');
               await whatsapp.update({
                 status: "CONNECTED",
                 qrcode: "",
-                retries: 0
+                retries: 0,
+                number: number[0],
+                perfilName: wsocket.user.name
               });
 
               io.emit(`company-${whatsapp.companyId}-whatsappSession`, {
@@ -231,7 +234,9 @@ export const initWASocket = async (whatsapp: Whatsapp): Promise<Session> => {
                 await whatsapp.update({
                   qrcode: qr,
                   status: "qrcode",
-                  retries: 0
+                  retries: 0,
+                  number: "",
+                  perfilName: ""
                 });
                 const sessionIndex = sessions.findIndex(
                   s => s.id === whatsapp.id

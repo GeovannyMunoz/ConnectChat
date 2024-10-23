@@ -52,6 +52,12 @@ class Whatsapp extends Model<Whatsapp> {
   @Column
   retries: number;
 
+  @Column
+  number: string;
+
+  @Column
+  perfilName: string;
+
   @Default("")
   @Column(DataType.TEXT)
   greetingMessage: string;

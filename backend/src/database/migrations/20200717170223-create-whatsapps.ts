@@ -24,6 +24,12 @@ module.exports = {
       plugged: {
         type: DataTypes.BOOLEAN
       },
+      number: {
+        type: DataTypes.STRING
+      },
+      perfilName: {
+        type: DataTypes.STRING
+      },
       createdAt: {
         type: DataTypes.DATE,
         allowNull: false

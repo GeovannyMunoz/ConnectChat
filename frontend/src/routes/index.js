@@ -53,11 +53,12 @@ const Routes = () => {
         <TicketsContextProvider>
           <Switch>
             <Route exact path="/login" component={Login} />
-            <Route exact path="/signup" component={Signup} />
+            {/*<Route exact path="/signup" component={Signup} />*/}
             {/* <Route exact path="/create-company" component={Companies} /> */}
             <WhatsAppsProvider>
               <LoggedInLayout>
                 <Route exact path="/" component={Dashboard} isPrivate />
+                <Route exact path="/signup" component={Signup} isPrivate />
                 <Route
                   exact
                   path="/tickets/:ticketId?"

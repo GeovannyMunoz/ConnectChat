@@ -385,7 +385,7 @@ const MainListItems = (props) => {
                       <ListItemIcon>
                         <ListIcon />
                       </ListItemIcon>
-                      <ListItemText primary="Listagem" />
+                      <ListItemText primary={i18n.t("mainDrawer.listItems.listCampaigns.campaigns")} />
                     </ListItem>
                     <ListItem
                       onClick={() => history.push("/contact-lists")}
@@ -394,7 +394,7 @@ const MainListItems = (props) => {
                       <ListItemIcon>
                         <PeopleIcon />
                       </ListItemIcon>
-                      <ListItemText primary="Listas de Contatos" />
+                      <ListItemText primary={i18n.t("mainDrawer.listItems.listCampaigns.contactLists")} />
                     </ListItem>
                     <ListItem
                       onClick={() => history.push("/campaigns-config")}
@@ -403,7 +403,7 @@ const MainListItems = (props) => {
                       <ListItemIcon>
                         <SettingsOutlinedIcon />
                       </ListItemIcon>
-                      <ListItemText primary="Configurações" />
+                      <ListItemText primary={i18n.t("mainDrawer.listItems.listCampaigns.campaignsConfig")} />
                     </ListItem>
                   </List>
                 </Collapse>
@@ -475,21 +475,6 @@ const MainListItems = (props) => {
               primary={i18n.t("mainDrawer.listItems.settings")}
               icon={<SettingsOutlinedIcon />}
             />
-			
-			
-            {!collapsed && <React.Fragment>
-              <Divider />
-              {/* 
-              // IMAGEM NO MENU
-              <Hidden only={['sm', 'xs']}>
-                <img style={{ width: "100%", padding: "10px" }} src={logo} alt="image" />            
-              </Hidden> 
-              */}
-              <Typography style={{ fontSize: "12px", padding: "10px", textAlign: "right", fontWeight: "bold" }}>
-                Versão: 4.0.0
-              </Typography>
-            </React.Fragment>
-            }
 			
           </>
         )}

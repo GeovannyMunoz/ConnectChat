@@ -10,6 +10,10 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 import { i18n } from "../../translate/i18n";
 
@@ -34,7 +38,7 @@ const useStyles = makeStyles(theme => ({
 	root: {
 		width: "100vw",
 		height: "100vh",
-		background: "linear-gradient(to right, #6D30EF , #6D30EF , #4C21A7)", //cor de fundo 
+		//background: "linear-gradient(to right, #036BA3 , #036BA3 , #4C21A7)", //cor de fundo 
 		//backgroundImage: "url(https://#)",
 		backgroundRepeat: "no-repeat",
 		backgroundSize: "100% 100%",
@@ -93,9 +97,9 @@ const Login = () => {
 				<div>
 					<center><img style={{ margin: "0 auto", width: "70%" }} src={logo} alt="Logologin" /></center>
 				</div>
-				{/*<Typography component="h1" variant="h5">
+				<Typography component="h1" variant="h5">
 					{i18n.t("login.title")}
-				</Typography>*/}
+				</Typography>
 				<form className={classes.form} noValidate onSubmit={handlSubmit}>
 					<TextField
 						variant="outlined"
@@ -117,11 +121,23 @@ const Login = () => {
 						fullWidth
 						name="password"
 						label={i18n.t("login.form.password")}
-						type="password"
 						id="password"
 						value={user.password}
 						onChange={handleChangeInput}
 						autoComplete="current-password"
+						type={showPassword ? 'text' : 'password'}
+						InputProps={{
+						endAdornment: (
+							<InputAdornment position="end">
+							<IconButton
+								aria-label="toggle password visibility"
+								onClick={() => setShowPassword((e) => !e)}
+							>
+								{showPassword ? <VisibilityOff /> : <Visibility />}
+							</IconButton>
+							</InputAdornment>
+						)
+						}}
 					/>
 					<Button
 						type="submit"
@@ -132,7 +148,7 @@ const Login = () => {
 					>
 						{i18n.t("login.buttons.submit")}
 					</Button>
-					{ <Grid container>
+					{/* <Grid container>
 						<Grid item>
 							<Link
 								href="#"
@@ -143,7 +159,7 @@ const Login = () => {
 								{i18n.t("login.buttons.register")}
 							</Link>
 						</Grid>
-					</Grid> }
+					</Grid> */}
 				</form>
 			
 			</div>

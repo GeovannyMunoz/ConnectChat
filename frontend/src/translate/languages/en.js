@@ -86,6 +86,8 @@ const messages = {
 					default: "Default",
 					actions: "Actions",
 					session: "Session",
+					number: "Number",
+					profileName: "Profile"
 				},
 			},
 			whatsappModal: {
@@ -188,7 +190,7 @@ const messages = {
 				success: "User saved successfully.",
 			},
 			chat: {
-				noTicketMessage: "Select a ticket to start chatting.",
+				noTicketMessage: "Select a chat to start chatting.",
 			},
 			ticketsManager: {
 				buttons: {
@@ -196,7 +198,7 @@ const messages = {
 				},
 			},
 			ticketsQueueSelect: {
-				placeholder: "Queues",
+				placeholder: "Departments",
 			},
 			tickets: {
 				toasts: {
@@ -248,12 +250,29 @@ const messages = {
 				listItems: {
 					dashboard: "Dashboard",
 					connections: "Connections",
-					tickets: "Tickets",
+					tickets: "Chats",
+					quickMessages: "Quick Responses",
 					contacts: "Contacts",
-					queues: "Queues",
+					queues: "Dep & Chatbot",
+					tags: "Tags",
 					administration: "Administration",
 					users: "Users",
 					settings: "Settings",
+					helps: "Ayuda",
+					messagesAPI: "API",
+					schedules: "Schedules",
+					campaigns: "Massive",
+					annoucements: "Informative",
+					chats: "Internal Chat",
+					financeiro: "Financial",
+					files: "List of files",
+					prompts: "Open.Ai",
+					queueIntegration: "Integrations",
+					listCampaigns:{
+						campaigns: "Campaigns",
+						contactLists: "Contacts",
+						campaignsConfig: "Settings"
+					},
 				},
 				appBar: {
 					user: {
@@ -266,7 +285,7 @@ const messages = {
 				noTickets: "No notifications.",
 			},
 			queues: {
-				title: "Queues",
+				title: "Departments",
 				table: {
 					name: "Name",
 					color: "Color",
@@ -283,7 +302,7 @@ const messages = {
 				},
 			},
 			queueSelect: {
-				inputLabel: "Queues",
+				inputLabel: "Departments",
 			},
 			users: {
 				title: "Users",

@@ -339,6 +339,9 @@ const Connections = () => {
 								{i18n.t("connections.table.name")}
 							</TableCell>
 							<TableCell align="center">
+								{i18n.t("connections.table.number")}
+							</TableCell>
+							<TableCell align="center">
 								{i18n.t("connections.table.status")}
 							</TableCell>
 							<Can
@@ -350,6 +353,9 @@ const Connections = () => {
 									</TableCell>
 								)}
 							/>
+							<TableCell align="center">
+								{i18n.t("connections.table.perfilName")}
+							</TableCell>
 							<TableCell align="center">
 								{i18n.t("connections.table.lastUpdate")}
 							</TableCell>
@@ -376,6 +382,7 @@ const Connections = () => {
 									whatsApps.map(whatsApp => (
 										<TableRow key={whatsApp.id}>
 											<TableCell align="center">{whatsApp.name}</TableCell>
+											<TableCell align="center">{whatsApp.number}</TableCell>
 											<TableCell align="center">
 												{renderStatusToolTips(whatsApp)}
 											</TableCell>
@@ -388,6 +395,7 @@ const Connections = () => {
 													</TableCell>
 												)}
 											/>
+											<TableCell align="center">{whatsApp.perfilName}</TableCell>
 											<TableCell align="center">
 												{format(parseISO(whatsApp.updatedAt), "dd/MM/yy HH:mm")}
 											</TableCell>

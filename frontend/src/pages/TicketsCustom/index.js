@@ -63,12 +63,7 @@ const TicketsCustom = () => {
 							</>
 						) : (
 							<Paper square variant="outlined" className={classes.welcomeMsg}>
-							{/*  LOGO */}
-							<div>
-							<center><img style={{ margin: "0 auto", width: "70%" }} src={logo} alt="logologin" /></center>
-							</div>
-							{/*  LOGO */}
-							{/*<span>{i18n.t("chat.noTicketMessage")}</span>*/}
+								<span>{i18n.t("chat.noTicketMessage")}</span>
 							</Paper>
 						)}
 					</Grid>

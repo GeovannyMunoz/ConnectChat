@@ -32,6 +32,8 @@ const reducer = (state, action) => {
       state[whatsAppIndex].updatedAt = whatsApp.updatedAt;
       state[whatsAppIndex].qrcode = whatsApp.qrcode;
       state[whatsAppIndex].retries = whatsApp.retries;
+      state[whatsAppIndex].number = whatsApp.number;
+      state[whatsAppIndex].perfilName = whatsApp.perfilName;
       return [...state];
     } else {
       return [...state];

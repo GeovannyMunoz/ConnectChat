@@ -115,6 +115,8 @@ const messages = {
           default: "Padrão",
           actions: "Ações",
           session: "Sessão",
+          number: "Número",
+          profileName: "Perfil"
         },
       },
       whatsappModal: {
@@ -340,7 +342,7 @@ const messages = {
         success: "Tag salvo com sucesso.",
       },
       chat: {
-        noTicketMessage: "Selecione um ticket para começar a conversar.",
+        noTicketMessage: "Selecione um chat para começar a conversar.",
       },
       uploads: {
         titles: {
@@ -354,7 +356,7 @@ const messages = {
         },
       },
       ticketsQueueSelect: {
-        placeholder: "Filas",
+        placeholder: "Departamentos",
       },
       tickets: {
         toasts: {
@@ -411,10 +413,10 @@ const messages = {
         listItems: {
           dashboard: "Dashboard",
           connections: "Conexões",
-          tickets: "Atendimentos",
+          tickets: "Chats",
           quickMessages: "Respostas Rápidas",
           contacts: "Contatos",
-          queues: "Filas & Chatbot",
+          queues: "Departamentos & Chatbot",
           tags: "Tags",
           administration: "Administração",
           users: "Usuários",
@@ -429,6 +431,11 @@ const messages = {
           files: "Lista de arquivos",
           prompts: "Open.Ai",
           queueIntegration: "Integrações",
+          listCampaigns:{
+						campaigns: "Campanhas",
+						contactLists: "Contactos",
+						campaignsConfig: "Configurações"
+					},
         },
         appBar: {
           user: {
@@ -455,7 +462,7 @@ const messages = {
         confirmationModal: {
           deleteTitle: "Excluir",
           deleteMessage:
-            "Você tem certeza? Essa ação não pode ser revertida! e será removida das filas e conexões vinculadas",
+            "Você tem certeza? Essa ação não pode ser revertida! e será removida das Departamentos e conexões vinculadas",
         },
       },
       files: {
@@ -722,7 +729,7 @@ const messages = {
         title: "Configurações de Campanhas",
       },
       queues: {
-        title: "Filas & Chatbot",
+        title: "Departamentos & Chatbot",
         table: {
           name: "Nome",
           color: "Cor",
@@ -740,7 +747,7 @@ const messages = {
         },
       },
       queueSelect: {
-        inputLabel: "Filas",
+        inputLabel: "Departamentos",
       },
       users: {
         title: "Usuários",

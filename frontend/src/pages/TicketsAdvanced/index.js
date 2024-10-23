@@ -61,13 +61,8 @@ const TicketAdvanced = (props) => {
 
 	const renderPlaceholder = () => {
 		return <Box className={classes.placeholderContainer}>
-             {/*<div className={classes.placeholderItem}>{i18n.t("chat.noTicketMessage")}</div>*/}
-			// LOGO//
-			<div>
-			<center><img style={{ margin: "0 auto", width: "70%" }} src={logo} alt="logologin" /></center>
-			</div>
-			// LOGO//
-			<br />
+             <div className={classes.placeholderItem}>{i18n.t("chat.noTicketMessage")}</div>
+
             <Button onClick={() => setOption(1)} variant="contained" color="primary">
                 Selecionar Ticket
             </Button>

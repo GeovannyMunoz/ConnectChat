@@ -111,6 +111,8 @@ const messages = {
 					default: "Por Defecto",
 					actions: "Acciones",
 					session: "Sesión",
+					number: "Número",
+					perfilName: "Perfil",
 				},
 			},
 			whatsappModal: {
@@ -121,7 +123,7 @@ const messages = {
 				form: {
 					name: "Nombre",
 					default: "Por Defecto",
-					sendIdQueue: "Sectores",
+					sendIdQueue: "Departamentos",
 					timeSendQueue: "Redireccionar para el sector en X minutos",
 					queueRedirection: "edireccionamiento de sector",
 					queueRedirectionDesc: "Seleccione un sector para los contactos que no tienen una cola para ser redirigidos",
@@ -335,7 +337,7 @@ const messages = {
 				success: "Tag sguardado satisfactoriamente.",
 			  },
 			chat: {
-				noTicketMessage: "Selecciona un ticket para empezar a chatear.",
+				noTicketMessage: "Selecciona un chat para empezar a chatear.",
 			},
 			uploads: {
 				titles: {
@@ -349,7 +351,7 @@ const messages = {
 				},
 			},
 			ticketsQueueSelect: {
-				placeholder: "Sectores",
+				placeholder: "Departamentos",
 			},
 			tickets: {
 				toasts: {
@@ -405,10 +407,10 @@ const messages = {
 				listItems: {
 					dashboard: "Dashboard",
 					connections: "Conexiones",
-					tickets: "Atención",
+					tickets: "Chats",
 					quickMessages: "Respuestas Rapidas",
 					contacts: "Contactos",
-					queues: "Sectores & Chatbot",
+					queues: "Dep & Chatbot",
 					tags: "Tags",
 					administration: "Administración",
 					users: "Usuarios",
@@ -419,10 +421,15 @@ const messages = {
 					campaigns: "Masivos",
 					annoucements: "Informativos",
 					chats: "Chat Interno",
-					financeiro: "Financiero - BR",
+					financeiro: "Financiero",
 					files: "Lista de archivos",
 					prompts: "Open.Ai",
 					queueIntegration: "Integraciones",
+					listCampaigns:{
+						campaigns: "Campañas",
+						contactLists: "Contactos",
+						campaignsConfig: "Configuraciones"
+					},
 				},
 				appBar: {
 					user: {
@@ -715,7 +722,7 @@ const messages = {
 				title: "Configuraciones de Campañaas",
 			  },
 			queues: {
-				title: "Sectores & Chatbot",
+				title: "Departamentos & Chatbot",
 				table: {
 					name: "Nombre",
 					color: "Color",
@@ -733,7 +740,7 @@ const messages = {
 				},
 			  },
 			queueSelect: {
-					inputLabel: "Sectores",
+					inputLabel: "Departamentos",
 			  },
 			users: {
 					title: "Usuarios",

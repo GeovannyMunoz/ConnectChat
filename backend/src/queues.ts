@@ -28,7 +28,8 @@ import FilesOptions from './models/FilesOptions';
 import { addSeconds, differenceInSeconds } from "date-fns";
 import formatBody from "./helpers/Mustache";
 import { ClosedAllOpenTickets } from "./services/WbotServices/wbotClosedTickets";
-
+import SendWhatsAppMessage from "./services/WbotServices/SendWhatsAppMessage";
+import ShowTicketService from "./services/TicketServices/ShowTicketService";
 
 const nodemailer = require('nodemailer');
 const CronJob = require('cron').CronJob;
@@ -271,17 +272,31 @@ async function handleSendScheduledMessage(job) {
       filePath = path.resolve("public", schedule.mediaPath);
     }
 
-    await SendMessage(whatsapp, {
+    /*await SendMessage(whatsapp, {
       number: schedule.contact.number,
       body: formatBody(schedule.body, schedule.contact),
       mediaPath: filePath
-    });
+    });*/
+
+    const  contactId  = schedule.contactId;
+    const message = await sequelize.query(`SELECT "ticketId" FROM "Messages" WHERE "contactId" = :contactId ORDER BY "createdAt" DESC LIMIT 1`,
+    {
+      replacements: { contactId },
+      type: QueryTypes.SELECT
+    })as {  ticketId: number }[];
+
+    const ticketId  = message[0].ticketId;
+    const body  = schedule.body;
+
+    const ticket = await ShowTicketService(ticketId, schedule.companyId);
+    const send = await SendWhatsAppMessage({ body, ticket });
 
     await scheduleRecord?.update({
       sentAt: moment().format("YYYY-MM-DD HH:mm"),
       status: "ENVIADA"
     });
 
+    
     logger.info(`Mensagem agendada enviada para: ${schedule.contact.name}`);
     sendScheduledMessages.clean(15000, "completed");
   } catch (e: any) {

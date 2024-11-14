@@ -380,7 +380,7 @@ async function getCampaign(id) {
 
 async function getContact(id) {
   return await ContactListItem.findByPk(id, {
-    attributes: ["id", "name", "number", "email"]
+    attributes: ["id", "name", "number", "email", "variables"]
   });
 }
 
@@ -508,8 +508,8 @@ function getCampaignValidConfirmationMessages(campaign) {
 function getProcessedMessage(msg: string, variables: any[], contact: any) {
   let finalMessage = msg;
 
-  if (finalMessage.includes("{nome}")) {
-    finalMessage = finalMessage.replace(/{nome}/g, contact.name);
+  if (finalMessage.includes("{nombre}")) {
+    finalMessage = finalMessage.replace(/{nombre}/g, contact.name);
   }
 
   if (finalMessage.includes("{email}")) {
@@ -520,12 +520,17 @@ function getProcessedMessage(msg: string, variables: any[], contact: any) {
     finalMessage = finalMessage.replace(/{numero}/g, contact.number);
   }
 
+  const dynamicColumns = JSON.parse(contact.variables);
+
   variables.forEach(variable => {
-    if (finalMessage.includes(`{${variable.key}}`)) {
+    const dynamicValue = dynamicColumns.find((column: any) => column.key === variable.value)
+    if(dynamicValue !== undefined){
       const regex = new RegExp(`{${variable.key}}`, "g");
-      finalMessage = finalMessage.replace(regex, variable.value);
+      finalMessage = finalMessage.replace(regex, dynamicValue.value);
     }
+    
   });
+
 
   return finalMessage;
 }

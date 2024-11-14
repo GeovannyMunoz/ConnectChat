@@ -13,36 +13,41 @@ export async function ImportContacts(
 ) {
   const workbook = XLSX.readFile(file?.path as string);
   const worksheet = head(Object.values(workbook.Sheets)) as any;
-  const rows: any[] = XLSX.utils.sheet_to_json(worksheet, { header: 0 });
-  const contacts = rows.map(row => {
+  const rows: any[] = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+  const headers = rows[0].map((header: string) => header.toLowerCase());
+
+  const contacts = rows.slice(1).map(row => {
     let name = "";
     let number = "";
     let email = "";
+    let variables = "";
 
-    if (has(row, "nome") || has(row, "Nome")) {
-      name = row["nome"] || row["Nome"];
+
+    const dynamicColumns: any[] = [];
+    const nameHeader = headers.find(header => header.includes("nombre"));
+    const numberHeader = headers.find(header => header.includes("numero"));
+    const emailHeader = headers.find(header => header.includes("email"));
+
+    if (nameHeader) name = row[headers.indexOf(nameHeader)];
+    if (numberHeader) number = `${row[headers.indexOf(numberHeader)]}`.replace(/\D/g, "");
+    if (emailHeader) email = row[headers.indexOf(emailHeader)];
+
+    headers.forEach((header: string, index: number) => {
+	    if (![nameHeader, numberHeader, emailHeader].includes(header)) {
+		    dynamicColumns.push({
+		      key: header,
+		      value:row[index]
+		    });
+	    }
+    });
+
+    if(dynamicColumns.length > 0){
+    	variables = JSON.stringify(dynamicColumns)
     }
 
-    if (
-      has(row, "numero") ||
-      has(row, "número") ||
-      has(row, "Numero") ||
-      has(row, "Número")
-    ) {
-      number = row["numero"] || row["número"] || row["Numero"] || row["Número"];
-      number = `${number}`.replace(/\D/g, "");
-    }
 
-    if (
-      has(row, "email") ||
-      has(row, "e-mail") ||
-      has(row, "Email") ||
-      has(row, "E-mail")
-    ) {
-      email = row["email"] || row["e-mail"] || row["Email"] || row["E-mail"];
-    }
-
-    return { name, number, email, contactListId, companyId };
+    return { name, number, email, contactListId, companyId, variables };
   });
 
   const contactList: ContactListItem[] = [];

@@ -21,6 +21,10 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: true
       },
+      variables: {
+        type: DataTypes.TEXT,
+        allowNull: true
+      },
       contactListId: {
         type: DataTypes.INTEGER,
         references: { model: "ContactLists", key: "id" },

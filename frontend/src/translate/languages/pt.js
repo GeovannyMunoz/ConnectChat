@@ -67,6 +67,26 @@ const messages = {
             title: "Atendimentos hoje: ",
           },
         },
+        operationalSummary: {
+          inAttendance: {
+            title: "Em Atendimento"
+          },
+          waiting: {
+            title: "Aguardando"
+          },
+          closed: {
+            title: "Finalizado"
+          },
+          newContacts:{
+						title: "Novos Contatos"
+					},
+					attendanceTime:{
+						title: "T.M. de Atendimento"
+					},
+					waitingTime:{
+						title: "T.M. de Espera"
+					},
+        }
       },
       connections: {
         title: "Conexões",
@@ -415,6 +435,7 @@ const messages = {
           connections: "Conexões",
           tickets: "Chats",
           quickMessages: "Respostas Rápidas",
+          task:"Tarefas",
           contacts: "Contatos",
           queues: "Departamentos & Chatbot",
           tags: "Tags",

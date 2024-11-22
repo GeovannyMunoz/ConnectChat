@@ -39,6 +39,26 @@ const messages = {
 						title: "Tickets today: ",
 					},
 				},
+				operationalSummary: {
+					inAttendance: {
+					  title: "In Service"
+					},
+					waiting: {
+					  title: "Waiting"
+					},
+					closed: {
+					  title: "Closed"
+					},
+					newContacts:{
+						title: "New Contacts"
+					},
+					attendanceTime:{
+						title: "Attendance Time"
+					},
+					waitingTime:{
+						title: "Waiting Time"
+					},
+				  }
 			},
 			connections: {
 				title: "Connections",
@@ -252,6 +272,7 @@ const messages = {
 					connections: "Connections",
 					tickets: "Chats",
 					quickMessages: "Quick Responses",
+					task:"Task",
 					contacts: "Contacts",
 					queues: "Dep & Chatbot",
 					tags: "Tags",

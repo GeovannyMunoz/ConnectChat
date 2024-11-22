@@ -10,6 +10,7 @@ import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Typography from "@material-ui/core/Typography";
+import { i18n } from "../../translate/i18n";
 
 // ICONS
 import SpeedIcon from "@material-ui/icons/Speed";
@@ -91,7 +92,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     flexDirection: "column",
     height: "100%",
-    backgroundColor: "#036BA3",
+    backgroundColor: "#0094bb",
     color: "#eee",
   },
   card2: {
@@ -100,7 +101,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     flexDirection: "column",
     height: "100%",
-    backgroundColor: "#036BA3",
+    backgroundColor: "#748e9d",
     color: "#eee",
   },
   card3: {
@@ -109,7 +110,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     flexDirection: "column",
     height: "100%",
-    backgroundColor: "#036BA3",
+    backgroundColor: "#7f78e6",
     color: "#eee",
   },
   card4: {
@@ -118,7 +119,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     flexDirection: "column",
     height: "100%",
-    backgroundColor: "#036BA3",
+    backgroundColor: "#cc991b",
     color: "#eee",
   },
   card5: {
@@ -127,7 +128,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     flexDirection: "column",
     height: "100%",
-    backgroundColor: "#036BA3",
+    backgroundColor: "#434243",
     color: "#eee",
   },
   card6: {
@@ -136,7 +137,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     flexDirection: "column",
     height: "100%",
-    backgroundColor: "#036BA3",
+    backgroundColor: "#b87d77",
     color: "#eee",
   },
   card7: {
@@ -145,7 +146,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     flexDirection: "column",
     height: "100%",
-    backgroundColor: "#036BA3",
+    backgroundColor: "#7bc780",
     color: "#eee",
   },
   card8: {
@@ -154,7 +155,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     flexDirection: "column",
     height: "100%",
-    backgroundColor: "#036BA3",
+    backgroundColor: "#b05c38",
     color: "#eee",
   },
   card9: {
@@ -163,7 +164,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     flexDirection: "column",
     height: "100%",
-    backgroundColor: "#036BA3",
+    backgroundColor: "#bd3c58",
     color: "#eee",
   },
 }));
@@ -366,14 +367,14 @@ const Dashboard = () => {
                     variant="h6"
                     paragraph
                   >
-                    Atd. Pendentes
+                    {i18n.t("dashboard.operationalSummary.inAttendance.title")}
                   </Typography>
                   <Grid item>
                     <Typography
                       component="h1"
                       variant="h4"
                     >
-                      {counters.supportPending}
+                      {counters.supportHappening}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -403,14 +404,14 @@ const Dashboard = () => {
                     variant="h6"
                     paragraph
                   >
-                    Atd. Acontecendo
+                    {i18n.t("dashboard.operationalSummary.waiting.title")}
                   </Typography>
                   <Grid item>
                     <Typography
                       component="h1"
                       variant="h4"
                     >
-                      {counters.supportHappening}
+                      {counters.supportPending}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -440,7 +441,7 @@ const Dashboard = () => {
                     variant="h6"
                     paragraph
                   >
-                    Finalizados
+                    {i18n.t("dashboard.operationalSummary.closed.title")}
                   </Typography>
                   <Grid item>
                     <Typography
@@ -477,7 +478,7 @@ const Dashboard = () => {
                     variant="h6"
                     paragraph
                   >
-                    Novos Contatos
+                    {i18n.t("dashboard.operationalSummary.newContacts.title")}
                   </Typography>
                   <Grid item>
                     <Typography
@@ -514,7 +515,7 @@ const Dashboard = () => {
                     variant="h6"
                     paragraph
                   >
-                    T.M. de Atendimento
+                    {i18n.t("dashboard.operationalSummary.attendanceTime.title")}
                   </Typography>
                   <Grid item>
                     <Typography
@@ -551,7 +552,7 @@ const Dashboard = () => {
                     variant="h6"
                     paragraph
                   >
-                    T.M. de Espera
+                    {i18n.t("dashboard.operationalSummary.waitingTime.title")}
                   </Typography>
                   <Grid item>
                     <Typography

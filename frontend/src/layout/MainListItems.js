@@ -299,7 +299,7 @@ const MainListItems = (props) => {
 	  
 	  <ListItemLink
         to="/todolist"
-        primary={i18n.t("Tarefas")}
+        primary={i18n.t("mainDrawer.listItems.task")}
         icon={<BorderColorIcon />}
       />
 

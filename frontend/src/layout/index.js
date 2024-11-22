@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
   toolbarIcon: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
     padding: "0 8px",
     minHeight: "48px",
     [theme.breakpoints.down("sm")]: {

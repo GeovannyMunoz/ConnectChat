@@ -520,17 +520,20 @@ function getProcessedMessage(msg: string, variables: any[], contact: any) {
     finalMessage = finalMessage.replace(/{numero}/g, contact.number);
   }
 
-  const dynamicColumns = JSON.parse(contact.variables);
+  if (!contact.variables || contact.variables.trim() === '') {
+    logger.warn("Sin variables dinamicas");
+  } else {
+    const dynamicColumns = JSON.parse(contact.variables);
 
-  variables.forEach(variable => {
-    const dynamicValue = dynamicColumns.find((column: any) => column.key === variable.value)
-    if(dynamicValue !== undefined){
-      const regex = new RegExp(`{${variable.key}}`, "g");
-      finalMessage = finalMessage.replace(regex, dynamicValue.value);
-    }
-    
-  });
-
+    variables.forEach(variable => {
+      const dynamicValue = dynamicColumns.find((column: any) => column.key === variable.value)
+      if(dynamicValue !== undefined){
+        const regex = new RegExp(`{${variable.key}}`, "g");
+        finalMessage = finalMessage.replace(regex, dynamicValue.value);
+      }
+      
+    });
+  }
 
   return finalMessage;
 }

@@ -18,6 +18,7 @@ import { ReplyMessageProvider } from "../../context/ReplyingMessage/ReplyingMess
 import TicketHeader from "../TicketHeader";
 import TicketInfo from "../TicketInfo";
 import { socketConnection } from "../../services/socket";
+import { i18n } from "../../translate/i18n";
 
 const drawerWidth = 320;
 
@@ -175,7 +176,7 @@ export default function TicketMessagesDialog({ open, handleClose, ticketId }) {
       <ReplyMessageProvider>{renderMessagesList()}</ReplyMessageProvider>
       <DialogActions>
         <Button onClick={handleClose} color="primary">
-          Fechar
+          {i18n.t("previewTicketModal.buttons.closed")}
         </Button>
       </DialogActions>
     </Dialog>

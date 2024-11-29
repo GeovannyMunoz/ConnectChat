@@ -286,7 +286,7 @@ const Dashboard = () => {
         <>
           <Grid item xs={12} sm={6} md={4}>
             <TextField
-              label="Data Inicial"
+              label={i18n.t("dashboard.filter.startDate.title")}
               type="date"
               value={dateFrom}
               onChange={(e) => setDateFrom(e.target.value)}
@@ -298,7 +298,7 @@ const Dashboard = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
             <TextField
-              label="Data Final"
+              label={i18n.t("dashboard.filter.endDate.title")}
               type="date"
               value={dateTo}
               onChange={(e) => setDateTo(e.target.value)}
@@ -314,14 +314,14 @@ const Dashboard = () => {
       return (
         <Grid item xs={12} sm={6} md={4}>
           <FormControl className={classes.selectContainer}>
-            <InputLabel id="period-selector-label">Período</InputLabel>
+            <InputLabel id="period-selector-label">{i18n.t("dashboard.filter.period.title")}</InputLabel>
             <Select
               labelId="period-selector-label"
               id="period-selector"
               value={period}
               onChange={(e) => handleChangePeriod(e.target.value)}
             >
-              <MenuItem value={0}>Nenhum selecionado</MenuItem>
+              <MenuItem value={0}>{i18n.t("dashboard.filter.selectedNone.title")}</MenuItem>
               <MenuItem value={3}>Últimos 3 dias</MenuItem>
               <MenuItem value={7}>Últimos 7 dias</MenuItem>
               <MenuItem value={15}>Últimos 15 dias</MenuItem>
@@ -329,7 +329,7 @@ const Dashboard = () => {
               <MenuItem value={60}>Últimos 60 dias</MenuItem>
               <MenuItem value={90}>Últimos 90 dias</MenuItem>
             </Select>
-            <FormHelperText>Selecione o período desejado</FormHelperText>
+            <FormHelperText>{i18n.t("dashboard.filter.helperText")}</FormHelperText>
           </FormControl>
         </Grid>
       );
@@ -578,16 +578,16 @@ const Dashboard = () => {
           {/* FILTROS */}
           <Grid item xs={12} sm={6} md={4}>
             <FormControl className={classes.selectContainer}>
-              <InputLabel id="period-selector-label">Tipo de Filtro</InputLabel>
+              <InputLabel id="period-selector-label">{i18n.t("dashboard.filter.filterType.title")}</InputLabel>
               <Select
                 labelId="period-selector-label"
                 value={filterType}
                 onChange={(e) => handleChangeFilterType(e.target.value)}
               >
-                <MenuItem value={1}>Filtro por Data</MenuItem>
-                <MenuItem value={2}>Filtro por Período</MenuItem>
+                <MenuItem value={1}>{i18n.t("dashboard.filter.filterDate")}</MenuItem>
+                <MenuItem value={2}>{i18n.t("dashboard.filter.filterPeriod")}</MenuItem>
               </Select>
-              <FormHelperText>Selecione o período desejado</FormHelperText>
+              <FormHelperText>{i18n.t("dashboard.filter.helperText")}</FormHelperText>
             </FormControl>
           </Grid>
 
@@ -601,7 +601,7 @@ const Dashboard = () => {
               variant="contained"
               color="primary"
             >
-              Filtrar
+              {i18n.t("dashboard.filter.buttonFilter.title")}
             </ButtonWithSpinner>
           </Grid>
 

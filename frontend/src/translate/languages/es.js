@@ -72,7 +72,7 @@ const messages = {
 					  title: "En servicio"
 					},
 					waiting: {
-					  title: "En sperando"
+					  title: "En espera"
 					},
 					closed: {
 					  title: "Finalizados"
@@ -86,7 +86,36 @@ const messages = {
 					waitingTime:{
 						title: "Tiempo Espera"
 					},
-				  }
+				},
+				filter: {
+					helperText: "Seleccione el período deseado",
+					filterDate: "Filtrar por fecha",
+					filterPeriod: "Filtrar por Período",
+					filterType: {
+						title: "Tipo de Filtro",
+					},
+					startDate: {
+						title: "Fecha Inicio",
+					},
+					endDate: {
+						title: "Fecha Fin",
+					},
+					period: {
+						title: "Período",
+					},
+					selectedNone:{
+						title: "Ninguno seleccionado"
+					},
+					buttonFilter:{
+						title: "FILTRAR"
+					}
+				},
+				table:{
+					name: "Nombre",
+					reviews: "Reseñas",
+					attendanceTime: "Tiempo de Atendimento",
+					status: "Status (Actual)"
+				}
 			},
 			connections: {
 				title: "Conexiones",
@@ -381,7 +410,7 @@ const messages = {
 					message: "Mensaje de",
 				},
 				tabs: {
-					open: { title: "Bandeja" },
+					open: { title: "Abiertos" },
 					closed: { title: "Resueltos" },
 					search: { title: "Buscar" },
 				},
@@ -404,20 +433,30 @@ const messages = {
 				},
 			},
 			ticketsList: {
-				pendingHeader: "Cola",
-				assignedHeader: "Trabajando en",
+				pendingHeader: "En espera",
+				assignedHeader: "Mis Chats",
 				noTicketsTitle: "¡Nada acá!",
-				noTicketsMessage:"No se encontraron tickets con este estado o término de búsqueda",
+				noTicketsMessage:"No se encontraron chats con este estado o término de búsqueda",
+				noQueue: "SIN DPTO.",
 				buttons: {
 				  accept: "Acceptar",
 				  closed: "Finalizar",
          		  reopen: "Reabrir"
 				},
 			},
+			previewTicketModal:{
+				buttons: {
+					closed: "Cerrar",
+				},
+			},
 			newTicketModal: {
-				title: "Crear Ticket",
+				title: "Crear Chat",
 				fieldLabel: "Escribe para buscar un contacto",
 				add: "Añadir",
+				select:{
+					queue: "Seleccione un Departemento",
+					connection: "Seleccione una Conexión"
+				},
 				buttons: {
 					ok: "Guardar",
 					cancel: "Cancelar",
@@ -884,7 +923,7 @@ const messages = {
 				success: "¡La lista de archivos se guardó correctamente!",
 			  },
 			ticketOptionsMenu: {
-				schedule: "Appuntamiento",
+				schedule: "Agendar",
 				delete: "Borrar",
 				transfer: "Transferir",
 				registerAppointment: "Observaciones del Conctato",

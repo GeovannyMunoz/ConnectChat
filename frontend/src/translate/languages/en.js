@@ -58,7 +58,36 @@ const messages = {
 					waitingTime:{
 						title: "Waiting Time"
 					},
-				  }
+				},
+				filter: {
+					helperText: "Select the desired period",
+					filterDate: "Filter by Date",
+					filterPeriod: "Filter by Period",
+					filterType: {
+						title: "Filter Type",
+					},
+					startDate: {
+						title: "Start Date",
+					},
+					endDate: {
+						title: "End Date",
+					},
+					period: {
+						title: "Period",
+					},
+					selectedNone:{
+						title: "None selected"
+					},
+					buttonFilter:{
+						title: "FILTER"
+					}
+				},
+				table:{
+					name: "Name",
+					reviews: "Reviews",
+					attendanceTime: "Service Time",
+					status: "Status (Current)"
+				}
 			},
 			connections: {
 				title: "Connections",
@@ -249,18 +278,30 @@ const messages = {
 				},
 			},
 			ticketsList: {
-				pendingHeader: "Queue",
-				assignedHeader: "Working on",
+				pendingHeader: "On hold",
+				assignedHeader: "My chats",
 				noTicketsTitle: "Nothing here!",
-				noTicketsMessage: "No tickets found with this status or search term.",
+				noTicketsMessage: "No chats found with this status or search term.",
+				noQueue: "NO DEPT.",
 				buttons: {
 					accept: "Accept",
+					closed: "Closed",
+         		  	reopen: "Reopen"
+				},
+			},
+			previewTicketModal:{
+				buttons: {
+					closed: "Close",
 				},
 			},
 			newTicketModal: {
-				title: "Create Ticket",
+				title: "Create Chat",
 				fieldLabel: "Type to search for a contact",
 				add: "Add",
+				select:{
+					queue: "Select a Department",
+					connection: "Select a Connection"
+				},
 				buttons: {
 					ok: "Save",
 					cancel: "Cancel",
@@ -382,6 +423,7 @@ const messages = {
 				extraInfo: "Other information",
 			},
 			ticketOptionsMenu: {
+				schedule: "Schedule",
 				delete: "Delete",
 				transfer: "Transfer",
 				confirmationModal: {

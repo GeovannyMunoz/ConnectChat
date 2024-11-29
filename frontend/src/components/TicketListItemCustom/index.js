@@ -376,7 +376,7 @@ const useStyles = makeStyles((theme) => ({
           [classes.pendingTicket]: ticket.status === "pending",
         })}
       >
-        <Tooltip arrow placement="right" title={ticket.queue?.name?.toUpperCase() || "SEM FILA"} >
+        <Tooltip arrow placement="right" title={ticket.queue?.name?.toUpperCase() || i18n.t("ticketsList.noQueue")} >
           <span style={{ backgroundColor: ticket.queue?.color || "#7C7C7C" }} className={classes.ticketQueueColor}></span>
         </Tooltip>
         <ListItemAvatar>
@@ -387,7 +387,7 @@ const useStyles = makeStyles((theme) => ({
                 marginLeft: "-3px",
                 width: "55px",
                 height: "55px",
-                borderRadius: "10%",
+                //borderRadius: "10%",
               }}
               src={ticket?.contact?.profilePicUrl}
             />
@@ -398,7 +398,7 @@ const useStyles = makeStyles((theme) => ({
                 marginLeft: "0px",
                 width: "50px",
                 height: "50px",
-                borderRadius: "10%",
+                //borderRadius: "10%",
               }}
               src={ticket?.contact?.profilePicUrl}
             />
@@ -416,7 +416,7 @@ const useStyles = makeStyles((theme) => ({
                 color="textPrimary"
               >
                 {ticket.contact.name}
-                {profile === "admin" && (
+                {/*profile === "admin" && (
                   <Tooltip title="Espiar Conversa">
                     <VisibilityIcon
                       onClick={() => setOpenTicketMessageDialog(true)}
@@ -429,7 +429,7 @@ const useStyles = makeStyles((theme) => ({
                       }}
                     />
                   </Tooltip>
-                )}
+                )*/}
               </Typography>
               <ListItemSecondaryAction>
                 <Box className={classes.ticketInfo1}>{renderTicketInfo()}</Box>
@@ -450,7 +450,7 @@ const useStyles = makeStyles((theme) => ({
                 <span className={classes.secondaryContentSecond} >
                   {ticket?.whatsapp?.name ? <Badge className={classes.connectionTag}>{ticket?.whatsapp?.name?.toUpperCase()}</Badge> : <br></br>}
                   {ticketUser ? <Badge style={{ backgroundColor: "#000000" }} className={classes.connectionTag}>{ticketUser}</Badge> : <br></br>}
-                  <Badge style={{ backgroundColor: ticket.queue?.color || "#7c7c7c" }} className={classes.connectionTag}>{ticket.queue?.name?.toUpperCase() || "SEM FILA"}</Badge>
+                  <Badge style={{ backgroundColor: ticket.queue?.color || "#7c7c7c" }} className={classes.connectionTag}>{ticket.queue?.name?.toUpperCase() || i18n.t("ticketsList.noQueue")}</Badge>
                 </span>
                 <span style={{ paddingTop: "2px" }} className={classes.secondaryContentSecond} >
                   {tag?.map((tag) => {
@@ -495,6 +495,22 @@ const useStyles = makeStyles((theme) => ({
             </>
           )}
 
+        </ListItemSecondaryAction>
+        <ListItemSecondaryAction>
+          {profile === "admin" && (
+            <Tooltip title="Espiar Conversa">
+              <VisibilityIcon
+                onClick={() => setOpenTicketMessageDialog(true)}
+                fontSize="small"
+                style={{
+                  color: blue[700],
+                  cursor: "pointer",
+                  marginLeft: 10,
+                  verticalAlign: "middle"
+                }}
+              />
+            </Tooltip>
+          )}
         </ListItemSecondaryAction>
         <span className={classes.secondaryContentSecond} >
           {ticket.status === "pending" && (

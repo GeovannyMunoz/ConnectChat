@@ -86,7 +86,36 @@ const messages = {
 					waitingTime:{
 						title: "T.M. de Espera"
 					},
-        }
+        },
+        filter: {
+					helperText: "Selecione o período desejado",
+					filterDate: "Filtrar por Data",
+					filterPeriod: "Filtro por Período",
+					filterType: {
+						title: "Tipo de Filtro",
+					},
+					startDate: {
+						title: "Data Inicial",
+					},
+					endDate: {
+						title: "Data Final",
+					},
+					period: {
+						title: "Período",
+					},
+					selectedNone:{
+						title: "Nenhum selecionado"
+					},
+          buttonFilter:{
+						title: "FILTRAR"
+					}
+				},
+        table:{
+					name: "Nome",
+					reviews: "Avaliações",
+					attendanceTime: "T.M. de Atendimento",
+					status: "Status (Atual)"
+				}
       },
       connections: {
         title: "Conexões",
@@ -412,18 +441,27 @@ const messages = {
         pendingHeader: "Aguardando",
         assignedHeader: "Atendendo",
         noTicketsTitle: "Nada aqui!",
-        noTicketsMessage:
-          "Nenhum atendimento encontrado com esse status ou termo pesquisado",
+        noTicketsMessage:"Nenhum bate-papos encontrado com esse status ou termo pesquisado",
+        noQueue: "SEM DEPTO.",
         buttons: {
           accept: "Aceitar",
           closed: "Finalizar",
           reopen: "Reabrir"
         },
       },
+      previewTicketModal:{
+				buttons: {
+					closed: "Fechar",
+				},
+			},
       newTicketModal: {
-        title: "Criar Ticket",
+        title: "Criar bate-papo",
         fieldLabel: "Digite para pesquisar o contato",
         add: "Adicionar",
+        select:{
+					queue: "Selecione um departamento",
+					connection: "Selecione uma conexão"
+				},
         buttons: {
           ok: "Salvar",
           cancel: "Cancelar",

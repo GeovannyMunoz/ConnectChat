@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 
 import { useParams, useHistory } from "react-router-dom";
-
+import { i18n } from "../../translate/i18n";
 import {
   Button,
   Dialog,
@@ -114,13 +114,13 @@ export function ChatModal({
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">Conversa</DialogTitle>
+      <DialogTitle id="alert-dialog-title">{i18n.t("internalChat.modalTitle")}</DialogTitle>
       <DialogContent>
         <Grid spacing={2} container>
           <Grid xs={12} style={{ padding: 18 }} item>
             <TextField
-              label="Título"
-              placeholder="Título"
+              label={i18n.t("internalChat.title")}
+              placeholder={i18n.t("internalChat.title")}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               variant="outlined"
@@ -138,10 +138,10 @@ export function ChatModal({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">
-          Fechar
+          {i18n.t("internalChat.buttonClose")}
         </Button>
         <Button onClick={handleSave} color="primary" variant="contained">
-          Salvar
+        {i18n.t("internalChat.buttonSave")}
         </Button>
       </DialogActions>
     </Dialog>
@@ -334,6 +334,7 @@ function Chat(props) {
         <Grid className={classes.gridItem} md={3} item>
           
             <div className={classes.btnContainer}>
+            {user.profile === "admin" && (
               <Button
                 onClick={() => {
                   setDialogType("new");
@@ -342,8 +343,9 @@ function Chat(props) {
                 color="primary"
                 variant="contained"
               >
-                Nova
+                {i18n.t("internalChat.button")}
               </Button>
+            )}
             </div>
           
           <ChatList

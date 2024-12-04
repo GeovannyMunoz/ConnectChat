@@ -274,6 +274,9 @@ const Quickemessages = () => {
               <TableCell align="center">
                 {i18n.t("quickMessages.table.shortcode")}
               </TableCell>
+              <TableCell align="center">
+                {i18n.t("quickMessages.table.message")}
+              </TableCell>
 
               <TableCell align="center">
                 {i18n.t("quickMessages.table.mediaName")}
@@ -288,6 +291,7 @@ const Quickemessages = () => {
               {quickemessages.map((quickemessage) => (
                 <TableRow key={quickemessage.id}>
                   <TableCell align="center">{quickemessage.shortcode}</TableCell>
+                  <TableCell align="center">{quickemessage.message}</TableCell>
 
                   <TableCell align="center">
                     {quickemessage.mediaName ?? i18n.t("quickMessages.noAttachment")}

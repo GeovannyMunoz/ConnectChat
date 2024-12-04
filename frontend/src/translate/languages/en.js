@@ -182,6 +182,92 @@ const messages = {
 					actions: "Actions",
 				},
 			},
+			kanba:{
+				openTicket: "Open  Chats",
+				ticketNumber: "Chat n° ",
+				viewticket: "View Chat"
+			},
+			task:{
+				newTask: "New Task",
+				buttons: {
+					add: "ADD",
+					edit: "SAVE"
+				}
+			},
+			internalChat:{
+				button: "Nuevo",
+				modalTitle: "Conversation",
+				title: "Title", 
+				users: "Users",
+				buttonSave: "Save",
+				buttonClose: "Close"
+			},
+			schedules: {
+				title: "Schedules",
+				confirmationModal: {
+					deleteTitle:  "Are you sure you want to delete this appointment?",
+					deleteMessage: "This action cannot be undone.",
+				},
+				table: {
+					contact: "Contact",
+					body: "Message",
+					sendAt: "Appointment Date",
+					sentAt: "Sent Date",
+					status: "Status",
+					actions: "Action",
+				},
+				buttons: {
+					add: "New Appointment",
+				},
+				toasts: {
+					deleted: "Appointment successfully deleted.",
+				},
+				calendar:{
+					date: "Date",
+					time: "Time",
+					event: "Event",
+					allDay: "All Day",
+					week: "Week",
+					work_week: "Appointments",
+					day: "Day",
+					month: "Month",
+					previous: "Previous",
+					next: "Next",
+					yesterday: "Yesterday",
+					tomorrow: "Tomorrow",
+					today: "Today",
+					agenda: "Agenda",
+					noEventsInRange: "There are no appointments in this period."
+				},
+				weekday:{
+					monday :"Monday",
+					tuesday :"Tuesday",
+					wednesday :"Wednesday",
+					thursday :"Thursday",
+					friday :"Friday",
+					saturday :"Saturday",
+					sunday :"Sunday"
+				}
+			},
+			tags: {
+				title: "Tags",
+				confirmationModal: {
+				  deleteTitle: "Are you sure you want to delete this tag?",
+				  deleteMessage: "This action cannot be undone.",
+				},
+				table: {
+				  name: "Name",
+				  color: "Color",
+				  tickets: "# Records",
+				  actions: "Actions",
+				},
+				buttons: {
+				  add: "New Tag",
+				},
+				toasts: {
+				  deleted: "Tag deleted successfully.",
+				},
+			  },
 			contactModal: {
 				title: {
 					add: "Add contact",
@@ -238,6 +324,40 @@ const messages = {
 				},
 				success: "User saved successfully.",
 			},
+			scheduleModal: {
+				title: {
+				  add: "New Appointment",
+				  edit: "Edit Appointment",
+				},
+				form: {
+				  body: "Message",
+				  contact: "Contact",
+				  sendAt: "Appointment Date",
+				  sentAt: "Sent Date",
+				},
+				buttons: {
+				  okAdd: "Add",
+				  okEdit: "Save",
+				  cancel: "Cancel",
+				},
+				success: "Appointment successfully saved.",
+			  },
+			  tagModal: {
+				title: {
+				  add: "New Tag",
+				  edit: "Edit Tag",
+				},
+				form: {
+				  name: "Name",
+				  color: "Color",
+				},
+				buttons: {
+				  okAdd: "Add",
+				  okEdit: "Save",
+				  cancel: "Cancel",
+				},
+				success: "Tag successfully saved.",
+			  },
 			chat: {
 				noTicketMessage: "Select a chat to start chatting.",
 			},
@@ -397,6 +517,50 @@ const messages = {
 							disabled: "Disabled",
 						},
 					},
+				},
+			},
+			layout:{
+				WelcomeGreeting: {
+					greetings: "Hello",
+					welcome: "Welcome to",
+					expirationTime: "Active until",
+				},
+			},
+			quickMessages: {
+				title: "Quick Messages",
+				searchPlaceholder: "Search...",
+				noAttachment: "No Attachment",
+				confirmationModal: {
+				  deleteTitle: "Delete",
+				  deleteMessage: "This action is irreversible! Do you want to proceed?",
+				},
+				buttons: {
+				  add: "Add",
+				  attach: "Attach file",
+				  cancel: "Cancel",
+				  edit: "Edit",
+				},
+				toasts: {
+				  success: "Shortcut added successfully!",
+				  deleted: "Shortcut deleted successfully!",
+				},
+				dialog: {
+				  title: "Quick Message",
+				  shortcode: "Shortcut",
+				  message: "Messages",
+				  save: "Save",
+				  cancel: "Cancel",
+				  geral: "Allow editing",
+				  add: "Add",
+				  edit: "Edit",
+				  visao: "Allow viewing",
+				},
+				table: {
+				  shortcode: "Shortcut",
+				  message: "Messages",
+				  actions: "Action",
+				  mediaName: "File Name",
+				  status: "Status",
 				},
 			},
 			messagesList: {

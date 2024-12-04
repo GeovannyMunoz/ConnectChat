@@ -251,6 +251,7 @@ const Tags = () => {
               <TableCell align="center">
                 {i18n.t("tags.table.tickets")}
               </TableCell>
+              <TableCell align="center">{i18n.t("tags.table.color")}</TableCell>
               <TableCell align="center">
                 {i18n.t("tags.table.actions")}
               </TableCell>
@@ -261,18 +262,24 @@ const Tags = () => {
               {tags.map((tag) => (
                 <TableRow key={tag.id}>
                   <TableCell align="center">
+                     {tag.name}
+                  </TableCell>
+                  <TableCell align="center">{tag.ticketsCount}</TableCell>
+                  <TableCell align="center">
                     <Chip
                       variant="outlined"
                       style={{
                         backgroundColor: tag.color,
                         textShadow: "1px 1px 1px #000",
                         color: "white",
+                        borderRadius: "0",
+                        width: "20px", 
+                        height: "20px",
+                        padding: "0",
                       }}
-                      label={tag.name}
                       size="small"
                     />
                   </TableCell>
-                  <TableCell align="center">{tag.ticketsCount}</TableCell>
                   <TableCell align="center">
                     <IconButton size="small" onClick={() => handleEditTag(tag)}>
                       <EditIcon />

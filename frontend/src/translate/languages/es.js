@@ -215,6 +215,26 @@ const messages = {
 					actions: "Acciones",
 				},
 			},
+			kanba:{
+				openTicket: "Chats Abiertos",
+				ticketNumber: "Chat n° ",
+				viewticket: "Ver Chat"
+			},
+			task:{
+				newTask: "Nueva Tarea",
+				buttons: {
+					add: "AÑADIR",
+					edit: "GUARDAR"
+				}
+			},
+			internalChat:{
+				button: "Nuevo",
+				modalTitle: "Conversación",
+				title: "Título", 
+				users: "Usuarios",
+				buttonSave: "Guardar",
+				buttonClose: "Cerrar"
+			},
 			queueIntegrationModal: {
 				title: {
 				  add: "Agregar proyecto",
@@ -353,13 +373,13 @@ const messages = {
 			},
 			scheduleModal: {
 				title: {
-				  add: "Nuevo Appuntamento",
-				  edit: "Editar Appuntamento",
+				  add: "Nuevo Agendamiento",
+				  edit: "Editar Agendamiento",
 				},
 				form: {
 				  body: "Mensaje",
 				  contact: "Contacto",
-				  sendAt: "Fecha del Appuntamento",
+				  sendAt: "Fecha del Agendamiento",
 				  sentAt: "Fecha del Envio",
 				},
 				buttons: {
@@ -367,11 +387,11 @@ const messages = {
 				  okEdit: "Guardar",
 				  cancel: "Cancelar",
 				},
-				success: "Appuntamento guardado satisfactoriamente.",
+				success: "Agendamiento guardado satisfactoriamente.",
 			  },
 			tagModal: {
 				title: {
-				  add: "Nueva Tag",
+				  add: "Nuevo Tag",
 				  edit: "Editar Tag",
 				},
 				form: {
@@ -383,7 +403,7 @@ const messages = {
 				  okEdit: "Guardar",
 				  cancel: "Cancelar",
 				},
-				success: "Tag sguardado satisfactoriamente.",
+				success: "Tag guardado satisfactoriamente.",
 			  },
 			chat: {
 				noTicketMessage: "Selecciona un chat para empezar a chatear.",
@@ -680,7 +700,7 @@ const messages = {
 				  whatsapp: "Conexión",
 				  contactList: "Lista de Contactos",
 				  status: "Status",
-				  scheduledAt: "Appuntamientos",
+				  scheduledAt: "Agendamientos",
 				  completedAt: "Concluida",
 				  confirmation: "Confirmación",
 				  actions: "Acción",
@@ -704,7 +724,7 @@ const messages = {
 					messagePlaceholder: "Contenido del Mensaje",
 					whatsapp: "Conexión",
 					status: "Status",
-					scheduledAt: "Appuntamiento",
+					scheduledAt: "Agendamiento",
 					confirmation: "Confirmación",
 					contactList: "Lista de Contacto",
 					tagList: "Lista de Tags",
@@ -826,40 +846,66 @@ const messages = {
 					title: "Central de Ayuda",
 			  },
 			schedules: {
-					title: "Appuntamientos",
-					confirmationModal: {
-					  deleteTitle:  "¿Estás seguro de que deseas eliminar este appuntamiento?",
-					  deleteMessage: "Esta acción no se puede revertir.",
-					},
-					table: {
-					  contact: "Contacto",
-					  body: "Mensaje",
-					  sendAt: "Fecha del Appuntamiento",
-					  sentAt: "Fecha del Envio",
-					  status: "Status",
-					  actions: "Acción",
-					},
-					buttons: {
-					  add: "Nuevo Appuntamiento",
-					},
-					toasts: {
-					  deleted: "Appuntamiento eliminado exitosamente.",
-					},
-				  },
+				title: "Agendamientos",
+				confirmationModal: {
+					deleteTitle:  "¿Estás seguro de que deseas eliminar este agendamiento?",
+					deleteMessage: "Esta acción no se puede revertir.",
+				},
+				table: {
+					contact: "Contacto",
+					body: "Mensaje",
+					sendAt: "Fecha del Agendamiento",
+					sentAt: "Fecha del Envio",
+					status: "Status",
+					actions: "Acción",
+				},
+				buttons: {
+					add: "Nuevo Agendamiento",
+				},
+				toasts: {
+					deleted: "Agendamiento eliminado exitosamente.",
+				},
+				calendar:{
+					date: "Fecha",
+					time: "Hora",
+					event: "Evento",
+					allDay: "Todo el Día",
+					week: "Semana",
+					work_week: "Agendamientos",
+					day: "Día",
+					month: "Mes",
+					previous: "Anterior",
+					next: "Próximo",
+					yesterday: "Ayer",
+					tomorrow: "Mañana",
+					today: "Hoy",
+					agenda: "Agenda",
+					noEventsInRange: "No hay agendamientos en este período."
+				},
+				weekday:{
+					monday :"Lunes",
+					tuesday :"Martes",
+					wednesday :"Miércoles",
+					thursday :"Jueves",
+					friday :"Viernes",
+					saturday :"Sábado",
+					sunday :"Domingo"
+				} 
+			},
 			tags: {
 					title: "Tags",
 					confirmationModal: {
-						deleteTitle:  "¿Estás seguro de que deseas eliminar este appuntamiento?",
+						deleteTitle:  "¿Estás seguro de que deseas eliminar este tag?",
 						deleteMessage: "Esta acción no se puede revertir.",
 					},
 					table: {
 					  name: "Nombre",
 					  color: "Color",
-					  tickets: "Registros Tagados",
+					  tickets: "# Registros",
 					  actions: "Acción",
 					},
 					buttons: {
-					  add: "Nueva Tag",
+					  add: "Nuevo Tag",
 					},
 					toasts: {
 					  deleted: "Tag eliminado exitosamente.",
@@ -876,6 +922,13 @@ const messages = {
 							disabled: "Deshabilitado",
 						},
 					},
+				},
+			},
+			layout:{
+				WelcomeGreeting: {
+					greetings: "Hola",
+					welcome: "Bienvenido a",
+					expirationTime: "Activo hasta",
 				},
 			},
 			messagesList: {

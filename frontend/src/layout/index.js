@@ -387,11 +387,11 @@ const LoggedInLayout = ({ children, themeToggle }) => {
             {/* {greaterThenSm && user?.profile === "admin" && getDateAndDifDays(user?.company?.dueDate).difData < 7 ? ( */}
             {greaterThenSm && user?.profile === "admin" && user?.company?.dueDate ? (
               <>
-                Hola <b>{user.name}</b>, Bienvenido a <b>{user?.company?.name}</b>! (Activo hasta {dateToClient(user?.company?.dueDate)})
+                {i18n.t("layout.WelcomeGreeting.greetings")} <b>{user.name}</b>, {i18n.t("layout.WelcomeGreeting.welcome")} <b>{user?.company?.name}</b>! ({i18n.t("layout.WelcomeGreeting.expirationTime")} {dateToClient(user?.company?.dueDate)})
               </>
             ) : (
               <>
-                Hola  <b>{user.name}</b>, Bienvenido a <b>{user?.company?.name}</b>!
+                {i18n.t("layout.WelcomeGreeting.greetings")} <b>{user.name}</b>, {i18n.t("layout.WelcomeGreeting.welcome")} <b>{user?.company?.name}</b>! ({i18n.t("layout.WelcomeGreeting.expirationTime")} {dateToClient(user?.company?.dueDate)})
               </>
             )}
           </Typography>

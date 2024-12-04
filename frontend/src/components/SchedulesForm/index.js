@@ -34,13 +34,13 @@ function SchedulesForm(props) {
   const classes = useStyles();
 
   const [schedules, setSchedules] = useState([
-    { weekday: "Segunda-feira", weekdayEn: "monday", startTime: "", endTime: "", },
-    { weekday: "Terça-feira", weekdayEn: "tuesday", startTime: "", endTime: "", },
-    { weekday: "Quarta-feira", weekdayEn: "wednesday", startTime: "", endTime: "", },
-    { weekday: "Quinta-feira", weekdayEn: "thursday", startTime: "", endTime: "", },
-    { weekday: "Sexta-feira", weekdayEn: "friday", startTime: "", endTime: "" },
-    { weekday: "Sábado", weekdayEn: "saturday", startTime: "", endTime: "" },
-    { weekday: "Domingo", weekdayEn: "sunday", startTime: "", endTime: "" },
+    { weekday: "Segunda-feira", weekdayEn: "monday", weekdayEs: "Lunes", startTime: "", endTime: "", },
+    { weekday: "Terça-feira", weekdayEn: "tuesday", weekdayEs: "Marter", startTime: "", endTime: "", },
+    { weekday: "Quarta-feira", weekdayEn: "wednesday", weekdayEs: "Miércoles", startTime: "", endTime: "", },
+    { weekday: "Quinta-feira", weekdayEn: "thursday", weekdayEs: "Jueves", startTime: "", endTime: "", },
+    { weekday: "Sexta-feira", weekdayEn: "friday", weekdayEs: "Viernes", startTime: "", endTime: "" },
+    { weekday: "Sábado", weekdayEn: "saturday", weekdayEs: "Sábado", startTime: "", endTime: "" },
+    { weekday: "Domingo", weekdayEn: "sunday", weekdayEs: "Domingo", startTime: "", endTime: "" },
   ]);
 
   useEffect(() => {

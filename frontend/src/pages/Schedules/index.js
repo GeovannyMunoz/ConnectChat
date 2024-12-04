@@ -20,6 +20,7 @@ import { socketConnection } from "../../services/socket";
 import { AuthContext } from "../../context/Auth/AuthContext";
 import usePlans from "../../hooks/usePlans";
 import { Calendar, momentLocalizer } from "react-big-calendar";
+import "moment/locale/es"
 import "moment/locale/pt-br";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import SearchIcon from "@material-ui/icons/Search";
@@ -40,24 +41,25 @@ const eventTitleStyle = {
   whiteSpace: "nowrap", // Evite a quebra de linha do texto
   textOverflow: "ellipsis", // Exiba "..." se o texto for muito longo
 };
-
+const browserLanguage = navigator.language || navigator.userLanguage;
+moment.locale(browserLanguage);
 const localizer = momentLocalizer(moment);
 var defaultMessages = {
-  date: "Data",
-  time: "Hora",
-  event: "Evento",
-  allDay: "Dia Todo",
-  week: "Semana",
-  work_week: "Agendamentos",
-  day: "Dia",
-  month: "Mês",
-  previous: "Anterior",
-  next: "Próximo",
-  yesterday: "Ontem",
-  tomorrow: "Amanhã",
-  today: "Hoje",
-  agenda: "Agenda",
-  noEventsInRange: "Não há agendamentos no período.",
+  date: i18n.t("schedules.calendar.date"),
+  time:  i18n.t("schedules.calendar.time"),
+  event:  i18n.t("schedules.calendar.event"),
+  allDay:  i18n.t("schedules.calendar.allDay"),
+  week:  i18n.t("schedules.calendar.week"),
+  work_week:  i18n.t("schedules.calendar.work_week"),
+  day:  i18n.t("schedules.calendar.day"),
+  month:  i18n.t("schedules.calendar.month"),
+  previous:  i18n.t("schedules.calendar.previous"),
+  next:  i18n.t("schedules.calendar.next"),
+  yesterday:  i18n.t("schedules.calendar.yesterday"),
+  tomorrow:  i18n.t("schedules.calendar.tomorrow"),
+  today:  i18n.t("schedules.calendar.today"),
+  agenda:  i18n.t("schedules.calendar.agenda"),
+  noEventsInRange:  i18n.t("schedules.calendar.noEventsInRange"),
   showMore: function showMore(total) {
     return "+" + total + " mais";
   }

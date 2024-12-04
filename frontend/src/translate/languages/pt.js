@@ -220,6 +220,26 @@ const messages = {
           actions: "Ações",
         },
       },
+      kanba:{
+				openTicket: "Em aberto",
+				ticketNumber: "Bater papo n° ",
+				viewticket: "Ver bate-papo"
+			},
+      task:{
+				newTask: "Nova terefa",
+				buttons: {
+					add: "ADICIONAR",
+					edit: "SALVAR"
+				}
+			},
+      internalChat:{
+				button: "Nova",
+        modalTitle: "Conversa",
+				title: "Título", 
+				users: "Usuários",
+        buttonSave: "Salvar",
+				buttonClose: "Fechar"
+			},
       queueIntegrationModal: {
         title: {
           add: "Adicionar projeto",
@@ -851,6 +871,32 @@ const messages = {
         toasts: {
           deleted: "Agendamento excluído com sucesso.",
         },
+        calendar:{
+					date: "Data",
+					time: "Hora",
+					event: "Evento",
+					allDay: "Dia Todo",
+					week: "Semana",
+					work_week: "Agendamentos",
+					day: "Dia",
+					month: "Mês",
+					previous: "Anterior",
+					next: "Próximo",
+					yesterday: "Ontem",
+					tomorrow: "Amanhã",
+					today: "Hoje",
+					agenda: "Agenda",
+					noEventsInRange: "Não há agendamentos no período."
+				},
+        weekday:{
+					monday :"Segunda-feira",
+					tuesday :"Terça-feira",
+					wednesday :"Quarta-feira",
+					thursday :"Quinta-feira",
+					friday :"Sexta-feira",
+					saturday :"Sábado",
+					sunday :"Domingo"
+				}
       },
       tags: {
         title: "Tags",
@@ -884,6 +930,13 @@ const messages = {
           },
         },
       },
+      layout:{
+				WelcomeGreeting: {
+          greetings: "Olá",
+          welcome: "Seja bem-vindo a",
+          expirationTime: "Ativo até",
+        },
+			},
       messagesList: {
         header: {
           assignedTo: "Atribuído à:",

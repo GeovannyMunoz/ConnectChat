@@ -330,7 +330,7 @@ export function CompanyForm(props) {
                       onClick={() => onCancel()}
                       variant="contained"
                     >
-                      {i18n.t("settings.companies.clean")}
+                      {i18n.t("settings.companies.cancel")}
                     </ButtonWithSpinner>
                   </Grid>
                   {record.id !== undefined ? (

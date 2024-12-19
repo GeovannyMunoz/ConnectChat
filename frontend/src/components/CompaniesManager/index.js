@@ -28,6 +28,7 @@ import ModalUsers from "../ModalUsers";
 import api from "../../services/api";
 import { head, isArray, has } from "lodash";
 import { useDate } from "../../hooks/useDate";
+import { i18n } from "../../translate/i18n.js";
 
 import moment from "moment";
 
@@ -202,7 +203,7 @@ export function CompanyForm(props) {
               <Grid xs={12} sm={6} md={4} item>
                 <Field
                   as={TextField}
-                  label="Nome"
+                  label={i18n.t("settings.companies.name")}
                   name="name"
                   variant="outlined"
                   className={classes.fullWidth}
@@ -212,7 +213,7 @@ export function CompanyForm(props) {
               <Grid xs={12} sm={6} md={2} item>
                 <Field
                   as={TextField}
-                  label="E-mail"
+                  label={i18n.t("settings.companies.email")}
                   name="email"
                   variant="outlined"
                   className={classes.fullWidth}
@@ -223,7 +224,7 @@ export function CompanyForm(props) {
               <Grid xs={12} sm={6} md={2} item>
                 <Field
                   as={TextField}
-                  label="Telefone"
+                  label={i18n.t("settings.companies.phone")}
                   name="phone"
                   variant="outlined"
                   className={classes.fullWidth}
@@ -232,11 +233,11 @@ export function CompanyForm(props) {
               </Grid>
               <Grid xs={12} sm={6} md={2} item>
                 <FormControl margin="dense" variant="outlined" fullWidth>
-                  <InputLabel htmlFor="plan-selection">Plano</InputLabel>
+                  <InputLabel htmlFor="plan-selection">{i18n.t("settings.companies.plan")}</InputLabel>
                   <Field
                     as={Select}
                     id="plan-selection"
-                    label="Plano"
+                    label={i18n.t("settings.companies.plan")}
                     labelId="plan-selection-label"
                     name="planId"
                     margin="dense"
@@ -252,33 +253,33 @@ export function CompanyForm(props) {
               </Grid>
               <Grid xs={12} sm={6} md={2} item>
                 <FormControl margin="dense" variant="outlined" fullWidth>
-                  <InputLabel htmlFor="status-selection">Status</InputLabel>
+                  <InputLabel htmlFor="status-selection">{i18n.t("settings.companies.status")}</InputLabel>
                   <Field
                     as={Select}
                     id="status-selection"
-                    label="Status"
+                    label={i18n.t("settings.companies.status")}
                     labelId="status-selection-label"
                     name="status"
                     margin="dense"
                   >
-                    <MenuItem value={true}>Sim</MenuItem>
-                    <MenuItem value={false}>Não</MenuItem>
+                    <MenuItem value={true}>{i18n.t("settings.companies.true")}</MenuItem>
+                    <MenuItem value={false}>{i18n.t("settings.companies.false")}</MenuItem>
                   </Field>
                 </FormControl>
               </Grid>
               <Grid xs={12} sm={6} md={2} item>
                 <FormControl margin="dense" variant="outlined" fullWidth>
-                  <InputLabel htmlFor="status-selection">Campanhas</InputLabel>
+                  <InputLabel htmlFor="status-selection">{i18n.t("settings.companies.campaigns")}</InputLabel>
                   <Field
                     as={Select}
                     id="campaigns-selection"
-                    label="Campanhas"
+                    label={i18n.t("settings.companies.campaigns")}
                     labelId="campaigns-selection-label"
                     name="campaignsEnabled"
                     margin="dense"
                   >
-                    <MenuItem value={true}>Habilitadas</MenuItem>
-                    <MenuItem value={false}>Desabilitadas</MenuItem>
+                    <MenuItem value={true}>{i18n.t("settings.companies.enabled")}</MenuItem>
+                    <MenuItem value={false}>{i18n.t("settings.companies.disabled")}</MenuItem>
                   </Field>
                 </FormControl>
               </Grid>
@@ -286,7 +287,7 @@ export function CompanyForm(props) {
                 <FormControl variant="outlined" fullWidth>
                   <Field
                     as={TextField}
-                    label="Data de Vencimento"
+                    label={i18n.t("settings.companies.expirationDate")}
                     type="date"
                     name="dueDate"
                     InputLabelProps={{
@@ -301,7 +302,7 @@ export function CompanyForm(props) {
               <Grid xs={12} sm={6} md={2} item>
                 <FormControl margin="dense" variant="outlined" fullWidth>
                   <InputLabel htmlFor="recorrencia-selection">
-                    Recorrência
+                    {i18n.t("settings.companies.recurrence")}
                   </InputLabel>
                   <Field
                     as={Select}
@@ -311,7 +312,7 @@ export function CompanyForm(props) {
                     name="recurrence"
                     margin="dense"
                   >
-                    <MenuItem value="MENSAL">Mensal</MenuItem>
+                    <MenuItem value="MENSAL">{i18n.t("settings.companies.monthly")}</MenuItem>
                     {/*<MenuItem value="BIMESTRAL">Bimestral</MenuItem>*/}
                     {/*<MenuItem value="TRIMESTRAL">Trimestral</MenuItem>*/}
                     {/*<MenuItem value="SEMESTRAL">Semestral</MenuItem>*/}
@@ -329,7 +330,7 @@ export function CompanyForm(props) {
                       onClick={() => onCancel()}
                       variant="contained"
                     >
-                      Limpar
+                      {i18n.t("settings.companies.clean")}
                     </ButtonWithSpinner>
                   </Grid>
                   {record.id !== undefined ? (
@@ -343,7 +344,7 @@ export function CompanyForm(props) {
                           variant="contained"
                           color="secondary"
                         >
-                          Excluir
+                          {i18n.t("settings.companies.delete")}
                         </ButtonWithSpinner>
                       </Grid>
                       <Grid xs={6} md={2} item>
@@ -355,7 +356,7 @@ export function CompanyForm(props) {
                           variant="contained"
                           color="primary"
                         >
-                          + Vencimento
+                          + {i18n.t("settings.companies.expiration")}
                         </ButtonWithSpinner>
                       </Grid>
                       <Grid xs={6} md={1} item>
@@ -367,7 +368,7 @@ export function CompanyForm(props) {
                           variant="contained"
                           color="primary"
                         >
-                          Usuário
+                          {i18n.t("settings.companies.user")}
                         </ButtonWithSpinner>
                       </Grid>
                     </>
@@ -381,7 +382,7 @@ export function CompanyForm(props) {
                       variant="contained"
                       color="primary"
                     >
-                      Salvar
+                      {i18n.t("settings.companies.save")}
                     </ButtonWithSpinner>
                   </Grid>
                 </Grid>
@@ -400,7 +401,7 @@ export function CompaniesManagerGrid(props) {
   const { dateToClient } = useDate();
 
   const renderStatus = (row) => {
-    return row.status === false ? "Não" : "Sim";
+    return row.status === false ? i18n.t("settings.companies.false") : i18n.t("settings.companies.true");
   };
 
   const renderPlan = (row) => {
@@ -415,10 +416,10 @@ export function CompaniesManagerGrid(props) {
     ) {
       const setting = row.settings.find((s) => s.key === "campaignsEnabled");
       if (setting) {
-        return setting.value === "true" ? "Habilitadas" : "Desabilitadas";
+        return setting.value === "true" ? i18n.t("settings.companies.enabled") : i18n.t("settings.companies.disabled");
       }
     }
-    return "Desabilitadas";
+    return i18n.t("settings.companies.disabled");
   };
 
   const rowStyle = (record) => {
@@ -451,14 +452,14 @@ export function CompaniesManagerGrid(props) {
             <TableCell align="center" style={{ width: "1%" }}>
               #
             </TableCell>
-            <TableCell align="left">Nome</TableCell>
-            <TableCell align="left">E-mail</TableCell>
-            <TableCell align="left">Telefone</TableCell>
-            <TableCell align="left">Plano</TableCell>
-            <TableCell align="left">Campanhas</TableCell>
-            <TableCell align="left">Status</TableCell>
-            <TableCell align="left">Criada Em</TableCell>
-            <TableCell align="left">Vencimento</TableCell>
+            <TableCell align="left">{i18n.t("settings.companies.name")}</TableCell>
+            <TableCell align="center">{i18n.t("settings.companies.email")}</TableCell>
+            <TableCell align="left">{i18n.t("settings.companies.phone")}</TableCell>
+            <TableCell align="left">{i18n.t("settings.companies.plan")}</TableCell>
+            <TableCell align="left">{i18n.t("settings.companies.campaigns")}</TableCell>
+            <TableCell align="left">{i18n.t("settings.companies.status")}</TableCell>
+            <TableCell align="left">{i18n.t("settings.companies.created")}</TableCell>
+            <TableCell align="left">{i18n.t("settings.companies.expiration")}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -533,7 +534,7 @@ export default function CompaniesManager() {
       }
       await loadPlans();
       handleCancel();
-      toast.success("Operação realizada com sucesso!");
+      toast.success(i18n.t("settings.companies.success"));
     } catch (e) {
       toast.error(
         "Não foi possível realizar a operação. Verifique se já existe uma empresa com o mesmo nome ou se os campos foram preenchidos corretamente"
@@ -548,7 +549,7 @@ export default function CompaniesManager() {
       await remove(record.id);
       await loadPlans();
       handleCancel();
-      toast.success("Operação realizada com sucesso!");
+      toast.success(i18n.t("settings.companies.success"));
     } catch (e) {
       toast.error("Não foi possível realizar a operação");
     }

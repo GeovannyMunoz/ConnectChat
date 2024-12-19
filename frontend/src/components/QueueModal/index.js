@@ -97,13 +97,13 @@ const QueueModal = ({ open, onClose, queueId }) => {
   const [integrations, setIntegrations] = useState([]);
 
   const [schedules, setSchedules] = useState([
-    { weekday: "Segunda-feira", weekdayEn: "monday", startTime: "08:00", endTime: "18:00", },
-    { weekday: "Terça-feira", weekdayEn: "tuesday", startTime: "08:00", endTime: "18:00", },
-    { weekday: "Quarta-feira", weekdayEn: "wednesday", startTime: "08:00", endTime: "18:00", },
-    { weekday: "Quinta-feira", weekdayEn: "thursday", startTime: "08:00", endTime: "18:00", },
-    { weekday: "Sexta-feira", weekdayEn: "friday", startTime: "08:00", endTime: "18:00", },
-    { weekday: "Sábado", weekdayEn: "saturday", startTime: "08:00", endTime: "12:00", },
-    { weekday: "Domingo", weekdayEn: "sunday", startTime: "00:00", endTime: "00:00", },
+    { weekday: i18n.t("schedules.weekday.monday"), startTime: "08:00", endTime: "18:00", },
+    { weekday: i18n.t("schedules.weekday.tuesday"), startTime: "08:00", endTime: "18:00", },
+    { weekday: i18n.t("schedules.weekday.wednesday"), startTime: "08:00", endTime: "18:00", },
+    { weekday: i18n.t("schedules.weekday.thursday"), startTime: "08:00", endTime: "18:00", },
+    { weekday: i18n.t("schedules.weekday.friday"), startTime: "08:00", endTime: "18:00", },
+    { weekday: i18n.t("schedules.weekday.saturday"), startTime: "08:00", endTime: "12:00", },
+    { weekday: i18n.t("schedules.weekday.sunday"), startTime: "00:00", endTime: "00:00", },
   ]);
   const [selectedPrompt, setSelectedPrompt] = useState(null);
   const [prompts, setPrompts] = useState([]);
@@ -121,6 +121,7 @@ const QueueModal = ({ open, onClose, queueId }) => {
 
   useEffect(() => {
     api.get(`/settings`).then(({ data }) => {
+      console.log(data)
       if (Array.isArray(data)) {
         const scheduleType = data.find((d) => d.key === "scheduleType");
         if (scheduleType) {
@@ -224,8 +225,8 @@ const QueueModal = ({ open, onClose, queueId }) => {
           onChange={(_, v) => setTab(v)}
           aria-label="disabled tabs example"
         >
-          <Tab label="Dados da Fila" />
-          {schedulesEnabled && <Tab label="Horários de Atendimento" />}
+          <Tab label={i18n.t("queueModal.subtitle.queue")} />
+          {schedulesEnabled && <Tab label={i18n.t("queueModal.subtitle.schedules")} />}
         </Tabs>
         {tab === 0 && (
           <Paper>

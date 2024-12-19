@@ -168,7 +168,7 @@ const Invoices = () => {
     if (dias < 0) {
       return "Vencido";
     } else {
-      return "Em Aberto"
+      return "En Proceso"
     }
 
   }
@@ -184,7 +184,7 @@ const Invoices = () => {
 
       ></SubscriptionModal>
       <MainHeader>
-        <Title>Faturas</Title>
+        <Title>{i18n.t("invoices.title")}</Title>
       </MainHeader>
       <Paper
         className={classes.mainPaper}
@@ -194,12 +194,12 @@ const Invoices = () => {
         <Table size="small">
           <TableHead>
             <TableRow>
-              <TableCell align="center">Id</TableCell>
-              <TableCell align="center">Detalhes</TableCell>
-              <TableCell align="center">Valor</TableCell>
-              <TableCell align="center">Data Venc.</TableCell>
-              <TableCell align="center">Status</TableCell>
-              <TableCell align="center">Ação</TableCell>
+              <TableCell align="center">{i18n.t("invoices.table.id")}</TableCell>
+              <TableCell align="center">{i18n.t("invoices.table.details")}</TableCell>
+              <TableCell align="center">{i18n.t("invoices.table.amount")}</TableCell>
+              <TableCell align="center">{i18n.t("invoices.table.dueDate")}</TableCell>
+              <TableCell align="center">{i18n.t("invoices.table.status")}</TableCell>
+              <TableCell align="center">{i18n.t("invoices.table.action")}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -208,7 +208,7 @@ const Invoices = () => {
                 <TableRow style={rowStyle(invoices)} key={invoices.id}>
                   <TableCell align="center">{invoices.id}</TableCell>
                   <TableCell align="center">{invoices.detail}</TableCell>
-                  <TableCell style={{ fontWeight: 'bold' }} align="center">{invoices.value.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</TableCell>
+                  <TableCell style={{ fontWeight: 'bold' }} align="center">{invoices.value.toLocaleString('en', { style: 'currency', currency: 'USD' })}</TableCell>
                   <TableCell align="center">{moment(invoices.dueDate).format("DD/MM/YYYY")}</TableCell>
                   <TableCell style={{ fontWeight: 'bold' }} align="center">{rowStatus(invoices)}</TableCell>
                   <TableCell align="center">

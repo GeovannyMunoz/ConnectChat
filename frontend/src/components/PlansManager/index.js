@@ -208,11 +208,11 @@ export function PlanManagerForm(props) {
                         {/* CHAT INTERNO */}
                         <Grid xs={12} sm={8} md={2} item>
                             <FormControl margin="dense" variant="outlined" fullWidth>
-                                <InputLabel htmlFor="useInternalChat-selection">Chat Interno</InputLabel>
+                                <InputLabel htmlFor="useInternalChat-selection">{i18n.t("plans.form.internalChat")}</InputLabel>
                                 <Field
                                     as={Select}
                                     id="useInternalChat-selection"
-                                    label="Chat Interno"
+                                    label={i18n.t("plans.form.internalChat")}
                                     labelId="useInternalChat-selection-label"
                                     name="useInternalChat"
                                     margin="dense"
@@ -226,11 +226,11 @@ export function PlanManagerForm(props) {
                         {/* API Externa */}
                         <Grid xs={12} sm={8} md={4} item>
                             <FormControl margin="dense" variant="outlined" fullWidth>
-                                <InputLabel htmlFor="useExternalApi-selection">API Externa</InputLabel>
+                                <InputLabel htmlFor="useExternalApi-selection">{i18n.t("plans.form.externalAPI")}</InputLabel>
                                 <Field
                                     as={Select}
                                     id="useExternalApi-selection"
-                                    label="API Externa"
+                                    label={i18n.t("plans.form.externalAPI")}
                                     labelId="useExternalApi-selection-label"
                                     name="useExternalApi"
                                     margin="dense"
@@ -244,11 +244,11 @@ export function PlanManagerForm(props) {
                         {/* KANBAN */}
                         <Grid xs={12} sm={8} md={2} item>
                             <FormControl margin="dense" variant="outlined" fullWidth>
-                                <InputLabel htmlFor="useKanban-selection">Kanban</InputLabel>
+                                <InputLabel htmlFor="useKanban-selection">{i18n.t("plans.form.kanban")}</InputLabel>
                                 <Field
                                     as={Select}
                                     id="useKanban-selection"
-                                    label="Kanban"
+                                    label={i18n.t("plans.form.kanban")}
                                     labelId="useKanban-selection-label"
                                     name="useKanban"
                                     margin="dense"
@@ -262,11 +262,11 @@ export function PlanManagerForm(props) {
                         {/* OPENAI */}
                         <Grid xs={12} sm={8} md={2} item>
                             <FormControl margin="dense" variant="outlined" fullWidth>
-                                <InputLabel htmlFor="useOpenAi-selection">Open.Ai</InputLabel>
+                                <InputLabel htmlFor="useOpenAi-selection">{i18n.t("plans.form.openAi")}</InputLabel>
                                 <Field
                                     as={Select}
                                     id="useOpenAi-selection"
-                                    label="Talk.Ai"
+                                    label={i18n.t("plans.form.openAi")}
                                     labelId="useOpenAi-selection-label"
                                     name="useOpenAi"
                                     margin="dense"
@@ -280,11 +280,11 @@ export function PlanManagerForm(props) {
                         {/* INTEGRACOES */}
                         <Grid xs={12} sm={8} md={2} item>
                             <FormControl margin="dense" variant="outlined" fullWidth>
-                                <InputLabel htmlFor="useIntegrations-selection">Integrações</InputLabel>
+                                <InputLabel htmlFor="useIntegrations-selection">{i18n.t("plans.form.integrations")}</InputLabel>
                                 <Field
                                     as={Select}
                                     id="useIntegrations-selection"
-                                    label="Integrações"
+                                    label={i18n.t("plans.form.integrations")}
                                     labelId="useIntegrations-selection-label"
                                     name="useIntegrations"
                                     margin="dense"
@@ -367,15 +367,15 @@ export function PlansManagerGrid(props) {
                         <TableCell align="left">{i18n.t("plans.form.name")}</TableCell>
                         <TableCell align="center">{i18n.t("plans.form.users")}</TableCell>
                         <TableCell align="center">{i18n.t("plans.form.connections")}</TableCell>
-                        <TableCell align="center">Filas</TableCell>
-                        <TableCell align="center">Valor</TableCell>
+                        <TableCell align="center">{i18n.t("plans.form.queue")}</TableCell>
+                        <TableCell align="center">{i18n.t("plans.form.value")}</TableCell>
                         <TableCell align="center">{i18n.t("plans.form.campaigns")}</TableCell>
                         <TableCell align="center">{i18n.t("plans.form.schedules")}</TableCell>
-                        <TableCell align="center">Chat Interno</TableCell>
-                        <TableCell align="center">API Externa</TableCell>
-                        <TableCell align="center">Kanban</TableCell>
-                        <TableCell align="center">Open.Ai</TableCell>
-                        <TableCell align="center">Integrações</TableCell>
+                        <TableCell align="center">{i18n.t("plans.form.internalChat")}</TableCell>
+                        <TableCell align="center">{i18n.t("plans.form.externalAPI")}</TableCell>
+                        <TableCell align="center">{i18n.t("plans.form.kanban")}</TableCell>
+                        <TableCell align="center">{i18n.t("plans.form.openAi")}</TableCell>
+                        <TableCell align="center">{i18n.t("plans.form.integrations")}</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -390,7 +390,7 @@ export function PlansManagerGrid(props) {
                             <TableCell align="center">{row.users || '-'}</TableCell>
                             <TableCell align="center">{row.connections || '-'}</TableCell>
                             <TableCell align="center">{row.queues || '-'}</TableCell>
-                            <TableCell align="center">{i18n.t("plans.form.money")} {row.value ? row.value.toLocaleString('pt-br', { minimumFractionDigits: 2 }) : '00.00'}</TableCell>
+                            <TableCell align="center">{i18n.t("plans.form.money")} {row.value ? row.value.toLocaleString('en', { minimumFractionDigits: 2 }) : '00.00'}</TableCell>
                             <TableCell align="center">{renderCampaigns(row)}</TableCell>
                             <TableCell align="center">{renderSchedules(row)}</TableCell>
                             <TableCell align="center">{renderInternalChat(row)}</TableCell>

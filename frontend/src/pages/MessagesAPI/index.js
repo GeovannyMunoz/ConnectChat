@@ -243,78 +243,80 @@ const MessagesAPI = () => {
       variant="outlined"
     >
       <Typography variant="h5">
-        Documentação para envio de mensagens
+        <b>{i18n.t("messagesAPI.title")}</b>
       </Typography>
+      <Typography className={classes.elementMargin} component="div">
+        <b>{i18n.t("messagesAPI.subtitle")}</b>
+        </Typography>
       <Typography variant="h6" color="primary" className={classes.elementMargin}>
-        Métodos de Envio
+        {i18n.t("messagesAPI.methods.title")}
       </Typography>
       <Typography component="div">
         <ol>
-          <li>Mensagens de Texto</li>
-          <li>Mensagens de Media</li>
+          <li>{i18n.t("messagesAPI.methods.text")}</li>
+          <li>{i18n.t("messagesAPI.methods.media")}</li>
         </ol>
       </Typography>
       <Typography variant="h6" color="primary" className={classes.elementMargin}>
-        Instruções
+        {i18n.t("messagesAPI.instructions.title")}
       </Typography>
       <Typography className={classes.elementMargin} component="div">
-        <b>Observações importantes</b><br />
+        <b>{i18n.t("messagesAPI.instructions.subtitle")}</b><br />
         <ul>
-          <li>Antes de enviar mensagens, é necessário o cadastro do token vinculado à conexão que enviará as mensagens. <br/>Para realizar o cadastro acesse o menu "Conexões", clique no botão editar da conexão e insira o token no devido campo.</li>
+          <li>{i18n.t("messagesAPI.instructions.instruction1")} <br/> {i18n.t("messagesAPI.instructions.instruction1_1")}</li>
           <li>
-            O número para envio não deve ter mascara ou caracteres especiais e deve ser composto por:
+            {i18n.t("messagesAPI.instructions.instruction2")}
               <ul>
-                <li>Código do país</li>
-                <li>DDD</li>
-                <li>Número</li>
+                <li>{i18n.t("messagesAPI.instructions.instruction2_1")}</li>
+                <li>{i18n.t("messagesAPI.instructions.instruction2_2")}</li>
               </ul>
           </li>
         </ul>
       </Typography>
       <Typography variant="h6" color="primary" className={classes.elementMargin}>
-        1. Mensagens de Texto
+        1. {i18n.t("messagesAPI.methods.text")}
       </Typography>
       <Grid container>
         <Grid item xs={12} sm={6}>
           <Typography className={classes.elementMargin} component="div">
-            <p>Seguem abaixo a lista de informações necessárias para envio das mensagens de texto:</p>
+            <p>{i18n.t("messagesAPI.methods.descriptionText")}</p>
             <b>Endpoint: </b> {getEndpoint()} <br />
             <b>Método: </b> POST <br />
-            <b>Headers: </b> X_TOKEN (token cadastrado) e Content-Type (application/json) <br />
-            <b>Body: </b> {"{ \"number\": \"5551998917243\", \"body\": \"Sua mensagem\" }"}
+            <b>Headers: </b> X_TOKEN (token) e Content-Type (application/json) <br />
+            <b>Body: </b> {"{ \"number\": \"XXXXXXXXXXXXX\", \"body\": \"Messsage\" }"}
           </Typography>
         </Grid>
         <Grid item xs={12} sm={6}>
           <Typography className={classes.elementMargin}>
-            <b>Teste de Envio</b>
+            <b>{i18n.t("messagesAPI.test")}</b>
           </Typography>
           {renderFormMessageText()}
         </Grid>
       </Grid>
       <Typography variant="h6" color="primary" className={classes.elementMargin}>
-        2. Mensagens de Media
+        2. {i18n.t("messagesAPI.methods.media")}
       </Typography>
       <Grid container>
         <Grid item xs={12} sm={6}>
           <Typography className={classes.elementMargin} component="div">
-            <p>Seguem abaixo a lista de informações necessárias para envio das mensagens de texto:</p>
+            <p>{i18n.t("messagesAPI.methods.descriptionMedia")}</p>
             <b>Endpoint: </b> {getEndpoint()} <br />
             <b>Método: </b> POST <br />
-            <b>Headers: </b> X_TOKEN (token cadastrado) e Content-Type (multipart/form-data) <br />
+            <b>Headers: </b> X_TOKEN (token) e Content-Type (multipart/form-data) <br />
             <b>FormData: </b> <br />
             <ul>
               <li>
-                <b>number: </b> 5551998917243
+                <b>number: </b> XXXXXXXXXXXXX
               </li>
               <li>
-                <b>medias: </b> arquivo
+                <b>media: </b> {i18n.t("messagesAPI.methods.file")}
               </li>
             </ul>
           </Typography>
         </Grid>
         <Grid item xs={12} sm={6}>
           <Typography className={classes.elementMargin}>
-            <b>Teste de Envio</b>
+            <b>{i18n.t("messagesAPI.test")}</b>
           </Typography>
           {renderFormMessageMedia()}
         </Grid>

@@ -26,6 +26,7 @@ import formInitialValues from "./FormModel/formInitialValues";
 
 import useStyles from "./styles";
 import Invoices from "../../pages/Financeiro";
+import { i18n } from "../../translate/i18n";
 
 
 export default function CheckoutPage(props) {
@@ -113,7 +114,7 @@ function _renderStepContent(step, setFieldValue, setActiveStep, values ) {
   return (
     <React.Fragment>
       <Typography component="h1" variant="h4" align="center">
-        Falta pouco!
+      {i18n.t("invoices.modal.title")}
       </Typography>
       <Stepper activeStep={activeStep} className={classes.stepper}>
         {steps.map((label) => (
@@ -141,11 +142,11 @@ function _renderStepContent(step, setFieldValue, setActiveStep, values ) {
                 <div className={classes.buttons}>
                   {activeStep !== 1 && (
                     <Button onClick={_handleBack} className={classes.button}>
-                      VOLTAR
+                      {i18n.t("invoices.modal.return")}
                     </Button>
                   )}
                   <div className={classes.wrapper}>
-                    {activeStep !== 1 && (
+                    {/*activeStep !== 1 && (
                       <Button
                         disabled={isSubmitting}
                         type="submit"
@@ -155,7 +156,7 @@ function _renderStepContent(step, setFieldValue, setActiveStep, values ) {
                       >
                         {isLastStep ? "PAGAR" : "PRÓXIMO"}
                       </Button>
-                    )}
+                    )*/}
                     {isSubmitting && (
                       <CircularProgress
                         size={24}

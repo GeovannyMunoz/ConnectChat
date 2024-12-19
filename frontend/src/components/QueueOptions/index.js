@@ -11,6 +11,7 @@ import SaveIcon from "@material-ui/icons/Save";
 import EditIcon from "@material-ui/icons/Edit";
 import api from "../../services/api";
 import toastError from "../../errors/toastError";
+import { i18n } from "../../translate/i18n";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -131,7 +132,7 @@ export function QueueOptionStepper({ queueId, options, updateOptions }) {
             onChange={(event) => handleOptionChangeTitle(event, index)}
             size="small"
             className={classes.input}
-            placeholder="Título da opção"
+            placeholder={i18n.t("queueModal.bot.optionTitle")}
           />
           {option.edition && (
             <>
@@ -161,7 +162,7 @@ export function QueueOptionStepper({ queueId, options, updateOptions }) {
     return (
       <>
         <Typography>
-          {option.title !== "" ? option.title : "Título não definido"}
+          {option.title !== "" ? option.title : i18n.t("queueModal.bot.noTitle")}
           <IconButton
             variant="outlined"
             size="small"
@@ -187,7 +188,7 @@ export function QueueOptionStepper({ queueId, options, updateOptions }) {
             onChange={(event) => handleOptionChangeMessage(event, index)}
             size="small"
             className={classes.input}
-            placeholder="Digite o texto da opção"
+            placeholder={i18n.t("queueModal.bot.optiontext")}
           />
         </>
       );
@@ -327,7 +328,7 @@ export function QueueOptions({ queueId }) {
     <div className={classes.root}>
       <br />
       <Typography>
-        Opções
+        {i18n.t("queueModal.bot.options")}
         <Button
           color="primary"
           size="small"
@@ -336,7 +337,7 @@ export function QueueOptions({ queueId }) {
           style={{ marginLeft: 10 }}
           variant="outlined"
         >
-          Adicionar
+           {i18n.t("queueModal.bot.add")}
         </Button>
       </Typography>
       {renderStepper()}

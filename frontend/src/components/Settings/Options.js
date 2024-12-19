@@ -15,6 +15,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { makeStyles } from "@material-ui/core/styles";
 import { grey, blue } from "@material-ui/core/colors";
 import { Tabs, Tab } from "@material-ui/core";
+import { i18n } from "../../translate/i18n.js";
 
 //import 'react-toastify/dist/ReactToastify.css';
  
@@ -196,7 +197,7 @@ export default function Options(props) {
       key: "userRating",
       value,
     });
-    toast.success("Operação atualizada com sucesso.");
+    toast.success(i18n.t("settings.success"));
     setLoadingUserRating(false);
   }
 
@@ -208,7 +209,7 @@ export default function Options(props) {
       value,
     });
     //toast.success("Oraçãpeo atualizada com sucesso.");
-    toast.success('Operação atualizada com sucesso.', {
+    toast.success(i18n.t("settings.success"), {
       position: "top-right",
       autoClose: 2000,
       hideProgressBar: false,
@@ -230,7 +231,7 @@ export default function Options(props) {
       key: "call",
       value,
     });
-    toast.success("Operação atualizada com sucesso.");
+    toast.success(i18n.t("settings.success"));
     setLoadingCallType(false);
   }
 
@@ -241,7 +242,7 @@ export default function Options(props) {
       key: "chatBotType",
       value,
     });
-    toast.success("Operação atualizada com sucesso.");
+    toast.success(i18n.t("settings.success"));
     setLoadingChatbotType(false);
   }
 
@@ -252,7 +253,7 @@ export default function Options(props) {
       key: "CheckMsgIsGroup",
       value,
     });
-    toast.success("Operação atualizada com sucesso.");
+    toast.success(i18n.t("settings.success"));
     setCheckMsgIsGroupType(false);
     /*     if (typeof scheduleTypeChanged === "function") {
           scheduleTypeChanged(value);
@@ -267,7 +268,7 @@ export default function Options(props) {
       key: "sendGreetingAccepted",
       value,
     });
-	toast.success("Operação atualizada com sucesso.");
+	toast.success(i18n.t("settings.success"));
     setLoadingSendGreetingAccepted(false);
   }  
   
@@ -282,7 +283,7 @@ export default function Options(props) {
       value,
     });
 
-    toast.success("Operação atualizada com sucesso.");
+    toast.success(i18n.t("settings.success"));
     setLoadingSettingsTransfTicket(false);
   } 
  
@@ -293,7 +294,7 @@ export default function Options(props) {
       key: "ipixc",
       value,
     });
-    toast.success("Operação atualizada com sucesso.");
+    toast.success(i18n.t("settings.success"));
     setLoadingIpIxcType(false);
   }
 
@@ -304,7 +305,7 @@ export default function Options(props) {
       key: "tokenixc",
       value,
     });
-    toast.success("Operação atualizada com sucesso.");
+    toast.success(i18n.t("settings.success"));
     setLoadingTokenIxcType(false);
   }
 
@@ -315,7 +316,7 @@ export default function Options(props) {
       key: "ipmkauth",
       value,
     });
-    toast.success("Operação atualizada com sucesso.");
+    toast.success(i18n.t("settings.success"));
     setLoadingIpMkauthType(false);
   }
 
@@ -326,7 +327,7 @@ export default function Options(props) {
       key: "clientidmkauth",
       value,
     });
-    toast.success("Operação atualizada com sucesso.");
+    toast.success(i18n.t("settings.success"));
     setLoadingClientIdMkauthType(false);
   }
 
@@ -337,7 +338,7 @@ export default function Options(props) {
       key: "clientsecretmkauth",
       value,
     });
-    toast.success("Operação atualizada com sucesso.");
+    toast.success(i18n.t("settings.success"));
     setLoadingClientSecrectMkauthType(false);
   }
 
@@ -348,7 +349,7 @@ export default function Options(props) {
       key: "asaas",
       value,
     });
-    toast.success("Operação atualizada com sucesso.");
+    toast.success(i18n.t("settings.success"));
     setLoadingAsaasType(false);
   }
   return (
@@ -359,7 +360,7 @@ export default function Options(props) {
                 </Grid> */}
         <Grid xs={12} sm={6} md={4} item>
           <FormControl className={classes.selectContainer}>
-            <InputLabel id="ratings-label">Avaliações</InputLabel>
+            <InputLabel id="ratings-label">{i18n.t("settings.options.reviews.name")}</InputLabel>
             <Select
               labelId="ratings-label"
               value={userRating}
@@ -367,8 +368,8 @@ export default function Options(props) {
                 handleChangeUserRating(e.target.value);
               }}
             >
-              <MenuItem value={"disabled"}>Desabilitadas</MenuItem>
-              <MenuItem value={"enabled"}>Habilitadas</MenuItem>
+              <MenuItem value={"disabled"}>{i18n.t("settings.options.reviews.options.disabled")}</MenuItem>
+              <MenuItem value={"enabled"}>{i18n.t("settings.options.reviews.options.enabled")}</MenuItem>
             </Select>
             <FormHelperText>
               {loadingUserRating && "Atualizando..."}
@@ -378,7 +379,7 @@ export default function Options(props) {
         <Grid xs={12} sm={6} md={4} item>
           <FormControl className={classes.selectContainer}>
             <InputLabel id="schedule-type-label">
-              Gerenciamento de Expediente
+              {i18n.t("settings.options.schedules.name")}
             </InputLabel>
             <Select
               labelId="schedule-type-label"
@@ -387,9 +388,9 @@ export default function Options(props) {
                 handleScheduleType(e.target.value);
               }}
             >
-              <MenuItem value={"disabled"}>Desabilitado</MenuItem>
-              <MenuItem value={"queue"}>Fila</MenuItem>
-              <MenuItem value={"company"}>Empresa</MenuItem>
+              <MenuItem value={"disabled"}>{i18n.t("settings.options.schedules.options.disabled")}</MenuItem>
+              <MenuItem value={"queue"}>{i18n.t("settings.options.schedules.options.queue")}</MenuItem>
+              <MenuItem value={"company"}>{i18n.t("settings.options.schedules.options.company")}</MenuItem>
             </Select>
             <FormHelperText>
               {loadingScheduleType && "Atualizando..."}
@@ -399,7 +400,7 @@ export default function Options(props) {
         <Grid xs={12} sm={6} md={4} item>
           <FormControl className={classes.selectContainer}>
             <InputLabel id="group-type-label">
-              Ignorar Mensagens de Grupos
+              {i18n.t("settings.options.groups.name")}
             </InputLabel>
             <Select
               labelId="group-type-label"
@@ -408,8 +409,8 @@ export default function Options(props) {
                 handleGroupType(e.target.value);
               }}
             >
-              <MenuItem value={"disabled"}>Desativado</MenuItem>
-              <MenuItem value={"enabled"}>Ativado</MenuItem>
+              <MenuItem value={"disabled"}>{i18n.t("settings.options.groups.options.disabled")}</MenuItem>
+              <MenuItem value={"enabled"}>{i18n.t("settings.options.groups.options.enabled")}</MenuItem>
             </Select>
             <FormHelperText>
               {loadingScheduleType && "Atualizando..."}
@@ -419,7 +420,7 @@ export default function Options(props) {
         <Grid xs={12} sm={6} md={4} item>
           <FormControl className={classes.selectContainer}>
             <InputLabel id="call-type-label">
-              Aceitar Chamada
+              {i18n.t("settings.options.call.name")}
             </InputLabel>
             <Select
               labelId="call-type-label"
@@ -428,8 +429,8 @@ export default function Options(props) {
                 handleCallType(e.target.value);
               }}
             >
-              <MenuItem value={"disabled"}>Não Aceitar</MenuItem>
-              <MenuItem value={"enabled"}>Aceitar</MenuItem>
+              <MenuItem value={"disabled"}>{i18n.t("settings.options.call.options.disabled")}</MenuItem>
+              <MenuItem value={"enabled"}>{i18n.t("settings.options.call.options.enabled")}</MenuItem>
             </Select>
             <FormHelperText>
               {loadingCallType && "Atualizando..."}
@@ -439,7 +440,7 @@ export default function Options(props) {
         <Grid xs={12} sm={6} md={4} item>
           <FormControl className={classes.selectContainer}>
             <InputLabel id="chatbot-type-label">
-              Tipo Chatbot
+              {i18n.t("settings.options.chatbot.name")}
             </InputLabel>
             <Select
               labelId="chatbot-type-label"
@@ -448,7 +449,7 @@ export default function Options(props) {
                 handleChatbotType(e.target.value);
               }}
             >
-              <MenuItem value={"text"}>Texto</MenuItem>
+              <MenuItem value={"text"}>{i18n.t("settings.options.chatbot.options.text")}</MenuItem>
 			 {/*<MenuItem value={"button"}>Botão</MenuItem>*/}
              {/*<MenuItem value={"list"}>Lista</MenuItem>*/}
             </Select>
@@ -460,7 +461,7 @@ export default function Options(props) {
 		{/* ENVIAR SAUDAÇÃO AO ACEITAR O TICKET */}
         <Grid xs={12} sm={6} md={4} item>
           <FormControl className={classes.selectContainer}>
-            <InputLabel id="sendGreetingAccepted-label">Enviar saudação ao aceitar o ticket</InputLabel>
+            <InputLabel id="sendGreetingAccepted-label">{i18n.t("settings.options.acceptingTicket.name")}</InputLabel>
             <Select
               labelId="sendGreetingAccepted-label"
               value={SendGreetingAccepted}
@@ -468,8 +469,8 @@ export default function Options(props) {
                 handleSendGreetingAccepted(e.target.value);
               }}
             >
-              <MenuItem value={"disabled"}>Desabilitado</MenuItem>
-              <MenuItem value={"enabled"}>Habilitado</MenuItem>
+              <MenuItem value={"disabled"}>{i18n.t("settings.options.acceptingTicket.options.disabled")}</MenuItem>
+              <MenuItem value={"enabled"}>{i18n.t("settings.options.acceptingTicket.options.enabled")}</MenuItem>
             </Select>
             <FormHelperText>
               {loadingSendGreetingAccepted && "Atualizando..."}
@@ -481,7 +482,7 @@ export default function Options(props) {
 		{/* ENVIAR MENSAGEM DE TRANSFERENCIA DE SETOR/ATENDENTE */}
         <Grid xs={12} sm={6} md={4} item>
           <FormControl className={classes.selectContainer}>
-            <InputLabel id="sendMsgTransfTicket-label">Enviar mensagem de transferencia de Fila/agente</InputLabel>
+            <InputLabel id="sendMsgTransfTicket-label">{i18n.t("settings.options.transferMessage.name")}</InputLabel>
             <Select
               labelId="sendMsgTransfTicket-label"
               value={SettingsTransfTicket}
@@ -489,8 +490,8 @@ export default function Options(props) {
                 handleSettingsTransfTicket(e.target.value);
               }}
             >
-              <MenuItem value={"disabled"}>Desabilitado</MenuItem>
-              <MenuItem value={"enabled"}>Habilitado</MenuItem>
+              <MenuItem value={"disabled"}>{i18n.t("settings.options.transferMessage.options.disabled")}</MenuItem>
+              <MenuItem value={"enabled"}>{i18n.t("settings.options.transferMessage.options.enabled")}</MenuItem>
             </Select>
             <FormHelperText>
               {loadingSettingsTransfTicket && "Atualizando..."}
@@ -499,7 +500,7 @@ export default function Options(props) {
         </Grid>
 		
       </Grid>
-      <Grid spacing={3} container>
+      {/*<Grid spacing={3} container>
         <Tabs
           indicatorColor="primary"
           textColor="primary"
@@ -517,9 +518,9 @@ export default function Options(props) {
 
         </Tabs>
 
-      </Grid>
+      </Grid>*/}
       {/*-----------------ASAAS-----------------*/}
-      <Grid spacing={3} container
+      {/*<Grid spacing={3} container
         style={{ marginBottom: 10 }}>
         <Tabs
           indicatorColor="primary"
@@ -550,7 +551,7 @@ export default function Options(props) {
             </FormHelperText>
           </FormControl>
         </Grid>
-      </Grid>
+      </Grid>*/}
     </>
   );
 }

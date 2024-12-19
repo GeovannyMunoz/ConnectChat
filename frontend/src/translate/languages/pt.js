@@ -34,7 +34,14 @@ const messages = {
           users: "Usuários",
           connections: "Conexões",
           campaigns: "Campanhas",
+          queue:"Depto.",
+          value: "Valor",
           schedules: "Agendamentos",
+          internalChat: "Chat Interno",
+					externalAPI: "API Externa",
+					kanban: "Kanban",
+					openAi: "Open.Ai",
+					integrations: "Integrações",
           enabled: "Habilitadas",
           disabled: "Desabilitadas",
           clear: "Cancelar",
@@ -180,7 +187,9 @@ const messages = {
           timeSendQueue: "Redirecionar para fila em X minutos",
           queueRedirection: "Redirecionamento de Fila",
           queueRedirectionDesc: "Selecione uma fila para os contatos que não possuem fila serem redirecionados",
-          prompt: "Prompt",
+           prompt: "Prompt",
+          transfer: "Transferir após x (minutos)",
+          transferQueue: "Fila de Transferência",
           maxUseBotQueues: "Enviar bot x vezes",
           timeUseBotQueues: "Intervalo em minutos entre envio de bot",
           expiresTicket: "Encerrar chats abertos após x minutos",
@@ -300,7 +309,7 @@ const messages = {
         title: "Prompts",
         table: {
           name: "Nome",
-          queue: "Setor/Fila",
+          queue: "Departamento",
           max_tokens: "Máximo Tokens Resposta",
           actions: "Ações",
         },
@@ -340,6 +349,10 @@ const messages = {
           add: "Adicionar fila",
           edit: "Editar fila",
         },
+        subtitle: {
+				  queue: "Dados Departamento",
+				  schedules: "Horários de Atendimento"
+				},
         form: {
           name: "Nome",
           color: "Cor",
@@ -356,6 +369,13 @@ const messages = {
           okEdit: "Salvar",
           cancel: "Cancelar",
         },
+        bot:{
+					options: "Opções",
+          add:"Adicionar",
+          optionTitle: "Título da opção",
+          noTitle: "Título não definido",
+          optiontext:"Digite o texto da opção"
+				}
       },
       userModal: {
         title: {
@@ -367,7 +387,7 @@ const messages = {
           email: "Email",
           password: "Senha",
           profile: "Perfil",
-          whatsapp: "Conexão Padrão"
+          whatsApp: "Conexão Padrão"
         },
         buttons: {
           okAdd: "Adicionar",
@@ -568,6 +588,25 @@ const messages = {
       },
       messagesAPI: {
         title: "API",
+				subtitle: "Documentação para envio de mensagens",
+				methods:{
+          title: "Métodos de Envio",
+					text: "Mensagens de Texto",
+					descriptionText: "Seguem abaixo a lista de informações necessárias para envio das mensagens de texto:",
+					media: "Mensagens de Media",
+					descriptionMedia: "Seguem abaixo a lista de informações necessárias para envio das mensagens de media:",
+          file: "arquivo"
+				},
+				instructions:{
+					title: "Instruções",
+					subtitle: "Observações importantes",
+					instruction1: "Antes de enviar mensagens, é necessário o cadastro do token vinculado à conexão que enviará as mensagens.",
+					instruction1_1: "Para realizar o cadastro acesse o menu Conexões, clique no botão editar da conexão e insira o token no devido campo.",
+          instruction2: "O número para envio não deve ter mascara ou caracteres especiais e deve ser composto por:",
+					instruction2_1: "Código do país",
+					instruction2_2: "Número"
+
+				},
         textMessage: {
           number: "Número",
           body: "Mensagem",
@@ -579,7 +618,29 @@ const messages = {
           media: "Arquivo",
           token: "Token cadastrado",
         },
+        test:"Teste de Envio"
       },
+      invoices:{
+				title:"Facturas",
+				table:{
+					id: "Id",
+					details: "Detalhes", 
+					amount: "Valor",
+					dueDate: "Data Venc.",
+					status: "Status",
+					action: "Ação"
+				},
+        modal:{
+					title: "Falta pouco!",
+          return: "VOLTAR",
+          summary: "Resumo da assinatura",
+          details: "Detalhes do plano",
+          users: "Usuários",
+					billing: "Cobrança: Mensal",
+					total: "Total"
+				}
+
+			},
       notifications: {
         noTickets: "Nenhuma notificação.",
       },
@@ -734,7 +795,8 @@ const messages = {
             confirmation: "Confirmação",
             contactList: "Lista de Contato",
             tagList: "Lista de Tags",
-            fileList: "Lista de Arquivos"
+            fileList: "Lista de Arquivos",
+            selected: "Nenhuma"
           },
           buttons: {
             add: "Adicionar",
@@ -756,6 +818,34 @@ const messages = {
           restart: "Campanha reiniciada",
           deleted: "Registro excluído",
         },
+        report:{
+					title: "Relatório da ",
+					validContacts: "Contatos Válidos",
+					requestedConfirmations: "Confirmações Solicitadas",
+					confirmations: "Confirmações",
+					delivered: "Entregues",
+					connection: "Conexão",
+					contactList: "Lista de Contatos",
+					appointment: "Agendamento",
+					completion: "Conclusão",
+				},
+        settings:{
+					title: "Configuraciones de Campañaas",
+					subtitle: "Intervalos",
+					randomDispatchInterval: "Randômico de Disparo",
+					largerIntervalAfter: "Intervalo Maior Após",
+					largerDispatchInterval: "Intervalo de Disparo Maior",
+					addVarible: "Adicionar Variável",
+					save: "Save",
+					shortcut: "Atalho",
+					content: "Conteúdo",
+          add:"Adicionar",
+					close:"Fechar",
+          success: "Configurações salvas",
+          noInterval: "Sem Intervalo",
+          second: "segundo",
+          seconds: "segundos"
+				}
       },
       announcements: {
         active: 'Ativo',
@@ -929,6 +1019,97 @@ const messages = {
             },
           },
         },
+        options:{
+					title: "Opções",
+					reviews: {
+						name: "Avaliações",
+						options: {
+							enabled: "Habilitado",
+							disabled: "Deshabilitado",
+						}
+					},
+					schedules: {
+						name: "Gerenciamento de Expediente",
+						options: {
+							disabled: "Deshabilitado",
+							queue: "Fila",
+							company: "Empresa"
+						}
+					},
+					groups: {
+						name: "Ignorar Mensagens de Grupos",
+						options: {
+							enabled: "Habilitado",
+							disabled: "Deshabilitado",
+						}
+					},
+					call: {
+						name: "Aceitar Chamada",
+						options: {
+							enabled: "Habilitado",
+							disabled: "Deshabilitado",
+						}
+					},
+					chatbot: {
+						name: "Tipo Chatbot",
+						options: {
+							text: "Text"
+						}
+					},
+					acceptingTicket: {
+						name: "Enviar saudação ao aceitar o chat",
+						options: {
+							enabled: "Habilitado",
+							disabled: "Deshabilitado",
+						}
+					},
+					transferMessage: {
+						name: "Enviar mensagem de transferencia de dep./agente",
+						options: {
+							enabled: "Habilitado",
+							disabled: "Deshabilitado",
+						}
+					}
+				}, 
+				companies: {
+					title:"Empresas",
+          name: "Nome",
+          email: "E-mail",
+          phone: "Telefone",
+          plan: "Plano",
+          status: "Status",
+          campaigns: "Campanhas",
+          expirationDate: "Data de Vencimento",
+          recurrence: "Recorrência",
+          monthly: "Mensal",
+          created: "Criada Em",
+          true: "ATIVO",
+          false: "INATIVO",
+          save: "SALVAR",
+          cancel: "LIMPAR",
+          expiration: "Vencimento",
+          delete: "EXCLUIR",
+          user: "Usuário",
+          enabled: "Habilitado",
+					disabled: "Deshabilitado",
+          success: "Operação realizada com sucesso!"
+
+				},
+				plans: {
+					title: "Planos",
+				},
+				helps: {
+					title: "Ajuda",
+          form:{
+						title: "Título",
+						videoCode: "Código do Vídeo",
+						description: "Descrição",
+						save: "Salvar",
+						cancel: "Limpar",
+            delete: "Excluir"
+					},
+          success: "Operação realizada com sucesso!"
+				}
       },
       layout:{
 				WelcomeGreeting: {

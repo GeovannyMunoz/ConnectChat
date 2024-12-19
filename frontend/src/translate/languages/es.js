@@ -29,21 +29,28 @@ const messages = {
 				},
 			},
 			plans: {
-			 form: {
-			   name: "Nombre",
-			   users: "Usuarios",
-			   connections: "Conexiones",
-			   campaigns: "Masivo",
-			   schedules: "Horarios",
-			   enabled: "Activado",
-			   disabled: "Desactivado",
-			   clear: "Cancelar",
-			   delete: "Eliminar",
-			   save: "Guardar",
-			   yes: "Si",
-			   no: "No",
-			   money: "$",
-        	 },
+			 	form: {
+			   		name: "Nombre",
+					users: "Usuarios",
+					connections: "Conexiones",
+					campaigns: "Masivo",
+					queue:"Depto.",
+					value: "Valor",
+					schedules: "Horarios",
+					internalChat: "Chat Interno",
+					externalAPI: "API Externa",
+					kanban: "Kanban",
+					openAi: "Open.Ai",
+					integrations: "Integraciones",
+					enabled: "Activado",
+					disabled: "Desactivado",
+					clear: "Cancelar",
+					delete: "Eliminar",
+					save: "Guardar",
+					yes: "Si",
+					no: "No",
+					money: "$",
+        	 	},
       		},
       		companies: {
         	  title: "Registrar Empresa",
@@ -174,9 +181,11 @@ const messages = {
 					default: "Por Defecto",
 					sendIdQueue: "Departamentos",
 					timeSendQueue: "Redireccionar para el sector en X minutos",
-					queueRedirection: "edireccionamiento de sector",
-					queueRedirectionDesc: "Seleccione un sector para los contactos que no tienen una cola para ser redirigidos",
+					queueRedirection: "Redireccionamiento de departamento",
+					queueRedirectionDesc: "Seleccione un departamento para los contactos que no tienen uno para ser redirigidos",
 					prompt: "Prompt",
+					transfer: "Transferir despues x (minutos)",
+					transferQueue: "Departamento de Tranferencia",
 					maxUseBotQueues: "Enviar bot x veces",
 					timeUseBotQueues: "Intervalo en minutos entre envíos de bots",
 					expiresTicket: "Cerrar chats abiertos después de x minutos",
@@ -295,7 +304,7 @@ const messages = {
 				title: "Prompts",
 				table: {
 				  name: "Nombre",
-				  queue: "Sector/Fila",
+				  queue: "Departamento",
 				  max_tokens: "Máximo Tokens de Respuesta",
 				  actions: "Acciones",
 				},
@@ -335,11 +344,15 @@ const messages = {
 					add: "Agregar sector",
 					edit: "Editar sector",
 				},
+				subtitle:{
+					queue: "Datos Departamento",
+					schedules:"Horarios de servicio"
+				},
 				form: {
 					name: "Nombre",
 					color: "Color",
 					greetingMessage: "Mensaje de saludo",
-					completeMessage: "Mensaje de finalización",
+					complationMessage: "Mensaje de finalización",
 					outOfHoursMessage: "Mensaje fuera de horario",
 					ratingMessage: "Mensaje de calificación",
 					token: "Token",
@@ -351,6 +364,13 @@ const messages = {
 					okEdit: "Ahorrar",
 					cancel: "Cancelar",
 				},
+				bot:{
+					options: "Opciones",
+					add:"Agregar",
+					optionTitle: "Título de la opción",
+					noTitle: "Título no definido",
+					optiontext:"Digite el texto de la opción"
+				}
 			},
 			userModal: {
 				title: {
@@ -362,7 +382,7 @@ const messages = {
 					email: "Correo Electrónico",
 					password: "Contraseña",
 					profile: "Perfil",
-					WhatsApp: "Conexión predeterminada"
+					whatsApp: "Conexión predeterminada"
 				},
 				buttons: {
 					okAdd: "Agregar",
@@ -562,6 +582,24 @@ const messages = {
 			  },
 			messagesAPI: {
 				title: "API",
+				subtitle: "Documentación para enviar mensajes.",
+				methods:{
+					title: "Métodos de Envio",
+					text: "Mensajes de texto",
+					descriptionText: "A continuación se muestra la lista de información necesaria para enviar mensajes de Texto:",
+					media: "Mensajes de multimedia",
+					descriptionMedia: "A continuación se muestra la lista de información necesaria para enviar mensajes Multimedia:",
+					file: "archivo"
+				},
+				instructions:{
+					title: "Instrucciones",
+					subtitle: "Observaciones importantes",
+					instruction1: "Antes de enviar mensajes, es necesario registrar el token vinculado a la conexión que enviará los mensajes.",
+					instruction1_1: "Para registrarse, acceda al menú Conexiones, haga clic en el botón de edición de la conexión e inserte el token en el campo correspondiente.",
+					instruction2: "El número de envío no  caracteres especiales y debe constar de:",
+					instruction2_1: "Código del país",
+					instruction2_2: "Número"
+				},
 				textMessage: {
 				  number: "Número",
 				  body: "Mensaje",
@@ -573,7 +611,29 @@ const messages = {
 				  media: "Archivo",
 				  token: "Token registrado",
 				},
-			  },
+				test:"Test de envío"
+			},
+			invoices:{
+				title:"Facturas",
+				table:{
+					id: "Id",
+					details: "Detalles", 
+					amount: "Valor",
+					dueDate: "Fecha de expiración",
+					status: "Estado",
+					action: "Acción"
+				},
+				modal:{
+					title: "¡Falta poco!",
+					return: "REGRESAR",
+					summary: "Resumen de suscripción",
+					details: "Detalles del plan",
+					users: "Usuario",
+					billing: "Facturación: Mensual",
+					total: "Total"
+				}
+
+			},
 			notifications: {
 				noTickets: "Sin notificaciones.",
 			},
@@ -728,7 +788,8 @@ const messages = {
 					confirmation: "Confirmación",
 					contactList: "Lista de Contacto",
 					tagList: "Lista de Tags",
-					fileList: "Lista de Archivos"
+					fileList: "Lista de Archivos",
+					selected: "Ninguno"
 				  },
 				  buttons: {
 					add: "Agregar",
@@ -750,6 +811,34 @@ const messages = {
 				  restart: "Campaña reiniciada",
 				  deleted: "Registro eliminado",
 				},
+				report:{
+					title: "Reporte de ",
+					validContacts: "Contactos Válidos",
+					requestedConfirmations: "Confirmaciones Solicitadas",
+					confirmations: "Confirmaciones",
+					delivered: "Entregados",
+					connection: "Conexión",
+					contactList: "Lista de Contactos",
+					appointment: "Agendamiento",
+					completion: "Conclusión",
+				},
+				settings:{
+					title: "Configuraciones de Campaña",
+					subtitle: "Intervalos",
+					randomDispatchInterval: "Intervalo de Disparo",
+					largerIntervalAfter: "Intervalo Mayor Después",
+					largerDispatchInterval: "Intervalo Mayor de Disparo",
+					addVarible: "Agregar Variable",
+					save: "Guardar",
+					shortcut: "Atajo",
+					content: "Contenido",
+					add:"Adicionar",
+					close:"Cerrar",
+					success: "Configuraciones guardadas",
+					noInterval: "Sin intervalo",
+					second: "segundo",
+					seconds: "segundos"
+				}
 			  },
 			announcements: {
 				active: 'Activo',
@@ -923,6 +1012,97 @@ const messages = {
 						},
 					},
 				},
+				options:{
+					title: "Opciones",
+					reviews: {
+						name :"Reseñas",
+						options: {
+							enabled: "Habilitado",
+							disabled: "Deshabilitado",
+						}
+					},
+					schedules: {
+						name :"Horarios",
+						options: {
+							disabled: "Deshabilitado",
+							queue: "Departamento",
+							company:"Empresa"
+						}
+					},
+					groups: {
+						name: "Ignorar Mensajes de Grupos",
+						options: {
+							enabled: "Habilitado",
+							disabled: "Deshabilitado",
+						}
+					},
+					call: {
+						name: "Aceptar llamada",
+						options: {
+							enabled: "Habilitado",
+							disabled: "Deshabilitado",
+						}
+					},
+					chatbot: {
+						name: "Tipo ChatBot",
+						options: {
+							text: "Texto"
+						}
+					},
+					acceptingTicket: {
+						name: "Enviar saludo al aceptar chat",
+						options: {
+							enabled: "Habilitado",
+							disabled: "Deshabilitado",
+						}
+					},
+					transferMessage: {
+						name :"Enviar mensaje de transferencia de dep./agente",
+						options: {
+							enabled: "Habilitado",
+							disabled: "Deshabilitado",
+						}
+					}
+				}, 
+				companies: {
+					title:"Empresas",
+					name: "Nombre",
+					email: "E-mail",
+					phone: "Teléfono",
+					plan: "Plan",
+					status: "Estado",
+					campaigns: "Campañas",
+					expirationDate: "Fecha de expiración",
+					recurrence: "Periodicidad",
+					monthly: "Mensual",
+					created: "Creado",
+					true: "ACTIVO",
+					false: "INACTIVO",
+					save: "GUARDAR",
+					cancel: "Cancelar",
+					expiration: "Vencimiento",
+					delete: "Eliminar",
+					user: "USUARIO",
+					enabled: "Habilitado",
+					disabled: "Deshabilitado",
+					success: "¡Operación realizada con éxito!"
+				
+				},
+				plans: {
+					title: "Planes",
+				},
+				helps: {
+					title: "Ayuda",
+					form:{
+						title: "Título",
+						videoCode: "Código del Video",
+						description: "Descripción",
+						save: "Guardar",
+						cancel: "Cancelar",
+						delete: "Eliminar"
+					},
+					success: "¡Operación realizada con éxito!"
+				}
 			},
 			layout:{
 				WelcomeGreeting: {

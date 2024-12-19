@@ -19,6 +19,7 @@ import { Edit as EditIcon } from "@material-ui/icons";
 
 import { toast } from "react-toastify";
 import useHelps from "../../hooks/useHelps";
+import { i18n } from "../../translate/i18n";
 
 
 const useStyles = makeStyles(theme => ({
@@ -90,7 +91,7 @@ export function HelpManagerForm (props) {
                         <Grid xs={12} sm={6} md={3} item>
                             <Field
                                 as={TextField}
-                                label="Título"
+                                label={i18n.t("settings.helps.form.title")}
                                 name="title"
                                 variant="outlined"
                                 className={classes.fullWidth}
@@ -100,7 +101,7 @@ export function HelpManagerForm (props) {
                         <Grid xs={12} sm={6} md={3} item>
                             <Field
                                 as={TextField}
-                                label="Código do Vídeo"
+                                label={i18n.t("settings.helps.form.videoCode")}
                                 name="video"
                                 variant="outlined"
                                 className={classes.fullWidth}
@@ -110,7 +111,7 @@ export function HelpManagerForm (props) {
                         <Grid xs={12} sm={12} md={6} item>
                             <Field
                                 as={TextField}
-                                label="Descrição"
+                                label={i18n.t("settings.helps.form.description")}
                                 name="description"
                                 variant="outlined"
                                 className={classes.fullWidth}
@@ -119,19 +120,19 @@ export function HelpManagerForm (props) {
                         </Grid>
                         <Grid sm={3} md={1} item>
                             <ButtonWithSpinner className={classes.fullWidth} loading={loading} onClick={() => onCancel()} variant="contained">
-                                Limpar
+                            {i18n.t("settings.helps.form.cancel")}
                             </ButtonWithSpinner>
                         </Grid>
                         { record.id !== undefined ? (
                             <Grid sm={3} md={1} item>
                                 <ButtonWithSpinner className={classes.fullWidth} loading={loading} onClick={() => onDelete(record)} variant="contained" color="secondary">
-                                    Excluir
+                                {i18n.t("settings.helps.form.delete")}
                                 </ButtonWithSpinner>
                             </Grid>
                         ) : null}
                         <Grid sm={3} md={1} item>
                             <ButtonWithSpinner className={classes.fullWidth} loading={loading} type="submit" variant="contained" color="primary">
-                                Salvar
+                            {i18n.t("settings.helps.form.save")}
                             </ButtonWithSpinner>
                         </Grid>
                     </Grid>
@@ -151,9 +152,9 @@ export function HelpsManagerGrid (props) {
                 <TableHead>
                 <TableRow>
                     <TableCell align="center" style={{width: '1%'}}>#</TableCell>
-                    <TableCell align="left">Título</TableCell>
-                    <TableCell align="left">Descrição</TableCell>
-                    <TableCell align="left">Vídeo</TableCell>
+                    <TableCell align="left">{i18n.t("settings.helps.form.title")}</TableCell>
+                    <TableCell align="left">{i18n.t("settings.helps.form.description")}</TableCell>
+                    <TableCell align="left">{i18n.t("settings.helps.form.videoCode")}</TableCell>
                 </TableRow>
                 </TableHead>
                 <TableBody>
@@ -217,7 +218,7 @@ export default function HelpsManager () {
             }
             await loadHelps()
             handleCancel()
-            toast.success('Operação realizada com sucesso!')
+            toast.success(i18n.t("settings.helps.success"))
         } catch (e) {
             toast.error('Não foi possível realizar a operação. Verifique se já existe uma helpo com o mesmo nome ou se os campos foram preenchidos corretamente')
         }
@@ -230,7 +231,7 @@ export default function HelpsManager () {
             await remove(record.id)
             await loadHelps()
             handleCancel()
-            toast.success('Operação realizada com sucesso!')
+            toast.success(i18n.t("settings.helps.success"))
         } catch (e) {
             toast.error('Não foi possível realizar a operação')
         }

@@ -142,19 +142,30 @@ const messages = {
 			whatsappModal: {
 				title: {
 					add: "Add WhatsApp",
-					edit: "Edit WhatsApp",
+					edit: "Edit WhatsApp"
 				},
 				form: {
 					name: "Name",
 					default: "Default",
+					sendIdQueue: "Departments",
+					timeSendQueue: "Redirect to the department in X minutes",
+					queueRedirection: "Department Redirection",
+					queueRedirectionDesc: "Select a department for contacts without one to be redirected to",
+					prompt: "Prompt",
+					transfer: "Transfer after x (minutes)",
+					transferQueue: "Transfer Department",
+					maxUseBotQueues: "Send bot x times",
+					timeUseBotQueues: "Interval in minutes between bot sends",
+					expiresTicket: "Close open chats after x minutes",
+					expiresInactiveMessage: "Inactive closure message"
 				},
 				buttons: {
 					okAdd: "Add",
 					okEdit: "Save",
-					cancel: "Cancel",
+					cancel: "Cancel"
 				},
-				success: "WhatsApp saved successfully.",
-			},
+				success: "WhatsApp saved successfully."
+			},			
 			qrCode: {
 				message: "Read QrCode to start the session",
 			},
@@ -290,21 +301,61 @@ const messages = {
 				},
 				success: "Contact saved successfully.",
 			},
-			queueModal: {
-				title: {
-					add: "Add queue",
-					edit: "Edit queue",
-				},
+			promptModal: {
 				form: {
 					name: "Name",
-					color: "Color",
-					greetingMessage: "Greeting Message",
+					prompt: "Prompt",
+					voice: "Voice",
+					max_tokens: "Max Response Tokens",
+					temperature: "Temperature",
+					apikey: "API Key",
+					max_messages: "Max Messages in History",
+					voiceKey: "Voice API Key",
+					voiceRegion: "Voice Region"
+				},
+				success: "Prompt saved successfully!",
+				title: {
+					add: "Add Prompt",
+					edit: "Edit Prompt"
 				},
 				buttons: {
 					okAdd: "Add",
 					okEdit: "Save",
-					cancel: "Cancel",
+					cancel: "Cancel"
+				}
+			},
+			queueModal: {
+				title: {
+				  add: "Add Department",
+				  edit: "Edit Department"
 				},
+				subtitle: {
+				  queue: "Department Data",
+				  schedules: "Service Hours"
+				},
+				form: {
+				  name: "Name",
+				  color: "Color",
+				  greetingMessage: "Greeting Message",
+				  completeMessage: "Completion Message",
+				  outOfHoursMessage: "Out of Hours Message",
+				  ratingMessage: "Rating Message",
+				  token: "Token",
+				  orderQueue: "Department Order (Bot)",
+				  integrationId: "Integration"
+				},
+				buttons: {
+				  okAdd: "Add",
+				  okEdit: "Save",
+				  cancel: "Cancel"
+				},
+				bot:{
+					options: "Options",
+					add:"Add",
+					optionTitle: "Option Title",
+					noTitle: "Title not defined",
+					optiontext:"Enter the option text"
+				}
 			},
 			userModal: {
 				title: {
@@ -316,6 +367,7 @@ const messages = {
 					email: "Email",
 					password: "Password",
 					profile: "Profile",
+					whatsApp: "Default connection"
 				},
 				buttons: {
 					okAdd: "Add",
@@ -511,20 +563,175 @@ const messages = {
 				title: "Settings",
 				settings: {
 					userCreation: {
-						name: "User creation",
+						name: "User Creation",
 						options: {
 							enabled: "Enabled",
 							disabled: "Disabled",
 						},
 					},
 				},
+				options: {
+					title: "Options",
+					reviews: {
+						name: "Reviews",
+						options: {
+							enabled: "Enabled",
+							disabled: "Disabled",
+						}
+					},
+					schedules: {
+						name: "Schedules",
+						options: {
+							disabled: "Disabled",
+							queue: "Department",
+							company: "Company"
+						}
+					},
+					groups: {
+						name: "Ignore Group Messages",
+						options: {
+							enabled: "Enabled",
+							disabled: "Disabled",
+						}
+					},
+					call: {
+						name: "Accept Call",
+						options: {
+							enabled: "Enabled",
+							disabled: "Disabled",
+						}
+					},
+					chatbot: {
+						name: "ChatBot Type",
+						options: {
+							text: "Text"
+						}
+					},
+					acceptingTicket: {
+						name: "Send greeting when accepting chat",
+						options: {
+							enabled: "Enabled",
+							disabled: "Disabled",
+						}
+					},
+					transferMessage: {
+						name: "Send department/agent transfer message",
+						options: {
+							enabled: "Enabled",
+							disabled: "Disabled",
+						}
+					}
+				},				
+				companies: {
+					title: "Companies",
+					name: "Name",
+					email: "E-mail",
+					phone: "Phone",
+					plan: "Plan",
+					status: "Status",
+					campaigns: "Campaigns",
+					expirationDate: "Expiration Date",
+					recurrence: "Recurrence",
+					monthly: "Monthly",
+					created: "Created",
+					true: "ACTIVE",
+					false: "INACTIVE",
+					save: "SAVE",
+					cancel: "Cancel",
+					expiration: "Expiration",
+					delete: "DELETE",
+					user: "USER",
+					enabled: "Enabled",
+					disabled: "Disabled",
+					success: "Operation completed successfully!"
+
+
+				},
+				plans: {
+					title: "Plans",
+				},
+				helps: {
+					title: "Help",
+					form: {
+						title: "Title",
+						videoCode: "Video Code",
+						description: "Description",
+						save: "Save",
+						cancel: "Cancel",
+						delete: "Delete"
+					},
+					success: "Operation completed successfully!"				
+				}
 			},
+			plans: {
+				form: {
+					name: "Name",
+					users: "Users",
+					connections: "Connections",
+					campaigns: "Massive",
+					queue: "Dept.",
+					value: "Value",
+					schedules: "Schedules",
+					internalChat: "Internal Chat",
+					externalAPI: "External API",
+					kanban: "Kanban",
+					openAi: "Open.AI",
+					integrations: "Integrations",
+					enabled: "Enabled",
+					disabled: "Disabled",
+					clear: "Cancel",
+					delete: "Delete",
+					save: "Save",
+					yes: "Yes",
+					no: "No",
+					money: "$",
+				},
+			},						
 			layout:{
 				WelcomeGreeting: {
 					greetings: "Hello",
 					welcome: "Welcome to",
 					expirationTime: "Active until",
 				},
+			},
+			prompts: {
+				title: "Prompts",
+				table: {
+					name: "Name",
+					queue: "Department",
+					max_tokens: "Max Response Tokens",
+					actions: "Actions"
+				},
+				confirmationModal: {
+					deleteTitle: "Delete",
+					deleteMessage: "Are you sure? This action cannot be undone!"
+				},
+				buttons: {
+					add: "Add Prompt"
+				}
+			},
+			promptModal: {
+				form: {
+					name: "Name",
+					prompt: "Prompt",
+					voice: "Voice",
+					max_tokens: "Max Response Tokens",
+					temperature: "Temperature",
+					apikey: "API Key",
+					max_messages: "Max Messages in History",
+					voiceKey: "Voice API Key",
+					voiceRegion: "Voice Region"
+				},
+				success: "Prompt saved successfully!",
+				title: {
+					add: "Add Prompt",
+					edit: "Edit Prompt"
+				},
+				buttons: {
+					okAdd: "Add",
+					okEdit: "Save",
+					cancel: "Cancel"
+				}
 			},
 			quickMessages: {
 				title: "Quick Messages",
@@ -562,6 +769,152 @@ const messages = {
 				  mediaName: "File Name",
 				  status: "Status",
 				},
+			},
+			messagesAPI: {
+				title: "API",
+				subtitle: "Documentation for sending messages.",
+				methods: {
+					title: "Sending Methods",
+					text: "Text Messages",
+					descriptionText: "Below is the list of information required to send Text Messages:",
+					media: "Multimedia Messages",
+					descriptionMedia: "Below is the list of information required to send Multimedia Messages:",
+					file: "file"
+				},
+				instructions: {
+					title: "Instructions",
+					subtitle: "Important Observations",
+					instruction1: "Before sending messages, it is necessary to register the token linked to the connection that will send the messages.",
+					instruction1_1:"To register, go to the 'Connections' menu, click on the connection's edit button, and insert the token in the corresponding field.",
+					instruction2: "The sending number must not include special characters and must consist of:",
+					instruction2_1: "Country code",
+					instruction2_2: "Number"
+				},
+				textMessage: {
+					number: "Number",
+					body: "Message",
+					token: "Registered token",
+				},
+				mediaMessage: {
+					number: "Number",
+					body: "File name",
+					media: "File",
+					token: "Registered token",
+				},
+				test: "Sending Test"
+			},
+			invoices: {
+				title: "Invoices",
+				table: {
+					id: "Id",
+					details: "Details",
+					amount: "Amount",
+					dueDate: "Due Date",
+					status: "Status",
+					action: "Action"
+				},
+				modal:{
+					title: "Almost there!",
+					return: "RETURN",
+					summary: "Subscription Summary",
+					details: "Plan details",
+					users: "Users",
+					billing: "Billing: Monthly",
+					total: "Total"
+				}
+				
+			},					
+			campaigns: {
+    			title: "Campaigns",
+				searchPlaceholder: "Search",
+				buttons: {
+				add: "New Campaign",
+				contactLists: "Contact Lists"
+				},
+				table: {
+					name: "Name",
+					whatsapp: "Connection",
+					contactList: "Contact List",
+					status: "Status",
+					scheduledAt: "Appointments",
+					completedAt: "Completed",
+					confirmation: "Confirmation",
+					actions: "Action"
+				},
+				dialog: {
+					new: "New Campaign",
+					update: "Edit Campaign",
+					readonly: "Read-Only",
+					form: {
+						name: "Name",
+						message1: "Message 1",
+						message2: "Message 2",
+						message3: "Message 3",
+						message4: "Message 4",
+						message5: "Message 5",
+						confirmationMessage1: "Confirmation Message 1",
+						confirmationMessage2: "Confirmation Message 2",
+						confirmationMessage3: "Confirmation Message 3",
+						confirmationMessage4: "Confirmation Message 4",
+						confirmationMessage5: "Confirmation Message 5",
+						messagePlaceholder: "Message Content",
+						whatsapp: "Connection",
+						status: "Status",
+						scheduledAt: "Appointment",
+						confirmation: "Confirmation",
+						contactList: "Contact List",
+						tagList: "Tag List",
+						fileList: "File List",
+						selected: "None"
+					},
+					buttons: {
+						add: "Add",
+						edit: "Update",
+						okadd: "Ok",
+						cancel: "Cancel Dispatch",
+						restart: "Restart Dispatch",
+						close: "Close",
+						attach: "Attach File"
+					}
+				},
+				confirmationModal: {
+					deleteTitle: "Delete",
+					deleteMessage: "This action cannot be undone."
+				},
+				toasts: {
+					success: "Operation completed successfully",
+					cancel: "Campaign canceled",
+					restart: "Campaign restarted",
+					deleted: "Record deleted"
+				},
+				report:{
+					title: "Repoft of ",
+					validContacts: "Valid Contacts",
+					requestedConfirmations: "Requested Confirmations",
+					confirmations: "Confirmations",
+					delivered: "Delivered",
+					connection: "Connection",
+					contactList: "Contact List",
+					appointment: "Appointment",
+					completion: "Completion",
+				},
+				settings:{
+					title: "Campaign Settings",
+					subtitle: "Intervals",
+					randomDispatchInterval: "Random Dispatch Interval",
+					largerIntervalAfter: "Larger Interval After",
+					largerDispatchInterval: "Larger Dispatch Interval",
+					addVarible: "Add Variable",
+					save: "Save",
+					shortcut: "Shortcut",
+					content: "Content",
+					add:"Add",
+					close:"Close",
+					success: "Settings saved",
+					noInterval: "No Interval",
+					second: "second",
+					seconds: "seconds"
+				}
 			},
 			messagesList: {
 				header: {

@@ -361,7 +361,7 @@ const whatsappData = {
                       fullWidth
                       type="number"
                       as={TextField}
-                      label='Transferir após x (minutos)'
+                      label={i18n.t("whatsappModal.form.transfer")}
                       name="timeToTransfer"
                       error={touched.timeToTransfer && Boolean(errors.timeToTransfer)}
                       helperText={touched.timeToTransfer && errors.timeToTransfer}
@@ -380,7 +380,7 @@ const whatsappData = {
                         setSelectedQueueId(selectedId)
                       }}
                       multiple={false}
-                      title={'Fila de Transferência'}
+                      title={i18n.t("whatsappModal.form.transferQueue")}
                     />
                   </Grid>
 

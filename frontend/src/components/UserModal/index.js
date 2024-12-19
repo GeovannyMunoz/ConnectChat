@@ -231,16 +231,15 @@ const UserModal = ({ open, onClose, userId }) => {
 									yes={() => (
 										<FormControl variant="outlined" margin="dense" className={classes.maxWidth} fullWidth>
 											<InputLabel>
-												{i18n.t("userModal.form.whatsapp")}
+												{i18n.t("userModal.form.whatsApp")}
 											</InputLabel>
 											<Field
 												as={Select}
 												value={whatsappId}
 												onChange={(e) => setWhatsappId(e.target.value)}
-												label={i18n.t("userModal.form.whatsapp")}
+												label={i18n.t("userModal.form.whatsApp")}
 
 											>
-												<MenuItem value={''}>&nbsp;</MenuItem>
 												{whatsApps.map((whatsapp) => (
 													<MenuItem key={whatsapp.id} value={whatsapp.id}>{whatsapp.name}</MenuItem>
 												))}

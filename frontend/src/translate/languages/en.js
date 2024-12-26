@@ -823,7 +823,36 @@ const messages = {
 					total: "Total"
 				}
 				
-			},					
+			},
+			contactLists: {
+				title: "Contact Lists",
+				table: {
+				  name: "Name",
+				  contacts: "Contacts",
+				  valid: "Valid",
+				  invalid: "Invalid",
+				  actions: "Action",
+				},
+				buttons: {
+				  add: "New List",
+				},
+				dialog: {
+				  name: "Name",
+				  company: "Company",
+				  okEdit: "Edit",
+				  okAdd: "Add",
+				  add: "Add",
+				  edit: "Edit",
+				  cancel: "Cancel",
+				},
+				confirmationModal: {
+				  deleteTitle: "Delete",
+				  deleteMessage: "This action cannot be undone.",
+				},
+				toasts: {
+				  deleted: "Record deleted",
+				},
+			},								
 			campaigns: {
     			title: "Campaigns",
 				searchPlaceholder: "Search",

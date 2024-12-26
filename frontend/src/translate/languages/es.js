@@ -690,6 +690,8 @@ const messages = {
 				table: {
 				  name: "Nombre",
 				  contacts: "Contactos",
+				  valid: "Validos",
+				  invalid: "Inválidos",
 				  actions: "Acción",
 				},
 				buttons: {
@@ -711,7 +713,7 @@ const messages = {
 				toasts: {
 				  deleted: "Registro eliminado",
 				},
-			  },
+			},
 			contactListItems: {
 				title: "Contactos",
 				searchPlaceholder: "Busqueda",

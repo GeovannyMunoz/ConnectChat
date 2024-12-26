@@ -697,6 +697,8 @@ const messages = {
         table: {
           name: "Nome",
           contacts: "Contatos",
+          valid: "válido",
+				  invalid: "Inválidos",
           actions: "Ações",
         },
         buttons: {

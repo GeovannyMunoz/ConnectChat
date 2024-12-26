@@ -1,4 +1,4 @@
-import { Op, fn, col, where } from "sequelize";
+import { Op, fn, col, where, literal } from "sequelize";
 import ContactList from "../../models/ContactList";
 import ContactListItem from "../../models/ContactListItem";
 import { isEmpty } from "lodash";
@@ -59,7 +59,21 @@ const ListService = async ({
     attributes: [
       "id",
       "name",
-      [fn("count", col("contacts.id")), "contactsCount"]
+      [fn("count", col("contacts.id")), "contactsCount"],
+      [
+        fn(
+          "SUM",
+          literal(`CASE WHEN "contacts"."isWhatsappValid" = true THEN 1 ELSE 0 END`)
+        ),
+        "whatsappValidCountTrue",
+      ],
+      [
+        fn(
+          "SUM",
+          literal(`CASE WHEN "contacts"."isWhatsappValid" = false THEN 1 ELSE 0 END`)
+        ),
+        "whatsappValidCountFalse",
+      ]
     ],
     group: ["ContactList.id"]
   });

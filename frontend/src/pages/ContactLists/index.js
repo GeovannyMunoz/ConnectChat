@@ -267,6 +267,12 @@ const ContactLists = () => {
                 {i18n.t("contactLists.table.contacts")}
               </TableCell>
               <TableCell align="center">
+                {i18n.t("contactLists.table.valid")}
+              </TableCell>
+              <TableCell align="center">
+                {i18n.t("contactLists.table.invalid")}
+              </TableCell>
+              <TableCell align="center">
                 {i18n.t("contactLists.table.actions")}
               </TableCell>
             </TableRow>
@@ -278,6 +284,12 @@ const ContactLists = () => {
                   <TableCell align="center">{contactList.name}</TableCell>
                   <TableCell align="center">
                     {contactList.contactsCount || 0}
+                  </TableCell>
+                  <TableCell align="center">
+                    {contactList.whatsappValidCountTrue || 0}
+                  </TableCell>
+                  <TableCell align="center">
+                    {contactList.whatsappValidCountFalse || 0}
                   </TableCell>
                   <TableCell align="center">
                     <a href={planilhaExemplo} download="planilha.xlsx">

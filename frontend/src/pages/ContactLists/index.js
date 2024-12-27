@@ -194,10 +194,10 @@ const ContactLists = () => {
     history.push(`/contact-lists/${id}/contacts`);
   };
 
-const DownloadExcel = async (type) => {
+const DownloadExcel = async (type, contactListId) => {
   setLoading(true);
   try {
-    const response = await api.get(`/contact-lists/export/${type}`, {
+    const response = await api.get(`/contact-lists/export/${type}/${contactListId}`, {
       responseType: 'blob', 
     });
  
@@ -315,7 +315,7 @@ const DownloadExcel = async (type) => {
                     {contactList.whatsappValidCountTrue || 0}
                     <IconButton
                       size="small"
-                      onClick={() => DownloadExcel("valid")}
+                      onClick={() => DownloadExcel("valid", contactList.id)}
                     >
                        <DownloadIcon />
                     </IconButton>
@@ -324,7 +324,7 @@ const DownloadExcel = async (type) => {
                     {contactList.whatsappValidCountFalse || 0}
                     <IconButton
                       size="small"
-                      onClick={() => DownloadExcel("invalid")}
+                      onClick={() => DownloadExcel("invalid",contactList.id)}
                     >
                      <DownloadIcon />
                     </IconButton>

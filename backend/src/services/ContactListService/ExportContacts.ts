@@ -4,16 +4,20 @@ import * as XLSX from "xlsx";
 
 export interface IExportContacts {
   type: string;
+  contactListId: string;
 }
 
-export async function ExportContacts({ type }: IExportContacts)
+export async function ExportContacts({ type, contactListId  }: IExportContacts)
 {
     try {
 
         const isWhatsappValid = type === "valid" ? true : false;
 
         const contacts = await ContactListItem.findAll({
-            where: { isWhatsappValid },
+            where: { 
+                isWhatsappValid,
+                contactListId 
+            },
             attributes: ["name", "number", "email", "variables", "isWhatsappValid"]
         });
 

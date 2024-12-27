@@ -165,8 +165,8 @@ export const exportExcel = async (
   res: Response
 ): Promise<Response | void> => {
   try {
-      const { type } = req.params;
-      const { excelBuffer, filename } = await ExportContacts({ type });
+      const { type, contactListId  } = req.params;
+      const { excelBuffer, filename } = await ExportContacts({ type, contactListId });
 
       res.setHeader(
           "Content-Type",

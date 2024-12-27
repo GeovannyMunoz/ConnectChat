@@ -194,6 +194,32 @@ const ContactLists = () => {
     history.push(`/contact-lists/${id}/contacts`);
   };
 
+const DownloadExcel = async (type) => {
+  setLoading(true);
+  try {
+    const response = await api.get(`/contact-lists/export/${type}`, {
+      responseType: 'blob', 
+    });
+ 
+    const filename = type === 'valid' 
+    ? 'contactos_validos.xlsx' 
+    : 'contactos_no_validos.xlsx';
+
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', filename); 
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }  catch (err) {
+    toastError(err);
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+}
+
   return (
     <MainContainer>
       <ConfirmationModal
@@ -287,9 +313,21 @@ const ContactLists = () => {
                   </TableCell>
                   <TableCell align="center">
                     {contactList.whatsappValidCountTrue || 0}
+                    <IconButton
+                      size="small"
+                      onClick={() => DownloadExcel("valid")}
+                    >
+                       <DownloadIcon />
+                    </IconButton>
                   </TableCell>
                   <TableCell align="center">
                     {contactList.whatsappValidCountFalse || 0}
+                    <IconButton
+                      size="small"
+                      onClick={() => DownloadExcel("invalid")}
+                    >
+                     <DownloadIcon />
+                    </IconButton>
                   </TableCell>
                   <TableCell align="center">
                     <a href={planilhaExemplo} download="planilha.xlsx">
@@ -324,7 +362,7 @@ const ContactLists = () => {
                   </TableCell>
                 </TableRow>
               ))}
-              {loading && <TableRowSkeleton columns={3} />}
+              {loading && <TableRowSkeleton columns={5} />}
             </>
           </TableBody>
         </Table>

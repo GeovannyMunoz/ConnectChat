@@ -28,4 +28,6 @@ routes.put("/contact-lists/:id", isAuth, ContactListController.update);
 
 routes.delete("/contact-lists/:id", isAuth, ContactListController.remove);
 
+routes.get("/contact-lists/export/:type", isAuth, ContactListController.exportExcel);
+
 export default routes;

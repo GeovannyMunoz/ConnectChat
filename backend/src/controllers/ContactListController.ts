@@ -14,6 +14,8 @@ import ContactList from "../models/ContactList";
 
 import AppError from "../errors/AppError";
 import { ImportContacts } from "../services/ContactListService/ImportContacts";
+import { ExportContacts } from "../services/ContactListService/ExportContacts";
+
 
 type IndexQuery = {
   searchParam: string;
@@ -156,4 +158,26 @@ export const upload = async (req: Request, res: Response) => {
   });
 
   return res.status(200).json(response);
+};
+
+export const exportExcel = async (
+  req: Request,
+  res: Response
+): Promise<Response | void> => {
+  try {
+      const { type } = req.params;
+      const { excelBuffer, filename } = await ExportContacts({ type });
+
+      res.setHeader(
+          "Content-Type",
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      );
+      res.setHeader("Content-Disposition", `attachment; filename=${filename}`);
+
+
+      return res.status(200).send(excelBuffer);
+  } catch (error) {
+      console.error("Error al generar el archivo Excel:", error);
+      return res.status(500).json({ error: "Error al generar el archivo Excel" });
+  }
 };

@@ -38,4 +38,6 @@ routes.delete(
   CampaignController.deleteMedia
 );
 
+routes.get("/campaigns/:id/excel-report", isAuth, CampaignController.report);
+
 export default routes;

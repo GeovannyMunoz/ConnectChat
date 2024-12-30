@@ -15,6 +15,7 @@ import CardCounter from "../../components/Dashboard/CardCounter";
 import GroupIcon from "@material-ui/icons/Group";
 import ScheduleIcon from "@material-ui/icons/Schedule";
 import EventAvailableIcon from "@material-ui/icons/EventAvailable";
+import GetApp from '@material-ui/icons/GetApp';
 import DoneIcon from "@material-ui/icons/Done";
 import DoneAllIcon from "@material-ui/icons/DoneAll";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
@@ -24,6 +25,7 @@ import { useDate } from "../../hooks/useDate";
 
 import { socketConnection } from "../../services/socket";
 import { i18n } from "../../translate/i18n";
+import toastError from "../../errors/toastError";
 
 const useStyles = makeStyles((theme) => ({
   mainPaper: {
@@ -125,6 +127,29 @@ const CampaignReport = () => {
     setCampaign(data);
     setLoading(false);
   };
+  const DownloadReport = async (campaignId) => {
+    setLoading(true);
+    try {
+      const response = await api.get(`/campaigns/${campaignId}/excel-report`, {
+        responseType: 'blob', 
+      });
+   
+      const filename = "report_campaign.xlsx"
+  
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', filename); 
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }  catch (err) {
+      toastError(err);
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const formatStatus = (val) => {
     switch (val) {
@@ -233,6 +258,14 @@ const CampaignReport = () => {
               icon={<EventAvailableIcon fontSize="inherit" />}
               title={i18n.t("campaigns.report.completion")}
               value={datetimeToClient(campaign.completedAt)}
+              loading={loading}
+            />
+          </Grid>
+          <Grid xs={12} md={4} item onClick={() => DownloadReport(campaignId)}>
+            <CardCounter
+              icon={<GetApp fontSize="inherit" />}
+              title={i18n.t("campaigns.report.download")}
+              value=""
               loading={loading}
             />
           </Grid>

@@ -823,6 +823,7 @@ const messages = {
 					contactList: "Lista de Contactos",
 					appointment: "Agendamiento",
 					completion: "Conclusión",
+					download: "Descargar Reporte"
 				},
 				settings:{
 					title: "Configuraciones de Campaña",

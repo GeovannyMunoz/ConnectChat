@@ -830,6 +830,7 @@ const messages = {
 					contactList: "Lista de Contatos",
 					appointment: "Agendamento",
 					completion: "Conclusão",
+          download: "Baixar Relatório"
 				},
         settings:{
 					title: "Configuraciones de Campañaas",

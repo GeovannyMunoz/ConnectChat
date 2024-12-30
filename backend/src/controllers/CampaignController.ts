@@ -22,6 +22,7 @@ import Ticket from "../models/Ticket";
 import Contact from "../models/Contact";
 import ContactList from "../models/ContactList";
 import ContactListItem from "../models/ContactListItem";
+import { ReportService } from "../services/CampaignService/ReportService";
 
 type IndexQuery = {
   searchParam: string;
@@ -283,5 +284,28 @@ export const deleteMedia = async (
     return res.send({ mensagem: "Arquivo excluído" });
   } catch (err: any) {
     throw new AppError(err.message);
+  }
+};
+
+export const report = async (
+  req: Request,
+  res: Response
+): Promise<Response | void> => {
+  try {
+      const { id } = req.params;
+
+      const { excelBuffer, filename } = await ReportService({ id });
+
+      res.setHeader(
+          "Content-Type",
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      );
+      res.setHeader("Content-Disposition", `attachment; filename=${filename}`);
+
+
+      return res.status(200).send(excelBuffer);
+  } catch (error) {
+      console.error("Error al generar el archivo Excel:", error);
+      return res.status(500).json({ error: "Error al generar el archivo Excel" });
   }
 };

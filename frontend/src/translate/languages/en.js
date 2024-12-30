@@ -926,6 +926,7 @@ const messages = {
 					contactList: "Contact List",
 					appointment: "Appointment",
 					completion: "Completion",
+					download: "Download Report"
 				},
 				settings:{
 					title: "Campaign Settings",

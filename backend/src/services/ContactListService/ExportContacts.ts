@@ -1,4 +1,4 @@
-import ContactListItem from "../../models/ContactListItem"; // Asegúrate de que la ruta sea correcta
+import ContactListItem from "../../models/ContactListItem";
 import * as XLSX from "xlsx";
 
 

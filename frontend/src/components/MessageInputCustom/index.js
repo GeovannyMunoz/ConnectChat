@@ -455,6 +455,12 @@ const CustomInput = (props) => {
               multiline
               className={classes.messageInput}
               maxRows={5}
+              onKeyDown={(e) => {
+                if (popupOpen) return; // Deja que el menú maneje las flechas
+                if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+                  e.stopPropagation();
+                }
+              }}
             />
           );
         }}

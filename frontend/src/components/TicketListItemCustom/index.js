@@ -497,7 +497,7 @@ const useStyles = makeStyles((theme) => ({
 
         </ListItemSecondaryAction>
         <ListItemSecondaryAction>
-          {profile === "admin" && (
+          {//profile === "admin" && (
             <Tooltip title="Espiar Conversa">
               <VisibilityIcon
                 onClick={() => setOpenTicketMessageDialog(true)}
@@ -510,7 +510,7 @@ const useStyles = makeStyles((theme) => ({
                 }}
               />
             </Tooltip>
-          )}
+          /*)*/}
         </ListItemSecondaryAction>
         <span className={classes.secondaryContentSecond} >
           {ticket.status === "pending" && (

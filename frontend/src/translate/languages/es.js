@@ -1170,6 +1170,7 @@ const messages = {
 				  },
 				confirmationModal: {
 					title: "¿Borrar ticket #",
+					titleFrom: "del contacto ",
 					message:"¡Atención! Todos los mensajes Todos los mensajes relacionados con el ticket se perderán.",
 				},
 				buttons: {

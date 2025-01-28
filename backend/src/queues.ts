@@ -330,7 +330,7 @@ async function handleVerifyCampaigns(job) {
       const scheduledAt = moment(campaign.scheduledAt);
       const delay = scheduledAt.diff(now, "milliseconds");
       logger.info(
-        `Campanha enviada para a fila de processamento: Campanha=${campaign.id}, Delay Inicial=${delay}`
+        `Campaña enviada para a cola de procesamiento: Campaña=${campaign.id}, Delay Inicial=${delay}`
       );
       campaignQueue.add(
         "ProcessCampaign",
@@ -342,6 +342,14 @@ async function handleVerifyCampaigns(job) {
           removeOnComplete: true
         }
       );
+
+      await sequelize.models.Campaign.update(
+        { status: 'EM_ANDAMENTO' }, 
+        {
+          where: { id: campaign.id }, 
+        }
+      );
+
     } catch (err: any) {
       Sentry.captureException(err);
     }
@@ -359,7 +367,7 @@ async function getCampaign(id) {
           {
             model: ContactListItem,
             as: "contacts",
-            attributes: ["id", "name", "number", "email", "isWhatsappValid"],
+            attributes: ["id", "name", "number", "email", "isWhatsappValid", "variables"],
             where: { isWhatsappValid: true }
           }
         ]
@@ -520,9 +528,7 @@ function getProcessedMessage(msg: string, variables: any[], contact: any) {
     finalMessage = finalMessage.replace(/{numero}/g, contact.number);
   }
 
-  if (!contact.variables || contact.variables.trim() === '') {
-    logger.warn("Sin variables dinamicas");
-  } else {
+  if (contact.variables && contact.variables.trim() !== '') {
     const dynamicColumns = JSON.parse(contact.variables);
 
     variables.forEach(variable => {
@@ -587,6 +593,10 @@ async function handleProcessCampaign(job) {
           contactId: contact.id,
           campaignId: campaign.id,
           variables: settings.variables,
+          number: contact.number,
+          name: contact.name,
+          email: contact.email,
+          variablesContact: contact.variables
         }));
 
         // const baseDelay = job.data.delay || 0;
@@ -595,23 +605,39 @@ async function handleProcessCampaign(job) {
         const messageInterval = settings.messageInterval;
 
         let baseDelay = campaign.scheduledAt;
+        const dataCampaign ={
+          originalMessage: campaign.message1, 
+          confirmation: campaign.confirmation, 
+          originalConfirmationMessages: campaign.confirmationMessage1
+        }
 
         const queuePromises = [];
         for (let i = 0; i < contactData.length; i++) {
           baseDelay = addSeconds(baseDelay, i > longerIntervalAfter ? greaterInterval : messageInterval);
 
-          const { contactId, campaignId, variables } = contactData[i];
+          const { contactId, campaignId, variables, number, name, email, variablesContact} = contactData[i];
           const delay = calculateDelay(i, baseDelay, longerIntervalAfter, greaterInterval, messageInterval);
-          const queuePromise = campaignQueue.add(
+          
+          /*const queuePromise = campaignQueue.add(
             "PrepareContact",
             { contactId, campaignId, variables, delay },
             { removeOnComplete: true }
           );
-          queuePromises.push(queuePromise);
-          logger.info(`Registro enviado pra fila de disparo: Campanha=${campaign.id};Contato=${contacts[i].name};delay=${delay}`);
+          queuePromises.push(queuePromise);*/
+          const dataContact ={
+            number: number,
+            name: name,
+            email: email,
+            variables: variablesContact 
+          }
+
+          await handlePrepareContact(contactId, campaignId, delay, variables, dataCampaign, dataContact)
+
+          logger.info(`Registro enviado para cola de disparo: Campaña=${campaign.id};Contato=${name};delay=${delay}`);
         }
-        await Promise.all(queuePromises);
-        await campaign.update({ status: "EM_ANDAMENTO" });
+        //await Promise.all(queuePromises);
+        //await campaign.update({ status: "EM_ANDAMENTO" });
+        logger.info(`Registros EM_ANDAMENTO: Campaña=${campaign.id}`);
       }
     }
   } catch (err: any) {
@@ -619,41 +645,24 @@ async function handleProcessCampaign(job) {
   }
 }
 
-async function handlePrepareContact(job) {
+async function handlePrepareContact(contactId, campaignId, delay, variables, campaign, contact) {
   try {
-    const { contactId, campaignId, delay, variables }: PrepareContactData =
-      job.data;
-    const campaign = await getCampaign(campaignId);
-    const contact = await getContact(contactId);
+    //const { contactId, campaignId, delay, variables }: PrepareContactData =job.data;
+    //const campaign = await getCampaign(campaignId);
+    //const contact = await getContact(contactId);
 
     const campaignShipping: any = {};
     campaignShipping.number = contact.number;
     campaignShipping.contactId = contactId;
     campaignShipping.campaignId = campaignId;
 
-    const messages = getCampaignValidMessages(campaign);
-    if (messages.length) {
-      const radomIndex = randomValue(0, messages.length);
-      const message = getProcessedMessage(
-        messages[radomIndex],
-        variables,
-        contact
-      );
-      campaignShipping.message = `\u200c ${message}`;
-    }
+    const message = getProcessedMessage(campaign.originalMessage, variables, contact);
+    campaignShipping.message = `\u200c ${message}`;
+    
 
     if (campaign.confirmation) {
-      const confirmationMessages =
-        getCampaignValidConfirmationMessages(campaign);
-      if (confirmationMessages.length) {
-        const radomIndex = randomValue(0, confirmationMessages.length);
-        const message = getProcessedMessage(
-          confirmationMessages[radomIndex],
-          variables,
-          contact
-        );
-        campaignShipping.confirmationMessage = `\u200c ${message}`;
-      }
+      const message = getProcessedMessage(campaign.originalConfirmationMessages, variables,contact);
+      campaignShipping.confirmationMessage = `\u200c ${message}`;
     }
 
     const [record, created] = await CampaignShipping.findOrCreate({
@@ -680,7 +689,7 @@ async function handlePrepareContact(job) {
       const nextJob = await campaignQueue.add(
         "DispatchCampaign",
         {
-          campaignId: campaign.id,
+          campaignId: campaignId,
           campaignShippingId: record.id,
           contactListItemId: contactId
         },
@@ -692,7 +701,7 @@ async function handlePrepareContact(job) {
       await record.update({ jobId: nextJob.id });
     }
 
-    await verifyAndFinalizeCampaign(campaign);
+    //await verifyAndFinalizeCampaign(campaign);
   } catch (err: any) {
     Sentry.captureException(err);
     logger.error(`campaignQueue -> PrepareContact -> error: ${err.message}`);
@@ -722,7 +731,7 @@ async function handleDispatchCampaign(job) {
     }
 
     logger.info(
-      `Disparo de campanha solicitado: Campanha=${campaignId};Registro=${campaignShippingId}`
+      `Disparo de campaña solicitado: Campaña=${campaignId};Registro=${campaignShippingId}`
     );
 
     const campaignShipping = await CampaignShipping.findByPk(
@@ -787,7 +796,7 @@ async function handleDispatchCampaign(job) {
     });
 
     logger.info(
-      `Campanha enviada para: Campanha=${campaignId};Contato=${campaignShipping.contact.name}`
+      `Campaña enviada para: Campaña=${campaignId};Contato=${campaignShipping.contact.name}`
     );
   } catch (err: any) {
     Sentry.captureException(err);
@@ -893,7 +902,7 @@ handleCloseTicketsAutomatic()
 handleInvoiceCreate()
 
 export async function startQueueProcess() {
-  logger.info("Iniciando processamento de filas");
+  logger.info("Iniciando el procesamiento de colas");
 
   messageQueue.process("SendMessage", handleSendMessage);
 
@@ -905,7 +914,7 @@ export async function startQueueProcess() {
 
   campaignQueue.process("ProcessCampaign", handleProcessCampaign);
 
-  campaignQueue.process("PrepareContact", handlePrepareContact);
+  //campaignQueue.process("PrepareContact", handlePrepareContact);
 
   campaignQueue.process("DispatchCampaign", handleDispatchCampaign);
 

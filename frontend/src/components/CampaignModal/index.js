@@ -575,11 +575,11 @@ const CampaignModal = ({
                         borderRadius: 2,
                       }}
                     >
-                      <Tab label="Msg. 1" index={0} />
-                      <Tab label="Msg. 2" index={1} />
+                      <Tab label="Mensaje" index={0} />
+                      {/*<Tab label="Msg. 2" index={1} />
                       <Tab label="Msg. 3" index={2} />
                       <Tab label="Msg. 4" index={3} />
-                      <Tab label="Msg. 5" index={4} />
+                      <Tab label="Msg. 5" index={4} />*/}
                     </Tabs>
                     <Box style={{ paddingTop: 20, border: "none" }}>
                       {messageTab === 0 && (
@@ -602,7 +602,7 @@ const CampaignModal = ({
                           )}
                         </>
                       )}
-                      {messageTab === 1 && (
+                      {/*{messageTab === 1 && (
                         <>
                           {values.confirmation ? (
                             <Grid spacing={2} container>
@@ -681,7 +681,7 @@ const CampaignModal = ({
                             <>{renderMessageField("message5")}</>
                           )}
                         </>
-                      )}
+                      )}*/}
                     </Box>
                   </Grid>
                   {(campaign.mediaPath || attachment) && (

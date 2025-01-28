@@ -341,8 +341,8 @@ const messages = {
 			},
 			queueModal: {
 				title: {
-					add: "Agregar sector",
-					edit: "Editar sector",
+					add: "Agregar Dpto/Sector",
+					edit: "Editar Dpto/Sector",
 				},
 				subtitle:{
 					queue: "Datos Departamento",
@@ -361,7 +361,7 @@ const messages = {
 				},
 				buttons: {
 					okAdd: "Añadir",
-					okEdit: "Ahorrar",
+					okEdit: "Guardar",
 					cancel: "Cancelar",
 				},
 				bot:{
@@ -510,7 +510,7 @@ const messages = {
 					quickMessages: "Respuestas Rapidas",
 					task:"Tareas",
 					contacts: "Contactos",
-					queues: "Dep & Chatbot",
+					queues: "Dpto & Chatbot",
 					tags: "Tags",
 					administration: "Administración",
 					users: "Usuarios",
@@ -773,12 +773,12 @@ const messages = {
 				  readonly: "Solo Visualización",
 				  form: {
 					name: "Nombre",
-					message1: "Mensaje 1",
+					message1: "Mensaje",
 					message2: "Mensaje 2",
 					message3: "Mensaje 3",
 					message4: "Mensaje 4",
 					message5: "Mensaje 5",
-					confirmationMessage1: "Mensaje de Confirmación 1",
+					confirmationMessage1: "Mensaje de Confirmación",
 					confirmationMessage2: "Mensaje de Confirmación 2",
 					confirmationMessage3: "Mensaje de Confirmación 3",
 					confirmationMessage4: "Mensaje de Confirmación 4",
@@ -1060,7 +1060,7 @@ const messages = {
 						}
 					},
 					transferMessage: {
-						name :"Enviar mensaje de transferencia de dep./agente",
+						name :"Enviar mensaje de transferencia de Dpto/Agente",
 						options: {
 							enabled: "Habilitado",
 							disabled: "Deshabilitado",

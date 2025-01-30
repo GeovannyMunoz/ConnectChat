@@ -53,7 +53,7 @@ interface PrepareContactData {
 interface DispatchCampaignData {
   campaignId: number;
   campaignShippingId: number;
-  contactListItemId: number;
+  recordsCampaign: number;
 }
 
 export const userMonitor = new BullQueue("UserMonitor", connection);
@@ -356,7 +356,7 @@ async function handleVerifyCampaigns(job) {
   }
 }
 
-async function getCampaign(id) {
+async function getCampaignContactList(id) {
   return await Campaign.findByPk(id, {
     include: [
       {
@@ -377,11 +377,33 @@ async function getCampaign(id) {
         as: "whatsapp",
         attributes: ["id", "name"]
       },
-      {
+      /*{
         model: CampaignShipping,
         as: "shipping",
         include: [{ model: ContactListItem, as: "contact" }]
-      }
+      }*/
+    ]
+  });
+}
+async function getCampaign(id) {
+  return await Campaign.findByPk(id, {
+    attributes: ["id", "name", "confirmation", "fileListId", "companyId", "mediaPath", "mediaName", "scheduledAt", "completedAt", "contactListId", "whatsappId"],
+    include: [
+      {
+        model: ContactList,
+        as: "contactList",
+        attributes: ["id", "name"],
+      },
+      {
+        model: Whatsapp,
+        as: "whatsapp",
+        attributes: ["id", "name"]
+      },
+      /*{
+        model: CampaignShipping,
+        as: "shipping",
+        include: [{ model: ContactListItem, as: "contact" }]
+      }*/
     ]
   });
 }
@@ -548,10 +570,10 @@ export function randomValue(min, max) {
   return Math.floor(Math.random() * max) + min;
 }
 
-async function verifyAndFinalizeCampaign(campaign) {
-  const { contacts } = campaign.contactList;
+async function verifyAndFinalizeCampaign(campaign, recordsCampaign) {
+  //const { contacts } = campaign.contactList;
 
-  const count1 = contacts.length;
+  const count1 = recordsCampaign;
   const count2 = await CampaignShipping.count({
     where: {
       campaignId: campaign.id,
@@ -563,13 +585,15 @@ async function verifyAndFinalizeCampaign(campaign) {
 
   if (count1 === count2) {
     await campaign.update({ status: "FINALIZADA", completedAt: moment() });
+
+    const io = getIO();
+    io.emit(`company-${campaign.companyId}-campaign`, {
+      action: "update",
+      record: campaign
+    });
   }
 
-  const io = getIO();
-  io.emit(`company-${campaign.companyId}-campaign`, {
-    action: "update",
-    record: campaign
-  });
+  
 }
 
 function calculateDelay(index, baseDelay, longerIntervalAfter, greaterInterval, messageInterval) {
@@ -584,7 +608,7 @@ function calculateDelay(index, baseDelay, longerIntervalAfter, greaterInterval, 
 async function handleProcessCampaign(job) {
   try {
     const { id }: ProcessCampaignData = job.data;
-    const campaign = await getCampaign(id);
+    const campaign = await getCampaignContactList(id);
     const settings = await getSettings(campaign);
     if (campaign) {
       const { contacts } = campaign.contactList;
@@ -611,7 +635,7 @@ async function handleProcessCampaign(job) {
           originalConfirmationMessages: campaign.confirmationMessage1
         }
 
-        const queuePromises = [];
+        const count = contactData.length;
         for (let i = 0; i < contactData.length; i++) {
           baseDelay = addSeconds(baseDelay, i > longerIntervalAfter ? greaterInterval : messageInterval);
 
@@ -631,13 +655,19 @@ async function handleProcessCampaign(job) {
             variables: variablesContact 
           }
 
-          await handlePrepareContact(contactId, campaignId, delay, variables, dataCampaign, dataContact)
+          await handlePrepareContact(contactId, campaignId, delay, variables, dataCampaign, dataContact, count)
 
           logger.info(`Registro enviado para cola de disparo: Campaña=${campaign.id};Contato=${name};delay=${delay}`);
         }
         //await Promise.all(queuePromises);
         //await campaign.update({ status: "EM_ANDAMENTO" });
+        const io = getIO();
+        io.emit(`company-${campaign.companyId}-campaign`, {
+          action: "update",
+          record: campaign
+        });
         logger.info(`Registros EM_ANDAMENTO: Campaña=${campaign.id}`);
+       
       }
     }
   } catch (err: any) {
@@ -645,7 +675,7 @@ async function handleProcessCampaign(job) {
   }
 }
 
-async function handlePrepareContact(contactId, campaignId, delay, variables, campaign, contact) {
+async function handlePrepareContact(contactId, campaignId, delay, variables, campaign, contact, count) {
   try {
     //const { contactId, campaignId, delay, variables }: PrepareContactData =job.data;
     //const campaign = await getCampaign(campaignId);
@@ -691,7 +721,7 @@ async function handlePrepareContact(contactId, campaignId, delay, variables, cam
         {
           campaignId: campaignId,
           campaignShippingId: record.id,
-          contactListItemId: contactId
+          recordsCampaign: count
         },
         {
           delay
@@ -711,7 +741,7 @@ async function handlePrepareContact(contactId, campaignId, delay, variables, cam
 async function handleDispatchCampaign(job) {
   try {
     const { data } = job;
-    const { campaignShippingId, campaignId }: DispatchCampaignData = data;
+    const { campaignShippingId, campaignId, recordsCampaign }: DispatchCampaignData = data;
     const campaign = await getCampaign(campaignId);
     const wbot = await GetWhatsappWbot(campaign.whatsapp);
 
@@ -787,13 +817,13 @@ async function handleDispatchCampaign(job) {
     }
     await campaignShipping.update({ deliveredAt: moment() });
 
-    await verifyAndFinalizeCampaign(campaign);
+    await verifyAndFinalizeCampaign(campaign, recordsCampaign);
 
-    const io = getIO();
+    /*const io = getIO();
     io.emit(`company-${campaign.companyId}-campaign`, {
       action: "update",
       record: campaign
-    });
+    });*/
 
     logger.info(
       `Campaña enviada para: Campaña=${campaignId};Contato=${campaignShipping.contact.name}`

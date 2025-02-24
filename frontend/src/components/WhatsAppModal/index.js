@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
 import { toast } from "react-toastify";
+import crypto from 'crypto';
 
 import { makeStyles } from "@material-ui/core/styles";
 import { green } from "@material-ui/core/colors";
+import { Replay, FileCopy } from "@material-ui/icons";
 
 import {
   Dialog,
@@ -21,6 +23,8 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Tooltip,
+  IconButton
 } from "@material-ui/core";
 
 import api from "../../services/api";
@@ -86,6 +90,45 @@ const WhatsAppModal = ({ open, onClose, whatsAppId }) => {
   const [selectedQueueId, setSelectedQueueId] = useState(null)
   const [selectedPrompt, setSelectedPrompt] = useState(null);
   const [prompts, setPrompts] = useState([]);
+
+  const generateToken = (length = 32) => {
+    return crypto.randomBytes(length).toString('base64');
+  };
+
+  const handleGenerateToken = () => {
+    const newToken = generateToken();
+    setWhatsApp((prev) => ({
+      ...prev,
+      token: newToken, 
+    }));
+  };
+  
+  const handleCopyToken = () => {
+    if (whatsApp.token) {
+      if (navigator && navigator.clipboard) {
+        // Usamos la API moderna de Clipboard si está disponible
+        navigator.clipboard.writeText(whatsApp.token)
+          .then(() => {
+            toast.success('Token copiado al portapapeles');
+          })
+          .catch((err) => {
+            toastError('Error al copiar el token: ', err);
+          });
+      } else {
+        // Si la API de Clipboard no está disponible, usamos la solución alternativa
+        const textArea = document.createElement('textarea');
+        textArea.value = whatsApp.token;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+  
+        toast.success('Token copiado al portapapeles');
+      }
+    } else {
+      toastError('El token está vacío');
+    }
+  };
   
     useEffect(() => {
     const fetchSession = async () => {
@@ -93,6 +136,7 @@ const WhatsAppModal = ({ open, onClose, whatsAppId }) => {
 
       try {
         const { data } = await api.get(`whatsapp/${whatsAppId}?session=0`);
+        
         setWhatsApp(data);
 
         const whatsQueueIds = data.queues?.map((queue) => queue.id);
@@ -103,6 +147,15 @@ const WhatsAppModal = ({ open, onClose, whatsAppId }) => {
       }
     };
     fetchSession();
+  }, [whatsAppId]);
+
+  useEffect(() => {
+    if (!whatsAppId) {
+      setWhatsApp(prev => ({
+        ...prev,
+        token: generateToken()
+      }));
+    }
   }, [whatsAppId]);
 
   useEffect(() => {
@@ -164,6 +217,7 @@ const whatsappData = {
 	  setSelectedQueueId(null);
     setSelectedQueueIds([]);
   };
+
 
   return (
     <div className={classes.root}>
@@ -299,7 +353,7 @@ const whatsappData = {
                     margin="dense"
                   />
                 </div>
-                <div>
+                <div style={{ display: "flex", alignItems: "center" }}>
                   <Field
                     as={TextField}
                     label={i18n.t("queueModal.form.token")}
@@ -308,7 +362,20 @@ const whatsappData = {
                     name="token"
                     variant="outlined"
                     margin="dense"
+                    InputProps={{
+                      readOnly: true,
+                    }}
                   />
+                   <Tooltip title="Generar nuevo token">
+                    <IconButton onClick={handleGenerateToken} color="primary">
+                      <Replay />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Copiar token">
+                    <IconButton onClick={handleCopyToken} color="secondary">
+                      <FileCopy />
+                    </IconButton>
+                  </Tooltip>
                 </div>
                 <QueueSelect
                   selectedQueueIds={selectedQueueIds}

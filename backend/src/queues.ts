@@ -948,7 +948,7 @@ export async function startQueueProcess() {
 
   campaignQueue.process("DispatchCampaign", handleDispatchCampaign);
 
-  userMonitor.process("VerifyLoginStatus", handleLoginStatus);
+  //userMonitor.process("VerifyLoginStatus", handleLoginStatus);
 
   //queueMonitor.process("VerifyQueueStatus", handleVerifyQueue);
 
@@ -972,21 +972,21 @@ export async function startQueueProcess() {
     }
   );
 
-  userMonitor.add(
+  /*userMonitor.add(
     "VerifyLoginStatus",
     {},
     {
       repeat: { cron: "* * * * *", key: "verify-login" },
       removeOnComplete: true
     }
-  );
+  );*/
 
-  queueMonitor.add(
-    "VerifyQueueStatus",
-    {},
-    {
-      repeat: { cron: "*/20 * * * * *" },
-      removeOnComplete: true
-    }
-  );
+  //queueMonitor.add(
+  //  "VerifyQueueStatus",
+  //  {},
+  //  {
+  //    repeat: { cron: "*/20 * * * * *" },
+  //    removeOnComplete: true
+  //  }
+  //);
 }

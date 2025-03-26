@@ -22,7 +22,7 @@ const server = app.listen(process.env.PORT, async () => {
   logger.info(`Server started on port: ${process.env.PORT}`);
 });
 
-cron.schedule("* * * * *", async () => {
+/*cron.schedule("* * * * *", async () => {
 
   try {
     // console.log("Running a job at 01:00 at America/Sao_Paulo timezone")
@@ -34,7 +34,7 @@ cron.schedule("* * * * *", async () => {
     logger.error(error);
   }
 
-});
+});*/
 
 initIO(server);
 gracefulShutdown(server);

@@ -368,7 +368,7 @@ ${JSON.stringify(msg)}`);
   } catch (error) {
     Sentry.setExtra("Error getTypeMessage", { msg, BodyMsg: msg.message });
     Sentry.captureException(error);
-    console.log(error);
+    console.log("wbotMessageListener:",error);
   }
 };
 
@@ -464,7 +464,7 @@ const downloadMedia = async (msg: proto.IWebMessageInfo) => {
     msg.message?.extendedTextMessage?.contextInfo?.quotedMessage?.videoMessage;
 
   if (!mineType)
-    console.log(msg)
+    console.log("wbotMessageListener:",msg)
 
   if (!filename) {
     const ext = mineType.mimetype.split("/")[1].split(";")[0];
@@ -728,7 +728,7 @@ const handleOpenAi = async (
           deleteFileSync(`${publicFolder}/${fileNameWithOutExtension}.mp3`);
           deleteFileSync(`${publicFolder}/${fileNameWithOutExtension}.wav`);
         } catch (error) {
-          console.log(`Erro para responder com audio: ${error}`);
+          console.log("wbotMessageListener:",`Erro para responder com audio: ${error}`);
         }
       });
     }
@@ -793,7 +793,7 @@ const handleOpenAi = async (
           deleteFileSync(`${publicFolder}/${fileNameWithOutExtension}.mp3`);
           deleteFileSync(`${publicFolder}/${fileNameWithOutExtension}.wav`);
         } catch (error) {
-          console.log(`Erro para responder com audio: ${error}`);
+          console.log("wbotMessageListener:",`Erro para responder com audio: ${error}`);
         }
       });
     }
@@ -1636,7 +1636,7 @@ export const handleMessageIntegration = async (
             throw new Error(error);
           }
           else {
-            console.log(response.body);
+            console.log("wbotMessageListener:",response.body);
           }
         });
       } catch (error) {
@@ -1645,7 +1645,7 @@ export const handleMessageIntegration = async (
     }
 
   } else if (queueIntegration.type === "typebot") {
-    console.log("entrou no typebot")
+    console.log("wbotMessageListener:"+"entrou no typebot")
     // await typebots(ticket, msg, wbot, queueIntegration);
     await typebotListener({ ticket, msg, wbot, typebot: queueIntegration });
 
@@ -1800,7 +1800,7 @@ const handleMessage = async (
       }
     } catch (e) {
       Sentry.captureException(e);
-      console.log(e);
+      console.log("wbotMessageListener:",e);
     }
 
     // Atualiza o ticket se a ultima mensagem foi enviada por mim, para que possa ser finalizado. 
@@ -1810,7 +1810,7 @@ const handleMessage = async (
       });
     } catch (e) {
       Sentry.captureException(e);
-      console.log(e);
+      console.log("wbotMessageListener:",e);
     }
 
     if (hasMedia) {
@@ -1914,7 +1914,7 @@ const handleMessage = async (
       }
     } catch (e) {
       Sentry.captureException(e);
-      console.log(e);
+      console.log("wbotMessageListener:",e);
     }
 
     try {
@@ -1926,7 +1926,7 @@ const handleMessage = async (
       }
     } catch (e) {
       Sentry.captureException(e);
-      console.log(e);
+      console.log("wbotMessageListener:",e);
     }
 
     //openai na conexao
@@ -1980,7 +1980,7 @@ const handleMessage = async (
       ticket.queue
     ) {
 
-      console.log("entrou no type 1974")
+      console.log("wbotMessageListener:"+"entrou no type 1974")
       const integrations = await ShowQueueIntegrationService(ticket.integrationId, companyId);
 
       await handleMessageIntegration(msg, wbot, integrations, ticket)
@@ -2064,7 +2064,7 @@ const handleMessage = async (
       }
     } catch (e) {
       Sentry.captureException(e);
-      console.log(e);
+      console.log("wbotMessageListener:",e);
     }
 
 
@@ -2117,7 +2117,7 @@ const handleMessage = async (
     }
 
   } catch (err) {
-    console.log(err)
+    console.log("wbotMessageListener:",err)
     Sentry.captureException(err);
     logger.error(`Error handling whatsapp message: Err: ${err}`);
   }

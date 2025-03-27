@@ -831,7 +831,7 @@ async function handleDispatchCampaign(job) {
   } catch (err: any) {
     Sentry.captureException(err);
     logger.error(err.message);
-    console.log(err.stack);
+    console.log("queues:",err.stack);
   }
 }
 

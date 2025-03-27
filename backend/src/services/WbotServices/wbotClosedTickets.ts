@@ -112,7 +112,7 @@ export const ClosedAllOpenTickets = async (companyId: number): Promise<void> => 
     });
 
   } catch (e: any) {
-    console.log('e', e)
+    console.log('wbotClosedTickets:', e)
   }
 
 }

@@ -58,7 +58,7 @@ const SendWhatsAppMessage = async ({
     return sentMessage;
   } catch (err) {
     Sentry.captureException(err);
-    console.log(err);
+    console.log("SendWhatsAppMessage",err);
     throw new AppError("ERR_SENDING_WAPP_MSG");
   }
 };

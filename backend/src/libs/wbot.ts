@@ -262,7 +262,7 @@ export const initWASocket = async (whatsapp: Whatsapp): Promise<Session> => {
       })();
     } catch (error) {
       Sentry.captureException(error);
-      console.log(error);
+      console.log("wbot:",error);
       reject(error);
     }
   });

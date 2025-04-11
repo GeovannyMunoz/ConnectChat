@@ -1,8 +1,9 @@
-import { useState, useEffect, useReducer } from "react";
+import { useState, useEffect, useReducer, useContext } from "react";
 import toastError from "../../errors/toastError";
 
 import api from "../../services/api";
-import { socketConnection } from "../../services/socket";
+//import { socketConnection } from "../../services/socket";
+import { AuthContext } from "../../context/Auth/AuthContext";
 
 const reducer = (state, action) => {
   if (action.type === "LOAD_WHATSAPPS") {
@@ -58,6 +59,7 @@ const reducer = (state, action) => {
 const useWhatsApps = () => {
   const [whatsApps, dispatch] = useReducer(reducer, []);
   const [loading, setLoading] = useState(true);
+  const { user, socket } = useContext(AuthContext);
 
   useEffect(() => {
     setLoading(true);
@@ -74,9 +76,10 @@ const useWhatsApps = () => {
     fetchSession();
   }, []);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const companyId = localStorage.getItem("companyId");
-    const socket = socketConnection({ companyId });
+    const userId = localStorage.getItem("userId");
+    const socket = socketConnection({ companyId, userId });
 
     socket.on(`company-${companyId}-whatsapp`, (data) => {
       if (data.action === "update") {
@@ -99,7 +102,38 @@ const useWhatsApps = () => {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, []);*/
+
+  useEffect(() => {
+    if (user.companyId) {
+
+      const companyId = user.companyId;
+
+      const onCompanyWhatsapp = (data) => {
+        if (data.action === "update") {
+          dispatch({ type: "UPDATE_WHATSAPPS", payload: data.whatsapp });
+        }
+        if (data.action === "delete") {
+          dispatch({ type: "DELETE_WHATSAPPS", payload: data.whatsappId });
+        }
+      }
+
+      const onCompanyWhatsappSession = (data) => {
+        if (data.action === "update") {
+          dispatch({ type: "UPDATE_SESSION", payload: data.session });
+        }
+      }
+
+      socket.on(`company-${companyId}-whatsapp`, onCompanyWhatsapp);
+      socket.on(`company-${companyId}-whatsappSession`, onCompanyWhatsappSession);
+
+      return () => {
+        socket.off(`company-${companyId}-whatsapp`, onCompanyWhatsapp);
+        socket.off(`company-${companyId}-whatsappSession`, onCompanyWhatsappSession);
+      };
+    }
+  }, [socket])
+
 
   return { whatsApps, loading };
 };

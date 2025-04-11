@@ -35,7 +35,7 @@ import toastError from "../../errors/toastError";
 import { AuthContext } from "../../context/Auth/AuthContext";
 import { Can } from "../../components/Can";
 import NewTicketModal from "../../components/NewTicketModal";
-import { socketConnection } from "../../services/socket";
+//import { socketConnection } from "../../services/socket";
 
 import {CSVLink} from "react-csv";
 
@@ -96,7 +96,7 @@ const Contacts = () => {
   const classes = useStyles();
   const history = useHistory();
 
-  const { user } = useContext(AuthContext);
+  const { user, socket } = useContext(AuthContext);
 
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
@@ -135,7 +135,7 @@ const Contacts = () => {
     return () => clearTimeout(delayDebounceFn);
   }, [searchParam, pageNumber]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const companyId = localStorage.getItem("companyId");
     const socket = socketConnection({ companyId });
 
@@ -152,7 +152,25 @@ const Contacts = () => {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, []);*/
+
+  useEffect(() => {
+    const companyId = user.companyId;
+    const onContactEvent = (data) => {
+        if (data.action === "update" || data.action === "create") {
+            dispatch({ type: "UPDATE_CONTACTS", payload: data.contact });
+        }
+
+        if (data.action === "delete") {
+            dispatch({ type: "DELETE_CONTACT", payload: +data.contactId });
+        }
+    };
+    socket.on(`company-${companyId}-contact`, onContactEvent);
+
+    return () => {
+        socket.off(`company-${companyId}-contact`, onContactEvent);
+    };
+}, [socket]);
 
   const handleSearch = (event) => {
     setSearchParam(event.target.value.toLowerCase());

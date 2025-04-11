@@ -10,7 +10,7 @@ import TicketsListSkeleton from "../TicketsListSkeleton";
 import useTickets from "../../hooks/useTickets";
 import { i18n } from "../../translate/i18n";
 import { AuthContext } from "../../context/Auth/AuthContext";
-import { socketConnection } from "../../services/socket";
+//import { socketConnection } from "../../services/socket";
 
 const useStyles = makeStyles((theme) => ({
   ticketsListWrapper: {
@@ -104,7 +104,7 @@ const reducer = (state, action) => {
 
   if (action.type === "UPDATE_TICKET") {
     const ticket = action.payload;
-
+    
     const ticketIndex = state.findIndex((t) => t.id === ticket.id);
     if (ticketIndex !== -1) {
       state[ticketIndex] = ticket;
@@ -167,8 +167,10 @@ const TicketsListCustom = (props) => {
   const classes = useStyles();
   const [pageNumber, setPageNumber] = useState(1);
   const [ticketsList, dispatch] = useReducer(reducer, []);
-  const { user } = useContext(AuthContext);
+  const { user, socket } = useContext(AuthContext);
   const { profile, queues } = user;
+  const showTicketWithoutQueue = user.allTicket === 'enable';
+  const companyId = user.companyId
 
   useEffect(() => {
     dispatch({ type: "RESET" });
@@ -199,8 +201,9 @@ const TicketsListCustom = (props) => {
   }, [tickets, status, searchParam, queues, profile]);
 
   useEffect(() => {
-    const companyId = localStorage.getItem("companyId");
-    const socket = socketConnection({ companyId });
+    //const companyId = localStorage.getItem("companyId");
+    //const userId = localStorage.getItem("userId");
+    //const socket = socketConnection({ companyId, userId });
 
     const shouldUpdateTicket = (ticket) =>
       (!ticket.userId || ticket.userId === user?.id || showAll) &&
@@ -209,15 +212,55 @@ const TicketsListCustom = (props) => {
     const notBelongsToUserQueues = (ticket) =>
       ticket.queueId && selectedQueueIds.indexOf(ticket.queueId) === -1;
 
-    socket.on("connect", () => {
+    /*socket.on("connect", () => {
       if (status) {
         socket.emit("joinTickets", status);
       } else {
         socket.emit("joinNotification");
       }
-    });
+    });*/
 
-    socket.on(`company-${companyId}-ticket`, (data) => {
+    const onCompanyTicketTicketsList = (data) => {
+      //console.log("onCompanyTicketTicketsList", data);
+      if (data.action === "updateUnread") {
+          dispatch({
+              type: "RESET_UNREAD",
+              payload: data.ticketId,
+              status: status,
+              //sortDir: sortTickets
+          });
+      }
+      if (data.action === "update" && shouldUpdateTicket(data.ticket) && data.ticket.status === status) {
+          dispatch({
+              type: "UPDATE_TICKET",
+              payload: data.ticket,
+              status: status,
+              //sortDir: sortTickets
+          });
+      }
+
+      if (data.action === "update" && notBelongsToUserQueues(data.ticket)) {
+          dispatch({
+              type: "DELETE_TICKET", 
+              payload: data.ticket?.id, 
+              status: status,
+              //sortDir: sortTickets
+          });
+      }
+
+      if (data.action === "delete") {
+          dispatch({
+              type: "DELETE_TICKET", 
+              payload: data?.ticketId, 
+              status: status,
+              //sortDir: sortTickets
+          });
+
+      }
+    };
+
+
+    /*socket.on(`company-${companyId}-ticket`, (data) => {
       
       if (data.action === "updateUnread") {
         dispatch({
@@ -240,9 +283,29 @@ const TicketsListCustom = (props) => {
       if (data.action === "delete") {
         dispatch({ type: "DELETE_TICKET", payload: data.ticketId });
       }
-    });
+    });*/
 
-    socket.on(`company-${companyId}-appMessage`, (data) => {
+    const onCompanyAppMessageTicketsList = (data) => {
+      const queueIds = queues.map((q) => q.id);
+      if (
+        profile === "user" &&
+        (queueIds.indexOf(data.ticket.queue?.id) === -1 ||
+          data.ticket.queue === null)
+      ) {
+        return;
+      }
+
+      if (data.action === "create" &&  shouldUpdateTicket(data.ticket) && data.ticket.status === status) {
+          dispatch({
+              type: "UPDATE_TICKET_UNREAD_MESSAGES",
+              payload: data.ticket,
+              status: status,
+              //sortDir: sortTickets
+          });
+      }
+    };
+
+    /*socket.on(`company-${companyId}-appMessage`, (data) => {
       const queueIds = queues.map((q) => q.id);
       if (
         profile === "user" &&
@@ -258,19 +321,53 @@ const TicketsListCustom = (props) => {
           payload: data.ticket,
         });
       }
-    });
+    });*/
 
-    socket.on(`company-${companyId}-contact`, (data) => {
+    const onCompanyContactTicketsList = (data) => {
+      if (data.action === "update") {
+          dispatch({
+              type: "UPDATE_TICKET_CONTACT",
+              payload: data.contact,
+              status: status,
+              //sortDir: sortTickets
+          });
+      }
+    };
+
+    /*socket.on(`company-${companyId}-contact`, (data) => {
       if (data.action === "update") {
         dispatch({
           type: "UPDATE_TICKET_CONTACT",
           payload: data.contact,
         });
       }
-    });
+    });*/
+ 
+    const onConnectTicketsList = () => {
+      if (status) {
+          socket.emit("joinTickets", status);
+      } else {
+          socket.emit("joinNotification");
+      }
+    }
+    if (socket) {
+      onConnectTicketsList();
+    } else {
+      socket.on("connect", onConnectTicketsList)
+    }
+    
+    socket.on(`company-${companyId}-ticket`, onCompanyTicketTicketsList);
+    socket.on(`company-${companyId}-appMessage`, onCompanyAppMessageTicketsList);
+    socket.on(`company-${companyId}-contact`, onCompanyContactTicketsList);
+
+
 
     return () => {
-      socket.disconnect();
+      //socket.disconnect();
+      socket.off("connect", onConnectTicketsList);
+      socket.off(`company-${companyId}-ticket`, onCompanyTicketTicketsList);
+      socket.off(`company-${companyId}-appMessage`, onCompanyAppMessageTicketsList);
+      socket.off(`company-${companyId}-contact`, onCompanyContactTicketsList);
     };
   }, [status, showAll, user, selectedQueueIds, tags, users, profile, queues]);
 

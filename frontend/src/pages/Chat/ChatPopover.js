@@ -20,7 +20,7 @@ import {
 } from "@material-ui/core";
 import api from "../../services/api";
 import { isArray } from "lodash";
-import { socketConnection } from "../../services/socket";
+//import { socketConnection } from "../../services/socket";
 import { useDate } from "../../hooks/useDate";
 import { AuthContext } from "../../context/Auth/AuthContext";
 
@@ -98,7 +98,7 @@ const reducer = (state, action) => {
 export default function ChatPopover() {
   const classes = useStyles();
 
-  const { user } = useContext(AuthContext);
+  const { user, socket } = useContext(AuthContext);
 
   const [loading, setLoading] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -135,9 +135,10 @@ export default function ChatPopover() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParam, pageNumber]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const companyId = localStorage.getItem("companyId");
-    const socket = socketConnection({ companyId });
+    const userId = localStorage.getItem("userId");
+    const socket = socketConnection({ companyId, userId });
     
     socket.on(`company-${companyId}-chat`, (data) => {
       if (data.action === "new-message") {
@@ -156,7 +157,34 @@ export default function ChatPopover() {
       socket.disconnect();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, []);*/
+
+  useEffect(() => {
+    if (user.companyId) {
+      const companyId = user.companyId;
+
+      const onCompanyChatPopover = (data) => {
+        if (data.action === "new-message") {
+          dispatch({ type: "CHANGE_CHAT", payload: data });
+          if (data.newMessage.senderId !== user.id) {
+
+            soundAlertRef.current();
+          }
+        }
+        if (data.action === "update") {
+          dispatch({ type: "CHANGE_CHAT", payload: data });
+        }
+      }
+
+      socket.on(`company-${companyId}-chat`, onCompanyChatPopover);
+
+      return () => {
+        socket.off(`company-${companyId}-chat`, onCompanyChatPopover);
+      };
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, socket]);
+
 
   useEffect(() => {
     let unreadsCount = 0;

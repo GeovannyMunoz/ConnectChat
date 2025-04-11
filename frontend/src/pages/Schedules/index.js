@@ -16,7 +16,7 @@ import ScheduleModal from "../../components/ScheduleModal";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import toastError from "../../errors/toastError";
 import moment from "moment";
-import { socketConnection } from "../../services/socket";
+//import { socketConnection } from "../../services/socket";
 import { AuthContext } from "../../context/Auth/AuthContext";
 import usePlans from "../../hooks/usePlans";
 import { Calendar, momentLocalizer } from "react-big-calendar";
@@ -107,7 +107,7 @@ const Schedules = () => {
   const classes = useStyles();
   const history = useHistory();
 
-  const { user } = useContext(AuthContext);
+  const { user, socket } = useContext(AuthContext);
 
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
@@ -160,7 +160,7 @@ const Schedules = () => {
     handleOpenScheduleModalFromContactId,
   ]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     handleOpenScheduleModalFromContactId();
     const socket = socketConnection({ companyId: user.companyId });
 
@@ -177,7 +177,28 @@ const Schedules = () => {
     return () => {
       socket.disconnect();
     };
-  }, [handleOpenScheduleModalFromContactId, user]);
+  }, [handleOpenScheduleModalFromContactId, user]);*/
+
+  useEffect(() => {
+    handleOpenScheduleModalFromContactId();
+
+    const onCompanySchedule = (data) => {
+      if (data.action === "update" || data.action === "create") {
+        dispatch({ type: "UPDATE_SCHEDULES", payload: data.schedule });
+      }
+
+      if (data.action === "delete") {
+        dispatch({ type: "DELETE_SCHEDULE", payload: +data.scheduleId });
+      }
+    }
+
+    socket.on(`company${user.companyId}-schedule`, onCompanySchedule)
+
+    return () => {
+      socket.off(`company${user.companyId}-schedule`, onCompanySchedule)
+    };
+  }, [handleOpenScheduleModalFromContactId, user, socket]);
+
 
   const cleanContact = () => {
     setContactId("");

@@ -19,7 +19,7 @@ import ChatList from "./ChatList";
 import ChatMessages from "./ChatMessages";
 import { UsersFilter } from "../../components/UsersFilter";
 import api from "../../services/api";
-import { socketConnection } from "../../services/socket";
+//import { socketConnection } from "../../services/socket";
 
 import { has, isObject } from "lodash";
 
@@ -150,7 +150,7 @@ export function ChatModal({
 
 function Chat(props) {
   const classes = useStyles();
-  const { user } = useContext(AuthContext);
+  const { user, socket } = useContext(AuthContext);
   const history = useHistory();
 
   const [showDialog, setShowDialog] = useState(false);
@@ -204,7 +204,7 @@ function Chat(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentChat]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const companyId = localStorage.getItem("companyId");
     const socket = socketConnection({ companyId });
 
@@ -273,7 +273,85 @@ function Chat(props) {
       socket.disconnect();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentChat]);
+  }, [currentChat]);*/
+
+  useEffect(() => {
+    const companyId = user.companyId;
+
+    const onChatUser = (data) => {
+      if (data.action === "create") {
+        setChats((prev) => [data.record, ...prev]);
+      }
+      if (data.action === "update") {
+        const changedChats = chats.map((chat) => {
+          if (chat.id === data.record.id) {
+            setCurrentChat(data.record);
+            return {
+              ...data.record,
+            };
+          }
+          return chat;
+        });
+        setChats(changedChats);
+      }
+    }
+    const onChat = (data) => {
+      if (data.action === "delete") {
+        const filteredChats = chats.filter((c) => c.id !== +data.id);
+        setChats(filteredChats);
+        setMessages([]);
+        setMessagesPage(1);
+        setMessagesPageInfo({ hasMore: false });
+        setCurrentChat({});
+        history.push("/chats");
+      }
+    }
+
+    const onCurrentChat = (data) => {
+      if (data.action === "new-message") {
+        setMessages((prev) => [...prev, data.newMessage]);
+        const changedChats = chats.map((chat) => {
+          if (chat.id === data.newMessage.chatId) {
+            return {
+              ...data.chat,
+            };
+          }
+          return chat;
+        });
+        setChats(changedChats);
+        scrollToBottomRef.current();
+      }
+
+      if (data.action === "update") {
+        const changedChats = chats.map((chat) => {
+          if (chat.id === data.chat.id) {
+            return {
+              ...data.chat,
+            };
+          }
+          return chat;
+        });
+        setChats(changedChats);
+        scrollToBottomRef.current();
+      }
+    }
+
+    socket.on(`company-${companyId}-chat-user-${user.id}`, onChatUser);
+    socket.on(`company-${companyId}-chat`, onChat);
+    if (isObject(currentChat) && has(currentChat, "id")) {
+      socket.on(`company-${companyId}-chat-${currentChat.id}`, onCurrentChat);
+    }
+
+    return () => {
+      socket.off(`company-${companyId}-chat-user-${user.id}`, onChatUser);
+      socket.off(`company-${companyId}-chat`, onChat);
+      if (isObject(currentChat) && has(currentChat, "id")) {
+        socket.off(`company-${companyId}-chat-${currentChat.id}`, onCurrentChat);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentChat, socket]);
+
 
   const selectChat = (chat) => {
     try {

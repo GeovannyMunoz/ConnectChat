@@ -35,7 +35,7 @@ import TagModal from "../../components/TagModal";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import toastError from "../../errors/toastError";
 import { Chip } from "@material-ui/core";
-import { socketConnection } from "../../services/socket";
+//import { socketConnection } from "../../services/socket";
 import { AuthContext } from "../../context/Auth/AuthContext";
 
 const reducer = (state, action) => {
@@ -94,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
 const Tags = () => {
   const classes = useStyles();
 
-  const { user } = useContext(AuthContext);
+  const { user, socket } = useContext(AuthContext);
 
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
@@ -132,7 +132,7 @@ const Tags = () => {
     return () => clearTimeout(delayDebounceFn);
   }, [searchParam, pageNumber, fetchTags]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const socket = socketConnection({ companyId: user.companyId });
 
     socket.on("user", (data) => {
@@ -148,7 +148,26 @@ const Tags = () => {
     return () => {
       socket.disconnect();
     };
-  }, [user]);
+  }, [user]);*/
+
+  useEffect(() => {
+
+    const onCompanyTags = (data) => {
+      if (data.action === "update" || data.action === "create") {
+        dispatch({ type: "UPDATE_TAGS", payload: data.tag });
+      }
+
+      if (data.action === "delete") {
+        dispatch({ type: "DELETE_TAGS", payload: +data.tagId });
+      }
+    };
+    socket.on(`company${user.companyId}-tag`, onCompanyTags);
+
+    return () => {
+      socket.off(`company${user.companyId}-tag`, onCompanyTags);
+    };
+  }, [socket, user.companyId]);
+
 
   const handleOpenTagModal = () => {
     setSelectedTag(null);

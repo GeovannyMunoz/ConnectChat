@@ -34,7 +34,7 @@ import TableRowSkeleton from "../../components/TableRowSkeleton";
 import FileModal from "../../components/FileModal";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import toastError from "../../errors/toastError";
-import { socketConnection } from "../../services/socket";
+//import { socketConnection } from "../../services/socket";
 import { AuthContext } from "../../context/Auth/AuthContext";
 
 const reducer = (state, action) => {
@@ -93,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
 const FileLists = () => {
     const classes = useStyles();
 
-    const { user } = useContext(AuthContext);
+    const { user, socket } = useContext(AuthContext);
 
     const [loading, setLoading] = useState(false);
     const [pageNumber, setPageNumber] = useState(1);
@@ -131,7 +131,7 @@ const FileLists = () => {
         return () => clearTimeout(delayDebounceFn);
     }, [searchParam, pageNumber, fetchFileLists]);
 
-    useEffect(() => {
+    /*useEffect(() => {
         const socket = socketConnection({ companyId: user.companyId });
 
         socket.on(`company-${user.companyId}-file`, (data) => {
@@ -147,7 +147,25 @@ const FileLists = () => {
         return () => {
             socket.disconnect();
         };
-    }, [user]);
+    }, [user]);*/
+
+    useEffect(() => {
+
+        const onFileEvent = (data) => {
+            if (data.action === "update" || data.action === "create") {
+                dispatch({ type: "UPDATE_FILES", payload: data.files });
+            }
+
+            if (data.action === "delete") {
+                dispatch({ type: "DELETE_FILE", payload: +data.fileId });
+            }
+        };
+
+        socket.on(`company-${user.companyId}-file`, onFileEvent);
+        return () => {
+            socket.off(`company-${user.companyId}-file`, onFileEvent);
+        };
+    }, [user, socket]);
 
     const handleOpenFileListModal = () => {
         setSelectedFileList(null);

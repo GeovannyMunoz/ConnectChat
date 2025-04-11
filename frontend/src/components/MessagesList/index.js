@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, useRef } from "react";
+import React, { useState, useEffect, useReducer, useRef, useContext } from "react";
 
 import { isSameDay, parseISO, format } from "date-fns";
 import clsx from "clsx";
@@ -31,7 +31,8 @@ import whatsBackgroundDark from "../../assets/wa-background-dark.png"; //DARK MO
 
 import api from "../../services/api";
 import toastError from "../../errors/toastError";
-import { socketConnection } from "../../services/socket";
+//import { socketConnection } from "../../services/socket";
+import { AuthContext } from "../../context/Auth/AuthContext";
 
 const useStyles = makeStyles((theme) => ({
   messagesListWrapper: {
@@ -326,6 +327,7 @@ const MessagesList = ({ ticket, ticketId, isGroup }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const messageOptionsMenuOpen = Boolean(anchorEl);
   const currentTicketId = useRef(ticketId);
+  const { user, socket } = useContext(AuthContext);
 
   useEffect(() => {
     dispatch({ type: "RESET" });
@@ -366,12 +368,20 @@ const MessagesList = ({ ticket, ticketId, isGroup }) => {
   }, [pageNumber, ticketId]);
 
   useEffect(() => {
-    const companyId = localStorage.getItem("companyId");
-    const socket = socketConnection({ companyId });
+    if (ticketId === "undefined") {
+      return;
+    }
+    //const companyId = localStorage.getItem("companyId");
+    //const userId = localStorage.getItem("userId");
+    //const socket = socketConnection({ companyId, userId });
+    const companyId = user.companyId;
 
-    socket.on("connect", () => socket.emit("joinChatBox", `${ticket.id}`));
+    //socket.on("connect", () => socket.emit("joinChatBox", `${ticket.id}`));
+    const connectEventMessagesList = () => {
+      socket.emit("joinChatBox", `${ticketId}`);
+    }
 
-    socket.on(`company-${companyId}-appMessage`, (data) => {
+    /*socket.on(`company-${companyId}-appMessage`, (data) => {
       if (data.action === "create") {
         dispatch({ type: "ADD_MESSAGE", payload: data.message });
         scrollToBottom();
@@ -380,12 +390,34 @@ const MessagesList = ({ ticket, ticketId, isGroup }) => {
       if (data.action === "update") {
         dispatch({ type: "UPDATE_MESSAGE", payload: data.message });
       }
-    });
+    });*/
+
+    const onAppMessageMessagesList = (data) => {
+      //console.log("onAppMessageMessagesList", data);
+
+      if (data.action === "create" && data.ticket.id === ticketId) {
+        dispatch({ type: "ADD_MESSAGE", payload: data.message });
+        scrollToBottom();
+      }
+
+      if (data.action === "update" && data?.message?.ticketId === ticketId) {
+        dispatch({ type: "UPDATE_MESSAGE", payload: data.message });
+      }
+
+      if (data.action == "delete" && data.message.ticketId === ticketId) {
+        dispatch({ type: "DELETE_MESSAGE", payload: data.messageId });
+      }
+    }
+
+    socket.on("connect", connectEventMessagesList);
+    socket.on(`company-${companyId}-appMessage`, onAppMessageMessagesList);
 
     return () => {
-      socket.disconnect();
+      //socket.disconnect();
+      socket.off("connect", connectEventMessagesList);
+      socket.off(`company-${companyId}-appMessage`, onAppMessageMessagesList);
     };
-  }, [ticketId, ticket]);
+  }, [ticketId, ticket, socket]);
 
   const loadMore = () => {
     setPageNumber((prevPageNumber) => prevPageNumber + 1);

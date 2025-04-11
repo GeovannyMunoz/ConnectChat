@@ -30,7 +30,7 @@ import ConfirmationModal from "../../components/ConfirmationModal";
 import toastError from "../../errors/toastError";
 import { Grid } from "@material-ui/core";
 import { isArray } from "lodash";
-import { socketConnection } from "../../services/socket";
+//import { socketConnection } from "../../services/socket";
 import { AuthContext } from "../../context/Auth/AuthContext";
 
 const reducer = (state, action) => {
@@ -95,7 +95,7 @@ const Announcements = () => {
   const classes = useStyles();
   const history = useHistory();
 
-  const { user } = useContext(AuthContext);
+  const { user, socket } = useContext(AuthContext);
 
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
@@ -135,7 +135,7 @@ const Announcements = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParam, pageNumber]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const companyId = user.companyId;
     const socket = socketConnection({ companyId, userId: user.id });
 
@@ -150,7 +150,26 @@ const Announcements = () => {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, []);*/
+
+  useEffect(() => {
+    if (user.companyId) {
+
+      const onCompanyAnnouncement = (data) => {
+        if (data.action === "update" || data.action === "create") {
+          dispatch({ type: "UPDATE_ANNOUNCEMENTS", payload: data.record });
+        }
+        if (data.action === "delete") {
+          dispatch({ type: "DELETE_ANNOUNCEMENT", payload: +data.id });
+        }
+      }
+
+      socket.on(`company-announcement`, onCompanyAnnouncement);
+      return () => {
+        socket.off(`company-announcement`, onCompanyAnnouncement);
+      }
+    }
+  }, [user, socket]);
 
   const fetchAnnouncements = async () => {
     try {

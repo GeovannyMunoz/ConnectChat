@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useContext } from "react";
 import { toast } from "react-toastify";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -28,7 +28,8 @@ import TableRowSkeleton from "../../components/TableRowSkeleton";
 import UserModal from "../../components/UserModal";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import toastError from "../../errors/toastError";
-import { socketConnection } from "../../services/socket";
+//import { socketConnection } from "../../services/socket";
+import { AuthContext } from "../../context/Auth/AuthContext";
 
 const reducer = (state, action) => {
   if (action.type === "LOAD_USERS") {
@@ -95,6 +96,7 @@ const Users = () => {
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [searchParam, setSearchParam] = useState("");
   const [users, dispatch] = useReducer(reducer, []);
+  const { user, socket } = useContext(AuthContext)
 
   useEffect(() => {
     dispatch({ type: "RESET" });
@@ -121,7 +123,7 @@ const Users = () => {
     return () => clearTimeout(delayDebounceFn);
   }, [searchParam, pageNumber]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const companyId = localStorage.getItem("companyId");
     const socket = socketConnection({ companyId });
 
@@ -138,7 +140,24 @@ const Users = () => {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, []);*/
+
+  useEffect(() => {
+      const companyId = user.companyId;
+      const onCompanyUser = (data) => {
+        if (data.action === "update" || data.action === "create") {
+          dispatch({ type: "UPDATE_USERS", payload: data.user });
+        }
+        if (data.action === "delete") {
+          dispatch({ type: "DELETE_USER", payload: +data.userId });
+        }
+      };
+      socket.on(`company-${companyId}-users`, onCompanyUser);
+      return () => {
+        socket.off(`company-${companyId}-users`, onCompanyUser);
+      };
+    
+  }, [user, socket]);
 
   const handleOpenUserModal = () => {
     setSelectedUser(null);

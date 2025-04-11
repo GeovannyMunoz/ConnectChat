@@ -14,6 +14,7 @@ const useAuth = () => {
   const [isAuth, setIsAuth] = useState(false);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
+  const [socket, setSocket] = useState(null);
 
   api.interceptors.request.use(
     (config) => {
@@ -72,11 +73,12 @@ const useAuth = () => {
     })();
   }, []);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const companyId = localStorage.getItem("companyId");
+    const userId = localStorage.getItem("userId");
     if (companyId) {
    
-    const socket = socketConnection({ companyId });
+    const socket = socketConnection({ companyId, userId });
 
       socket.on(`company-${companyId}-user`, (data) => {
         if (data.action === "update" && data.user.id === user.id) {
@@ -90,7 +92,37 @@ const useAuth = () => {
     };
   }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user]);*/
+
+  useEffect(() => {
+    if (user && user.id > 0) {
+
+      let io;
+      if (!socket) {
+        io = socketConnection({ user }); 
+        setSocket(io);
+      } else {
+        io = socket;
+      }
+  
+      // Escuchar eventos de actualización de usuario en la empresa
+      io.on(`company-${user.companyId}-user`, (data) => {
+        if (data.action === "update" && data.user.id === user.id) {
+          setUser(data.user);
+        }
+      });
+  
+      return () => {
+        if (io) {
+          io.off(`company-${user.companyId}-user`); // Remueve el listener para evitar fugas de memoria
+          // io.disconnect(); // Desconecta si es necesario
+        }
+      };
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, socket]); // Agregamos socket como dependencia
+
+  
 
   const handleLogin = async (userData) => {
     setLoading(true);
@@ -183,6 +215,7 @@ Entre em contato com o Suporte para mais informações! `);
     handleLogin,
     handleLogout,
     getCurrentUserInfo,
+    socket
   };
 };
 

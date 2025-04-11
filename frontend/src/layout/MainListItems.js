@@ -33,7 +33,7 @@ import { WhatsAppsContext } from "../context/WhatsApp/WhatsAppsContext";
 import { AuthContext } from "../context/Auth/AuthContext";
 import LoyaltyRoundedIcon from '@material-ui/icons/LoyaltyRounded';
 import { Can } from "../components/Can";
-import { socketConnection } from "../services/socket";
+//import { socketConnection } from "../services/socket";
 import { isArray } from "lodash";
 import TableChartIcon from '@material-ui/icons/TableChart';
 import api from "../services/api";
@@ -135,7 +135,7 @@ const MainListItems = (props) => {
   const classes = useStyles();
   const { drawerClose, collapsed } = props;
   const { whatsApps } = useContext(WhatsAppsContext);
-  const { user, handleLogout } = useContext(AuthContext);
+  const { handleLogout } = useContext(AuthContext);
   const [connectionWarning, setConnectionWarning] = useState(false);
   const [openCampaignSubmenu, setOpenCampaignSubmenu] = useState(false);
   const [showCampaigns, setShowCampaigns] = useState(false);
@@ -152,7 +152,7 @@ const MainListItems = (props) => {
   const [searchParam] = useState("");
   const [chats, dispatch] = useReducer(reducer, []);
   const { getPlanCompany } = usePlans();
- 
+  const { user, socket } = useContext(AuthContext);
 
   useEffect(() => {
     dispatch({ type: "RESET" });
@@ -186,9 +186,10 @@ const MainListItems = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParam, pageNumber]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const companyId = localStorage.getItem("companyId");
-    const socket = socketConnection({ companyId });
+    const userId = localStorage.getItem("userId");
+    const socket = socketConnection({ companyId, userId});
 
     socket.on(`company-${companyId}-chat`, (data) => {
       if (data.action === "new-message") {
@@ -201,7 +202,28 @@ const MainListItems = (props) => {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, []);*/
+
+  useEffect(() => {
+    if (user.companyId) {
+      const companyId = user.companyId;
+
+      const onCompanyChatMainListItems = (data) => {
+        if (data.action === "new-message") {
+          dispatch({ type: "CHANGE_CHAT", payload: data });
+        }
+        if (data.action === "update") {
+          dispatch({ type: "CHANGE_CHAT", payload: data });
+        }
+      };
+
+      socket.on(`company-${companyId}-chat`, onCompanyChatMainListItems);
+      return () => {
+        socket.off(`company-${companyId}-chat`, onCompanyChatMainListItems);
+      };
+    }
+  }, [socket]);
+
 
   useEffect(() => {
     let unreadsCount = 0;

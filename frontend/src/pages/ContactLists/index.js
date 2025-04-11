@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useContext } from "react";
 import { toast } from "react-toastify";
 
 import { useHistory } from "react-router-dom";
@@ -34,7 +34,8 @@ import toastError from "../../errors/toastError";
 import { Grid } from "@material-ui/core";
 
 import planilhaExemplo from "../../assets/planilha.xlsx";
-import { socketConnection } from "../../services/socket";
+//import { socketConnection } from "../../services/socket";
+import { AuthContext } from "../../context/Auth/AuthContext";
 
 const reducer = (state, action) => {
   if (action.type === "LOAD_CONTACTLISTS") {
@@ -102,6 +103,7 @@ const ContactLists = () => {
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [searchParam, setSearchParam] = useState("");
   const [contactLists, dispatch] = useReducer(reducer, []);
+  const { user, socket } = useContext(AuthContext);
 
   useEffect(() => {
     dispatch({ type: "RESET" });
@@ -128,7 +130,7 @@ const ContactLists = () => {
     return () => clearTimeout(delayDebounceFn);
   }, [searchParam, pageNumber]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const companyId = localStorage.getItem("companyId");
     const socket = socketConnection({ companyId });
 
@@ -145,7 +147,27 @@ const ContactLists = () => {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, []);*/
+
+  useEffect(() => {
+    const companyId = user.companyId;
+
+    const onContactListEvent = (data) => {
+      if (data.action === "update" || data.action === "create") {
+        dispatch({ type: "UPDATE_CONTACTLIST", payload: data.record });
+      }
+
+      if (data.action === "delete") {
+        dispatch({ type: "DELETE_CONTACTLIST", payload: +data.id });
+      }
+    };
+
+    socket.on(`company-${companyId}-ContactList`, onContactListEvent);
+
+    return () => {
+      socket.off(`company-${companyId}-ContactList`, onContactListEvent);
+    };
+  }, [socket]);
 
   const handleOpenContactListModal = () => {
     setSelectedContactList(null);

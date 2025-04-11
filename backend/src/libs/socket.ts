@@ -3,30 +3,40 @@ import { Server } from "http";
 import AppError from "../errors/AppError";
 import { logger } from "../utils/logger";
 import User from "../models/User";
+//import { instrument } from "@socket.io/admin-ui";
 
 let io: SocketIO;
 
 export const initIO = (httpServer: Server): SocketIO => {
   io = new SocketIO(httpServer, {
     cors: {
-      origin: process.env.FRONTEND_URL
+      origin: [process.env.FRONTEND_URL],
+      //methods: ["GET", "POST"],
+      credentials: true
     }
   });
 
-  io.on("connection", async socket => {
-    logger.info("Client Connected");
-    const { userId } = socket.handshake.query;
+  /*instrument(io, {
+    auth: false, 
+    mode: 'development' // 'production'
+  });*/
 
-    if (userId && userId !== "undefined" && userId !== "null") {
+  io.on("connection", async socket => {
+    const userIdStr = socket.handshake.query.userId;
+    const userId = parseInt(Array.isArray(userIdStr) ? userIdStr[0] : userIdStr, 10);
+
+    logger.info("Client Connected: "+ userId + " - " + socket.id);
+
+    if (userId && userId !== undefined && userId !== null) {
       const user = await User.findByPk(userId);
       if (user) {
         user.online = true;
         await user.save();
       }
     }
-
+   
     socket.on("joinChatBox", (ticketId: string) => {
-      logger.info("A client joined a ticket channel");
+      logger.info("A client joined a ticket channel "+ ticketId);
       socket.join(ticketId);
     });
 
@@ -39,6 +49,11 @@ export const initIO = (httpServer: Server): SocketIO => {
       logger.info(`A client joined to ${status} tickets channel.`);
       socket.join(status);
     });
+
+    socket.on("disconnect", () => {
+      logger.info("Cliente desconectado: "+ socket.id);
+    });
+
   });
   return io;
 };

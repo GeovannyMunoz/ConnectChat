@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -10,7 +10,8 @@ import { toast } from "react-toastify";
 import api from "../../services/api";
 import { i18n } from "../../translate/i18n.js";
 import toastError from "../../errors/toastError";
-import { socketConnection } from "../../services/socket";
+//import { socketConnection } from "../../services/socket";
+import { AuthContext } from "../../context/Auth/AuthContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,6 +38,7 @@ const Settings = () => {
   const classes = useStyles();
 
   const [settings, setSettings] = useState([]);
+  const { user, socket } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchSession = async () => {
@@ -50,7 +52,7 @@ const Settings = () => {
     fetchSession();
   }, []);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const companyId = localStorage.getItem("companyId");
     const socket = socketConnection({ companyId });
 
@@ -68,7 +70,28 @@ const Settings = () => {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, []);*/
+
+  useEffect(() => {
+    const companyId = user.companyId;
+
+    const onSettingsEvent = (data) => {
+      if (data.action === "update") {
+        setSettings((prevState) => {
+          const aux = [...prevState];
+          const settingIndex = aux.findIndex((s) => s.key === data.setting.key);
+          aux[settingIndex].value = data.setting.value;
+          return aux;
+        });
+      }
+    };
+    socket.on(`company-${companyId}-settings`, onSettingsEvent);
+
+    return () => {
+      socket.off(`company-${companyId}-settings`, onSettingsEvent);
+    };
+  }, [socket]);
+
 
   const handleChangeSetting = async (e) => {
     const selectedValue = e.target.value;

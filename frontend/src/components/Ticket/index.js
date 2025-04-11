@@ -17,7 +17,7 @@ import { ReplyMessageProvider } from "../../context/ReplyingMessage/ReplyingMess
 import toastError from "../../errors/toastError";
 import { AuthContext } from "../../context/Auth/AuthContext";
 import { TagsContainer } from "../TagsContainer";
-import { socketConnection } from "../../services/socket";
+//import { socketConnection } from "../../services/socket";
 
 const drawerWidth = 320;
 
@@ -61,12 +61,13 @@ const Ticket = () => {
   const history = useHistory();
   const classes = useStyles();
 
-  const { user } = useContext(AuthContext);
+  const { user, socket } = useContext(AuthContext);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [contact, setContact] = useState({});
   const [ticket, setTicket] = useState({});
+  const { companyId } = user;
 
   useEffect(() => {
     setLoading(true);
@@ -97,9 +98,10 @@ const Ticket = () => {
     return () => clearTimeout(delayDebounceFn);
   }, [ticketId, user, history]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const companyId = localStorage.getItem("companyId");
-    const socket = socketConnection({ companyId });
+    const userId = localStorage.getItem("userId");
+    const socket = socketConnection({ companyId, userId });
 
     socket.on("connect", () => socket.emit("joinChatBox", `${ticket.id}`));
 
@@ -128,6 +130,60 @@ const Ticket = () => {
     return () => {
       socket.disconnect();
     };
+  }, [ticketId, ticket, history]);*/
+
+  useEffect(() => {
+    if (!ticket?.id || !ticketId || ticket?.uuid !== ticketId) {
+      return;
+    }    
+
+    if (user.companyId) {
+
+      const onConnectTicket = () => {
+        socket.emit("joinChatBox", `${ticket.id}`);
+      }
+
+      const onCompanyTicket = (data) => {
+        //console.log("onCompanyTicket", data);
+        if (data.action === "update" && data.ticket.id === ticket?.id) {
+          setTicket(data.ticket);
+        }
+
+        if (data.action === "delete" && data.ticketId === ticket?.id) {
+          history.push("/tickets");
+        }
+      };
+
+      const onCompanyContactTicket = (data) => {
+        if (data.action === "update") {
+          // if (isMounted) {
+          setContact((prevState) => {
+            if (prevState.id === data.contact?.id) {
+              return { ...prevState, ...data.contact };
+            }
+            return prevState;
+          });
+          // }
+        }
+      };
+
+      if (socket) {
+        onConnectTicket();
+      } else {
+        socket.on("connect", onConnectTicket);
+      }
+
+      //socket.on("connect", onConnectTicket)
+      socket.on(`company-${companyId}-ticket`, onCompanyTicket);
+      socket.on(`company-${companyId}-contact`, onCompanyContactTicket);
+
+      return () => {
+
+        socket.off("connect", onConnectTicket);
+        socket.off(`company-${companyId}-ticket`, onCompanyTicket);
+        socket.off(`company-${companyId}-contact`, onCompanyContactTicket);
+      };
+    }
   }, [ticketId, ticket, history]);
 
   const handleDrawerOpen = () => {

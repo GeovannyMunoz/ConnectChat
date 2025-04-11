@@ -43,7 +43,7 @@ import useContactLists from "../../hooks/useContactLists";
 import { Grid } from "@material-ui/core";
 
 import planilhaExemplo from "../../assets/planilha.xlsx";
-import { socketConnection } from "../../services/socket";
+//import { socketConnection } from "../../services/socket";
 
 const reducer = (state, action) => {
   if (action.type === "LOAD_CONTACTS") {
@@ -101,7 +101,7 @@ const useStyles = makeStyles((theme) => ({
 const ContactListItems = () => {
   const classes = useStyles();
 
-  const { user } = useContext(AuthContext);
+  const { user, socket } = useContext(AuthContext);
   const { contactListId } = useParams();
   const history = useHistory();
 
@@ -152,7 +152,7 @@ const ContactListItems = () => {
     return () => clearTimeout(delayDebounceFn);
   }, [searchParam, pageNumber, contactListId]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const companyId = localStorage.getItem("companyId");
     const socket = socketConnection({ companyId });
 
@@ -182,7 +182,39 @@ const ContactListItems = () => {
     return () => {
       socket.disconnect();
     };
-  }, [contactListId]);
+  }, [contactListId]);*/
+  
+  useEffect(() => {
+    const companyId = user.companyId;
+
+    const onCompanyContactLists = (data) => {
+      if (data.action === "update" || data.action === "create") {
+        dispatch({ type: "UPDATE_CONTACTS", payload: data.record });
+      }
+
+      if (data.action === "delete") {
+        dispatch({ type: "DELETE_CONTACT", payload: +data.id });
+      }
+
+      if (data.action === "reload") {
+        dispatch({ type: "LOAD_CONTACTS", payload: data.records });
+      }
+    }
+    socket.on(`company-${companyId}-ContactListItem`, onCompanyContactLists);
+
+    const handler = (data) => {
+      if (data.action === "reload") {
+        dispatch({ type: "LOAD_CONTACTS", payload: data.records });
+      }
+    };
+
+    socket.on(`company-${companyId}-ContactListItem-${contactListId}`, handler);
+
+    return () => {
+      socket.off(`company-${companyId}-ContactListItem`, onCompanyContactLists);
+      socket.off(`company-${companyId}-ContactListItem-${contactListId}`, handler);
+    };
+  }, [contactListId, socket]);
 
   const handleSearch = (event) => {
     setSearchParam(event.target.value.toLowerCase());
@@ -423,7 +455,7 @@ const ContactListItems = () => {
                   </TableCell>
                 </TableRow>
               ))}
-              {loading && <TableRowSkeleton columns={4} />}
+              {loading && <TableRowSkeleton columns={5} />}
             </>
           </TableBody>
         </Table>

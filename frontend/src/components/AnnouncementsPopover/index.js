@@ -1,9 +1,10 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useReducer, useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import toastError from "../../errors/toastError";
 import Popover from "@material-ui/core/Popover";
 import AnnouncementIcon from "@material-ui/icons/Announcement";
 import Notifications from "@material-ui/icons/Notifications"
+import { AuthContext } from "../../context/Auth/AuthContext";
 
 import {
   Avatar,
@@ -25,7 +26,7 @@ import {
 import api from "../../services/api";
 import { isArray } from "lodash";
 import moment from "moment";
-import { socketConnection } from "../../services/socket";
+//import { socketConnection } from "../../services/socket";
 
 const useStyles = makeStyles((theme) => ({
   mainPaper: {
@@ -139,6 +140,7 @@ export default function AnnouncementsPopover() {
   const [invisible, setInvisible] = useState(false);
   const [announcement, setAnnouncement] = useState({});
   const [showAnnouncementDialog, setShowAnnouncementDialog] = useState(false);
+  const { user, socket } = useContext(AuthContext);
 
   useEffect(() => {
     dispatch({ type: "RESET" });
@@ -154,9 +156,10 @@ export default function AnnouncementsPopover() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParam, pageNumber]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const companyId = localStorage.getItem("companyId");
-    const socket = socketConnection({ companyId });
+    const userId = localStorage.getItem("userId");
+    const socket = socketConnection({ companyId, userId });
 
     socket.on(`company-announcement`, (data) => {
       if (data.action === "update" || data.action === "create") {
@@ -170,7 +173,29 @@ export default function AnnouncementsPopover() {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, []);*/
+
+  useEffect(() => {
+    if (user.companyId) {
+      const companyId = user.companyId;
+
+      const onCompanyAnnouncement = (data) => {
+        if (data.action === "update" || data.action === "create") {
+          dispatch({ type: "UPDATE_ANNOUNCEMENTS", payload: data.record });
+          setInvisible(false);
+        }
+        if (data.action === "delete") {
+          dispatch({ type: "DELETE_ANNOUNCEMENT", payload: +data.id });
+        }
+      };
+      socket.on(`company-announcement`, onCompanyAnnouncement);
+
+      return () => {
+        socket.off(`company-announcement`, onCompanyAnnouncement);
+      };
+    }
+  }, [user, socket]);
+
 
   const fetchAnnouncements = async () => {
     try {

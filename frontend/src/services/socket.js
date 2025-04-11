@@ -1,15 +1,21 @@
 import openSocket from "socket.io-client";
 import { isObject } from "lodash";
+import SocketWorker from "./SocketWorker"
 
 export function socketConnection(params) {
-  let userId = null;
-  if (localStorage.getItem("userId")) {
-    userId = localStorage.getItem("userId");
+  let userId = "";
+  let companyId = "";
+  //console.log("params", params);
+
+  if (!params?.user?.id || !params?.user?.companyId) {
+    console.warn("❌ No se conecta: falta userId o companyId en params");
+    return null;
   }
-  return openSocket(process.env.REACT_APP_BACKEND_URL, {
-    transports: ["websocket", "polling", "flashsocket"],
-    pingTimeout: 18000,
-    pingInterval: 18000,
-    query: isObject(params) ? { ...params} : { userId: params.userId },
-  });
+  
+  if (isObject(params)){
+    companyId = params?.user?.companyId
+    userId = params?.user?.id
+  }
+ 
+  return SocketWorker(companyId,userId)
 }

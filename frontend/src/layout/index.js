@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, use } from "react";
 import clsx from "clsx";
 import moment from "moment";
 import {
@@ -33,7 +33,7 @@ import toastError from "../errors/toastError";
 import AnnouncementsPopover from "../components/AnnouncementsPopover";
 
 import logo from "../assets/logo.png";
-import { socketConnection } from "../services/socket";
+//import { socketConnection } from "../services/socket";
 import ChatPopover from "../pages/Chat/ChatPopover";
 
 import { useDate } from "../hooks/useDate";
@@ -184,7 +184,7 @@ const LoggedInLayout = ({ children, themeToggle }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [drawerVariant, setDrawerVariant] = useState("permanent");
   // const [dueDate, setDueDate] = useState("");
-  const { user } = useContext(AuthContext);
+  const { user, socket } = useContext(AuthContext);
 
   const theme = useTheme();
   const { colorMode } = useContext(ColorModeContext);
@@ -256,11 +256,11 @@ const LoggedInLayout = ({ children, themeToggle }) => {
     }
   }, [drawerOpen]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const companyId = localStorage.getItem("companyId");
     const userId = localStorage.getItem("userId");
 
-    const socket = socketConnection({ companyId });
+    const socket = socketConnection({ companyId, userId });
 
     socket.on(`company-${companyId}-auth`, (data) => {
       if (data.user.id === +userId) {
@@ -282,7 +282,37 @@ const LoggedInLayout = ({ children, themeToggle }) => {
       clearInterval(interval);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, []);*/
+
+  useEffect(() => {
+    const companyId = user.companyId;
+    const userId = user.id;
+    if(companyId){
+
+      const onCompanyAuthLayout = (data) => {
+        if (data.user.id === +userId) {
+          toastError("Se accedió a su cuenta en otra computadora.");
+          setTimeout(() => {
+            localStorage.clear();
+            window.location.reload();
+          }, 1000);
+        }
+      };
+
+      socket.on(`company-${companyId}-auth`, onCompanyAuthLayout);
+
+      socket.emit("userStatus");
+      const interval = setInterval(() => {
+        socket.emit("userStatus");
+      }, 1000 * 60 * 5);
+
+      return () => {
+        socket.off(`company-${companyId}-auth`, onCompanyAuthLayout);
+        clearInterval(interval);
+      };
+    }
+
+  },[socket]);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);

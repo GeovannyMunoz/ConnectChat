@@ -30,7 +30,7 @@ import ConfirmationModal from "../../components/ConfirmationModal";
 import toastError from "../../errors/toastError";
 import { Grid } from "@material-ui/core";
 import { isArray } from "lodash";
-import { socketConnection } from "../../services/socket";
+//import { socketConnection } from "../../services/socket";
 import { AuthContext } from "../../context/Auth/AuthContext";
 
 
@@ -107,7 +107,7 @@ const Quickemessages = () => {
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [searchParam, setSearchParam] = useState("");
   const [quickemessages, dispatch] = useReducer(reducer, []);
-  const { user } = useContext(AuthContext);
+  const { user, socket } = useContext(AuthContext);
   const { profile } = user;
 
   useEffect(() => {
@@ -124,7 +124,7 @@ const Quickemessages = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParam, pageNumber]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const companyId = user.companyId;
     const socket = socketConnection({ companyId, userId: user.id });
 
@@ -139,7 +139,26 @@ const Quickemessages = () => {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, []);*/
+
+  useEffect(() => {
+    const companyId = user.companyId;
+
+    const onQuickMessageEvent = (data) => {
+      if (data.action === "update" || data.action === "create") {
+        dispatch({ type: "UPDATE_QUICKMESSAGES", payload: data.record });
+      }
+      if (data.action === "delete") {
+        dispatch({ type: "DELETE_QUICKMESSAGE", payload: +data.id });
+      }
+    };
+    socket.on(`company-${companyId}-quickemessage`, onQuickMessageEvent);
+
+    return () => {
+      socket.off(`company-${companyId}-quickemessage`, onQuickMessageEvent);
+    };
+  }, [socket]);
+
 
   const fetchQuickemessages = async () => {
     try {

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useContext } from "react";
 
 import { useHistory } from "react-router-dom";
 import { format } from "date-fns";
-import { socketConnection } from "../../services/socket";
+//import { socketConnection } from "../../services/socket";
 
 import useSound from "use-sound";
 
@@ -46,7 +46,7 @@ const NotificationsPopOver = (volume) => {
 	const classes = useStyles();
 
 	const history = useHistory();
-	const { user } = useContext(AuthContext);
+	const { user, socket } = useContext(AuthContext);
 	const ticketIdUrl = +history.location.pathname.split("/")[2];
 	const ticketIdRef = useRef(ticketIdUrl);
 	const anchorEl = useRef();
@@ -107,7 +107,7 @@ const NotificationsPopOver = (volume) => {
 		ticketIdRef.current = ticketIdUrl;
 	}, [ticketIdUrl]);
 
-	useEffect(() => {
+	/*useEffect(() => {
 		const socket = socketConnection({companyId: user.companyId, userId: user.id});
 		socket.on("connect", () => socket.emit("joinNotification"));
 
@@ -168,6 +168,80 @@ const NotificationsPopOver = (volume) => {
 		return () => {
 			socket.disconnect();
 		};
+	}, [user, showPendingTickets]);*/
+
+	useEffect(() => {
+		const companyId = user.companyId;
+
+		if (companyId) {
+			const onConnectNotificationsPopover = () => {
+				socket.emit("joinNotification");
+			}
+
+			const onCompanyTicketNotificationsPopover = (data) => {
+				if (data.action === "updateUnread" || data.action === "delete") {
+					setNotifications(prevState => {
+						const ticketIndex = prevState.findIndex(t => t.id === data.ticketId);
+						if (ticketIndex !== -1) {
+							prevState.splice(ticketIndex, 1);
+							return [...prevState];
+						}
+						return prevState;
+					});
+
+					setDesktopNotifications(prevState => {
+						const notfiticationIndex = prevState.findIndex(
+							n => n.tag === String(data.ticketId)
+						);
+						if (notfiticationIndex !== -1) {
+							prevState[notfiticationIndex].close();
+							prevState.splice(notfiticationIndex, 1);
+							return [...prevState];
+						}
+						return prevState;
+					});
+				}
+			};
+
+			const onCompanyAppMessageNotificationsPopover = (data) => {
+				if (
+					data.action === "create" && !data.message.fromMe && 
+					(data.ticket.status !== "pending" ) &&
+					(!data.message.read || data.ticket.status === "pending") &&
+					(data.ticket.userId === user?.id || !data.ticket.userId) &&
+					(user?.queues?.some(queue => (queue.id === data.ticket.queueId)) || !data.ticket.queueId)
+				)  {
+					setNotifications(prevState => {
+						const ticketIndex = prevState.findIndex(t => t.id === data.ticket.id);
+						if (ticketIndex !== -1) {
+							prevState[ticketIndex] = data.ticket;
+							return [...prevState];
+						}
+						return [data.ticket, ...prevState];
+					});
+
+					const shouldNotNotificate =
+					(data.message.ticketId === ticketIdRef.current &&
+						document.visibilityState === "visible") ||
+					(data.ticket.userId && data.ticket.userId !== user?.id) ||
+					data.ticket.isGroup;
+
+					if (shouldNotNotificate) return;
+
+					handleNotifications(data);
+				}
+			}
+
+			socket.on("connect", onConnectNotificationsPopover);
+			socket.on(`company-${companyId}-ticket`, onCompanyTicketNotificationsPopover);
+			socket.on(`company-${companyId}-appMessage`, onCompanyAppMessageNotificationsPopover);
+
+			return () => {
+				socket.off("connect", onConnectNotificationsPopover);
+				socket.off(`company-${companyId}-ticket`, onCompanyTicketNotificationsPopover);
+				socket.off(`company-${companyId}-appMessage`, onCompanyAppMessageNotificationsPopover);
+			};
+		}
 	}, [user, showPendingTickets]);
 
 	const handleNotifications = data => {

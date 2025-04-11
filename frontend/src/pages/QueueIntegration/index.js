@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer, useContext } from "react";
 import { toast } from "react-toastify";
-import { socketConnection } from "../../services/socket";
+//import { socketConnection } from "../../services/socket";
 import n8n from "../../assets/n8n.png";
 import dialogflow from "../../assets/dialogflow.png";
 import webhooks from "../../assets/webhook.png";
@@ -116,7 +116,7 @@ const QueueIntegration = () => {
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [searchParam, setSearchParam] = useState("");
   const [queueIntegration, dispatch] = useReducer(reducer, []);
-  const { user } = useContext(AuthContext);
+  const { user, socket } = useContext(AuthContext);
   const { getPlanCompany } = usePlans();
   const companyId = user.companyId;
   const history = useHistory();
@@ -160,7 +160,7 @@ const QueueIntegration = () => {
     return () => clearTimeout(delayDebounceFn);
   }, [searchParam, pageNumber]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const companyId = localStorage.getItem("companyId");
     const socket = socketConnection({ companyId });
 
@@ -177,7 +177,25 @@ const QueueIntegration = () => {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, []);*/
+
+  useEffect(() => {
+
+    const onQueueEvent = (data) => {
+      if (data.action === "update" || data.action === "create") {
+        dispatch({ type: "UPDATE_INTEGRATIONS", payload: data.queueIntegration });
+      }
+
+      if (data.action === "delete") {
+        dispatch({ type: "DELETE_INTEGRATION", payload: +data.integrationId });
+      }
+    };
+
+    socket.on(`company-${companyId}-queueIntegration`, onQueueEvent);
+    return () => {
+      socket.off(`company-${companyId}-queueIntegration`, onQueueEvent);
+    };
+  }, [socket]);
 
   const handleOpenUserModal = () => {
     setSelectedIntegration(null);

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useContext } from "react";
 import { toast } from "react-toastify";
 
 import { useHistory } from "react-router-dom";
@@ -38,7 +38,8 @@ import toastError from "../../errors/toastError";
 import { Grid } from "@material-ui/core";
 import { isArray } from "lodash";
 import { useDate } from "../../hooks/useDate";
-import { socketConnection } from "../../services/socket";
+//import { socketConnection } from "../../services/socket";
+import { AuthContext } from "../../context/Auth/AuthContext";
 
 const reducer = (state, action) => {
   if (action.type === "LOAD_CAMPAIGNS") {
@@ -109,6 +110,7 @@ const Campaigns = () => {
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [searchParam, setSearchParam] = useState("");
   const [campaigns, dispatch] = useReducer(reducer, []);
+  const { user, socket } = useContext(AuthContext);
 
   const { datetimeToClient } = useDate();
 
@@ -126,7 +128,7 @@ const Campaigns = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParam, pageNumber]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const companyId = localStorage.getItem("companyId");
     const socket = socketConnection({ companyId });
 
@@ -141,7 +143,25 @@ const Campaigns = () => {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, []);*/
+
+  useEffect(() => {
+    const companyId = user.companyId;
+
+    const onCompanyCampaign = (data) => {
+      if (data.action === "update" || data.action === "create") {
+        dispatch({ type: "UPDATE_CAMPAIGNS", payload: data.record });
+      }
+      if (data.action === "delete") {
+        dispatch({ type: "DELETE_CAMPAIGN", payload: +data.id });
+      }
+    }
+
+    socket.on(`company-${companyId}-campaign`, onCompanyCampaign);
+    return () => {
+      socket.off(`company-${companyId}-campaign`, onCompanyCampaign);
+    };
+  }, [user, socket]);
 
   const fetchCampaigns = async () => {
     try {

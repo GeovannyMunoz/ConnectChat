@@ -20,7 +20,9 @@ class SocketWorker {
       autoConnect: true,
       reconnection: true,
       reconnectionDelay: 1000,
-      reconnectionAttempts: Infinity,
+      reconnectionAttempts: 10,
+      timeout: 5000,
+      reconnectionDelayMax: 5000,
       query: { userId: this.userId, companyId: this.companyId },
     });
 

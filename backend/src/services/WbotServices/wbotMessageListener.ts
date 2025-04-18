@@ -489,25 +489,69 @@ const verifyContact = async (
   companyId: number
 ): Promise<Contact> => {
   let profilePicUrl: string;
-  try {
+  const io = getIO();
+  /*try {
     profilePicUrl = await wbot.profilePictureUrl(msgContact.id);
   } catch (e) {
     Sentry.captureException(e);
     profilePicUrl = `${process.env.FRONTEND_URL}/nopicture.png`;
-  }
+  }*/
 
-  const contactData = {
+  let name = msgContact.name || msgContact.id.replace(/\D/g, "");
+  let rawNumber = msgContact.id.replace(/\D/g, "");
+  let isGroup = msgContact.id.includes("g.us");
+  let email = "";
+  let extraInfo = [];
+  let whatsappId = wbot.id;
+
+  /*const contactData = {
     name: msgContact?.name || msgContact.id.replace(/\D/g, ""),
     number: msgContact.id.replace(/\D/g, ""),
     profilePicUrl,
     isGroup: msgContact.id.includes("g.us"),
     companyId,
-    whatsappId: wbot.id
-  };
+    whatsappId: wbot.id,
+    remoteJid: msgContact.id,
+    wbot
+  };*/
 
+  //const contact = CreateOrUpdateContactService(contactData);
+  let contact: Contact | null;
+  const number = isGroup ? rawNumber : rawNumber.replace(/[^0-9]/g, "");
+  contact = await Contact.findOne({
+    where: {
+      number,
+      companyId
+    }
+  });
+  
+  if (contact) {
+    //contact.update({ profilePicUrl });
+    console.log("CreateOrUpdateContactService",contact.whatsappId)
+    if (isNil(contact.whatsappId === null)) {
+      contact.update({
+        whatsappId
+      });
+    }
 
+  } else {
+    profilePicUrl = await wbot.profilePictureUrl(msgContact.id);
+    contact = await Contact.create({
+      name,
+      number,
+      profilePicUrl,
+      email,
+      isGroup,
+      extraInfo,
+      companyId,
+      whatsappId
+    });
+    io.emit(`company-${companyId}-contact`, {
+      action: "create",
+      contact
+    });
 
-  const contact = CreateOrUpdateContactService(contactData);
+  }
 
   return contact;
 };
@@ -2240,6 +2284,10 @@ const filterMessages = (msg: WAMessage): boolean => {
 
 const wbotMessageListener = async (wbot: Session, companyId: number): Promise<void> => {
   try {
+
+    wbot.ev.removeAllListeners("messages.upsert");
+    wbot.ev.removeAllListeners("messages.update");
+
     wbot.ev.on("messages.upsert", async (messageUpsert: ImessageUpsert) => {
       const messages = messageUpsert.messages
         .filter(filterMessages)
@@ -2254,8 +2302,11 @@ const wbotMessageListener = async (wbot: Session, companyId: number): Promise<vo
         });
 
         if (!messageExists) {
+          const startHandle = performance.now();
           await handleMessage(message, wbot, companyId);
-          await verifyRecentCampaign(message, companyId);
+          const endHandle = performance.now();
+          console.log(`[${message.key.id}] handleMessage: ${(endHandle - startHandle).toFixed(2)}ms`);
+          //await verifyRecentCampaign(message, companyId);
           await verifyCampaignMessageAndCloseTicket(message, companyId);
         }
       });
@@ -2273,6 +2324,8 @@ const wbotMessageListener = async (wbot: Session, companyId: number): Promise<vo
     // wbot.ev.on("messages.set", async (messageSet: IMessage) => {
     //   messageSet.messages.filter(filterMessages).map(msg => msg);
     // });
+    logger.info(`[Línea ${wbot.id}] Listener messages.upsert activado para compañía ${companyId}`);
+    
   } catch (error) {
     Sentry.captureException(error);
     logger.error(`Error handling wbot message listener. Err: ${error}`);

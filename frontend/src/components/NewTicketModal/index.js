@@ -163,19 +163,26 @@ const NewTicketModal = ({ modalOpen, onClose, initialContact }) => {
 
       onClose(ticket);
     } catch (err) {
-      
-      const ticket  = JSON.parse(err.response.data.error);
+      const error = err.response?.data?.error;
 
-      if (ticket.userId !== user?.id) {
-        setOpenAlert(true);
-        setUserTicketOpen(ticket.user.name);
-        setQueueTicketOpen(ticket.queue.name);
+      if (error === "ERR_OTHER_OPEN_TICKET") {
+        toast.error(i18n.t("backendErrors.ERR_OTHER_OPEN_TICKET"));
       } else {
-        setOpenAlert(false);
-        setUserTicketOpen("");
-        setQueueTicketOpen("");
-        setLoading(false);
-        onClose(ticket);
+      
+        const ticket  = JSON.parse(error);
+
+        if (ticket.userId !== user?.id) {
+          setOpenAlert(true);
+          setUserTicketOpen(ticket.user.name);
+          setQueueTicketOpen(ticket.queue.name);
+        } else {
+          setOpenAlert(false);
+          setUserTicketOpen("");
+          setQueueTicketOpen("");
+          setLoading(false);
+          onClose(ticket);
+        }
+
       }
     }  
     setLoading(false);

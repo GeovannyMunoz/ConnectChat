@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -23,9 +23,10 @@ import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import { useDate } from "../../hooks/useDate";
 
-import { socketConnection } from "../../services/socket";
+//import { socketConnection } from "../../services/socket";
 import { i18n } from "../../translate/i18n";
 import toastError from "../../errors/toastError";
+import { AuthContext } from "../../context/Auth/AuthContext";
 
 const useStyles = makeStyles((theme) => ({
   mainPaper: {
@@ -55,6 +56,7 @@ const CampaignReport = () => {
   const [percent, setPercent] = useState(0);
   const [loading, setLoading] = useState(false);
   const mounted = useRef(true);
+  const { user, socket } = useContext(AuthContext);
 
   const { datetimeToClient } = useDate();
 
@@ -98,7 +100,7 @@ const CampaignReport = () => {
     setPercent((delivered / validContacts) * 100);
   }, [delivered, validContacts]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const companyId = localStorage.getItem("companyId");
     const socket = socketConnection({ companyId });
 
@@ -117,6 +119,29 @@ const CampaignReport = () => {
 
     return () => {
       socket.disconnect();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [campaignId]);*/
+
+  useEffect(() => {
+    const companyId = user.companyId;
+
+    const onCampaignEvent = (data) => {
+
+      if (data.record.id === +campaignId) {
+        setCampaign(data.record);
+
+        if (data.record.status === "FINALIZADA") {
+          setTimeout(() => {
+            findCampaign();
+          }, 5000);
+        }
+      }
+    };
+    socket.on(`company-${companyId}-campaign`, onCampaignEvent);
+
+    return () => {
+      socket.off(`company-${companyId}-campaign`, onCampaignEvent);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [campaignId]);

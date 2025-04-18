@@ -86,29 +86,34 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
     throw new AppError(err.message);
   }
 
-  await CheckIsValidContact(newContact.number, companyId);
-  const validNumber = await CheckContactNumber(newContact.number, companyId);
-  const number = validNumber.jid.replace(/\D/g, "");
-  newContact.number = number;
+  try {
+    await CheckIsValidContact(newContact.number, companyId);
+    const validNumber = await CheckContactNumber(newContact.number, companyId);
+    const number = validNumber.jid.replace(/\D/g, "");
+    newContact.number = number;
 
-  /**
-   * Código desabilitado por demora no retorno
-   */
-  // const profilePicUrl = await GetProfilePicUrl(validNumber.jid, companyId);
+    /**
+     * Código desabilitado por demora no retorno
+     */
+    // const profilePicUrl = await GetProfilePicUrl(validNumber.jid, companyId);
 
-  const contact = await CreateContactService({
-    ...newContact,
-    // profilePicUrl,
-    companyId
-  });
+    const contact = await CreateContactService({
+      ...newContact,
+      // profilePicUrl,
+      companyId
+    });
 
-  const io = getIO();
-  io.emit(`company-${companyId}-contact`, {
-    action: "create",
-    contact
-  });
+    const io = getIO();
+    io.emit(`company-${companyId}-contact`, {
+      action: "create",
+      contact
+    });
 
-  return res.status(200).json(contact);
+    return res.status(200).json(contact);
+  } catch (err: any) {
+    throw new AppError("Número inválido o no disponible en WhatsApp.");
+  }
+  
 };
 
 export const show = async (req: Request, res: Response): Promise<Response> => {

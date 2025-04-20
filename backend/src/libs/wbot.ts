@@ -62,10 +62,24 @@ export const removeWbot = async (
   try {
     const sessionIndex = sessions.findIndex(s => s.id === whatsappId);
     if (sessionIndex !== -1) {
+      const session = sessions[sessionIndex];
+
       if (isLogout) {
         sessions[sessionIndex].logout();
         sessions[sessionIndex].ws.close();
       }
+
+      session.ev.removeAllListeners("connection.update");
+      session.ev.removeAllListeners("creds.update");
+      session.ev.removeAllListeners("presence.update");
+      session.ev.removeAllListeners("groups.upsert");
+      session.ev.removeAllListeners("groups.update");
+      session.ev.removeAllListeners("group-participants.update");
+      session.ev.removeAllListeners("contacts.upsert");
+      session.end(null);
+
+      session.ws.removeAllListeners();
+      await session.ws.close();
 
       sessions.splice(sessionIndex, 1);
     }
@@ -95,12 +109,11 @@ export const initWASocket = async (whatsapp: Whatsapp): Promise<Session> => {
         let retriesQrCode = 0;
 
         let wsocket: Session = null;
-        const store = makeInMemoryStore({
-          logger: loggerBaileys
-        });
+        //const store = makeInMemoryStore({ logger: loggerBaileys});
 
         const { state, saveCreds } = await useMultiFileAuthState(whatsapp);
 
+        await removeWbot(whatsapp.id, false);
         wsocket = makeWASocket({
           version: version,
           logger: loggerBaileys,
@@ -225,7 +238,7 @@ export const initWASocket = async (whatsapp: Whatsapp): Promise<Session> => {
         });
 
         // Bindeamos la store
-        store.bind(wsocket.ev);
+        //store.bind(wsocket.ev);
 
         // Guardamos los nuevos credentials
         wsocket.ev.on("creds.update", saveCreds);

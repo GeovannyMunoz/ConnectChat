@@ -20,6 +20,7 @@ const CreateContactService = async ({
   name,
   number,
   email = "",
+  profilePicUrl = "",
   companyId,
   extraInfo = []
 }: Request): Promise<Contact> => {
@@ -36,6 +37,7 @@ const CreateContactService = async ({
       name,
       number,
       email,
+      profilePicUrl,
       extraInfo,
       companyId
     },

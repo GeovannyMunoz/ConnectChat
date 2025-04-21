@@ -95,11 +95,11 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
     /**
      * Código desabilitado por demora no retorno
      */
-    // const profilePicUrl = await GetProfilePicUrl(validNumber.jid, companyId);
+    const profilePicUrl = await GetProfilePicUrl(number, companyId);
 
     const contact = await CreateContactService({
       ...newContact,
-      // profilePicUrl,
+      profilePicUrl,
       companyId
     });
 
@@ -111,7 +111,12 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
 
     return res.status(200).json(contact);
   } catch (err: any) {
-    throw new AppError("Número inválido o no disponible en WhatsApp.");
+    if (err.message === "ERR_DUPLICATED_CONTACT") {
+      throw new AppError("El número ingresado ya se encuentra registrado.");
+    }else{
+      throw new AppError("Número inválido o no disponible en WhatsApp.");
+    }
+    
   }
   
 };

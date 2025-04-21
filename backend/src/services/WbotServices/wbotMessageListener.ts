@@ -535,7 +535,12 @@ const verifyContact = async (
     }
 
   } else {
-    profilePicUrl = await wbot.profilePictureUrl(msgContact.id);
+    try {
+      profilePicUrl = await wbot.profilePictureUrl(msgContact.id);
+    } catch (e) {
+      Sentry.captureException(e);
+      profilePicUrl = `${process.env.FRONTEND_URL}/nopicture.png`;
+    }
     contact = await Contact.create({
       name,
       number,

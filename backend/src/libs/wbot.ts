@@ -130,7 +130,7 @@ export const initWASocket = async (whatsapp: Whatsapp): Promise<Session> => {
           /*shouldIgnoreJid: (jid) => {
             return isJidBroadcast(jid) || (!allowGroup && isJidGroup(jid)) //|| jid.includes('newsletter')
           },*/
-          defaultQueryTimeoutMs: undefined,
+          defaultQueryTimeoutMs: 60000,
           markOnlineOnConnect: false,
           retryRequestDelayMs: 500,
           maxMsgRetryCount: 5,

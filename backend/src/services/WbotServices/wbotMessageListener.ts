@@ -960,7 +960,7 @@ export const verifyMessage = async (
   const messageData = {
     id: isEdited ? msg?.message?.editedMessage?.message?.protocolMessage?.key?.id : msg.key.id,
     ticketId: ticket.id,
-    contactId: msg.key.fromMe ? undefined : contact.id,
+    contactId: contact.id,
     body,
     fromMe: msg.key.fromMe,
     mediaType: getTypeMessage(msg),

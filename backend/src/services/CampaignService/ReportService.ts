@@ -1,6 +1,6 @@
 import CampaignShipping from "../../models/CampaignShipping";
 import * as XLSX from "xlsx";
-import { Op } from "sequelize";
+import { Op, literal } from "sequelize";
 
 export interface IReport {
   id: string;
@@ -16,11 +16,41 @@ export async function ReportService({ id }: IReport)
                     [Op.ne]: null
                 } 
             },
-            attributes: ["number", "message", "deliveredAt", "createdAt"]
+            attributes: ["number", "message", "deliveredAt", "createdAt",
+                [
+                    literal(`
+                      (
+                        SELECT json_agg(sub_m)
+                        FROM (
+                          SELECT messages."body", messages."createdAt"
+                          FROM "Messages" AS messages
+                          JOIN "Contacts" AS contacts ON contacts.id = messages."contactId"
+                          WHERE contacts.number = "CampaignShipping".number
+                          AND messages."createdAt" > "CampaignShipping"."deliveredAt"
+                          ORDER BY messages."createdAt" DESC
+                          LIMIT 5
+                        ) AS sub_m
+                      )
+                    `),
+                    "latestMessages"
+                  ]
+            ]
         });
 
-        const jsonData = reports.map(report => report.toJSON());
-
+        //const jsonData = reports.map(report => report.toJSON());
+        const jsonData = reports.map(report => {
+            const plain = report.toJSON() as any;
+            if (Array.isArray(plain.latestMessages)) {
+                plain.latestMessages = plain.latestMessages
+                .reverse()
+                .map(msg => `${msg.body} [${new Date(msg.createdAt).toLocaleString()}]`)
+                .join(" || ");
+            } else {
+              plain.latestMessages = "";
+            }
+            return plain;
+          });
+          
 
         const worksheet = XLSX.utils.json_to_sheet(jsonData);
         const workbook = XLSX.utils.book_new();

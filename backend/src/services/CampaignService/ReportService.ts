@@ -28,7 +28,7 @@ export async function ReportService({ id }: IReport)
                           WHERE contacts.number = "CampaignShipping".number
                           AND messages."createdAt" > "CampaignShipping"."deliveredAt"
                           ORDER BY messages."createdAt" DESC
-                          LIMIT 5
+                          LIMIT 10
                         ) AS sub_m
                       )
                     `),

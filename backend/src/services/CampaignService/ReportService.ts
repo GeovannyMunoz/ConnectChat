@@ -26,6 +26,7 @@ export async function ReportService({ id }: IReport)
                           FROM "Messages" AS messages
                           JOIN "Contacts" AS contacts ON contacts.id = messages."contactId"
                           WHERE contacts.number = "CampaignShipping".number
+                          AND contacts."fromMe" = false
                           AND messages."createdAt" > "CampaignShipping"."deliveredAt"
                           ORDER BY messages."createdAt" DESC
                           LIMIT 10

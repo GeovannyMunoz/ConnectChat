@@ -687,12 +687,12 @@ async function handlePrepareContact(contactId, campaignId, delay, variables, cam
     campaignShipping.campaignId = campaignId;
 
     const message = getProcessedMessage(campaign.originalMessage, variables, contact);
-    campaignShipping.message = `\u200c ${message}`;
+    campaignShipping.message = `\u200c${message}`;
     
 
     if (campaign.confirmation) {
       const message = getProcessedMessage(campaign.originalConfirmationMessages, variables,contact);
-      campaignShipping.confirmationMessage = `\u200c ${message}`;
+      campaignShipping.confirmationMessage = `\u200c${message}`;
     }
 
     const [record, created] = await CampaignShipping.findOrCreate({
